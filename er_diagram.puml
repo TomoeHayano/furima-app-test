@@ -1,0 +1,110 @@
+@startuml
+skinparam linetype ortho
+
+entity users {
+    + id : unsigned_bigint <<PK>>
+    --
+    name : varchar(20)
+    email : varchar(255) <<UK>>
+    email_verified_at : timestamp
+    password : varchar(255)
+    postal_code : varchar(8)
+    address : varchar(255)
+    building_name : varchar(255)
+    profile_image_path : varchar(255)
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity products {
+    + id : unsigned_bigint <<PK>>
+    --
+    user_id : unsigned_bigint <<FK>>
+    name : varchar(255)
+    brand_name : varchar(255)
+    description : text
+    price : integer
+    condition_id : integer <<FK>>
+    image_path : varchar(255)
+    is_sold : boolean
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity categories {
+    + id : unsigned_bigint <<PK>>
+    --
+    name : varchar(255) <<UK>>
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity product_category {
+    + id : unsigned_bigint <<PK>>
+    --
+    product_id : unsigned_bigint <<FK>>
+    category_id : unsigned_bigint <<FK>>
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity likes {
+    + id : unsigned_bigint <<PK>>
+    --
+    user_id : unsigned_bigint <<FK>>
+    product_id : unsigned_bigint <<FK>>
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity comments {
+    + id : unsigned_bigint <<PK>>
+    --
+    user_id : unsigned_bigint <<FK>>
+    product_id : unsigned_bigint <<FK>>
+    content : varchar(255)
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity orders {
+    + id : unsigned_bigint <<PK>>
+    --
+    user_id : unsigned_bigint <<FK>>
+    product_id : unsigned_bigint <<FK>>
+    payment_method : varchar(50)
+    postal_code : varchar(8)
+    address : varchar(255)
+    building_name : varchar(255)
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity product_conditions {
+    + id : unsigned_bigint <<PK>>
+    --
+    status_name : varchar(255) <<UK>>
+    --
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+users "1" -- "0..*" products : "出品"
+products "1" -- "0..*" product_category : "カテゴリ"
+categories "1" -- "0..*" product_category : "カテゴリ"
+users "1" -- "0..*" likes : "いいね"
+products "1" -- "0..*" likes : "いいね"
+users "1" -- "0..*" comments : "コメント"
+products "1" -- "0..*" comments : "コメント"
+users "1" -- "0..*" orders : "購入"
+products "1" -- "0..*" orders : "注文"
+product_conditions "1" -- "0..*" products : "状態"
+
+@enduml

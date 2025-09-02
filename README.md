@@ -1,18 +1,35 @@
-# furima-app-test
-##GitHubの作成
-git init
-Initialized empty Git repository in /Users/to/coachtech/furima-app/.git/
+# furima-app-test　環境構築
 
-nginx:1.21.1
-mysql:8.0.26
-docker version: '3.8'
-php 8.1
 
-##docker Composeでビルド
-docker-compose up -d --build
+## Dokerビルド
 
-## Laravel８　インストール
-composer create-project "laravel/laravel=8.*" . --prefer-dist
+- git clone https://github.com/TomoeHayano/furima-app-test.git
 
-## 時間設定
-日本時間
+- docker-compose up -d --build
+
+## laravel環境構築
+
+- docker-compose exec php bash
+
+- composer install
+
+- cp .env.example .env
+
+- php artisan key:generate
+
+- php artisan migrate
+
+- php artisan db:seed
+
+## 開発環境
+- 商品一覧画面(トップ画面):
+- 会員登録:http://
+- ログイン画面:http://login
+- phpMyAdmin:http://localhost:8080
+
+## 使用技術（実行環境）
+- nginx:1.21.1
+- mysql:8.0.26
+- docker:3.8
+- php:8.1
+

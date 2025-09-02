@@ -1,0 +1,28 @@
+/* メインレイアウト */
+body {
+        font-family: 'Inter', sans-serif;
+        background-color: #FFFFFF;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+     }
+
+/* ヘッダー */
+.auth-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 82px;
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    box-sizing: border-box;
+}
+.auth-header img {
+    height: 36px;
+}
