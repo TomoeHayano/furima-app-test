@@ -11,7 +11,7 @@
 </head>
 <body>
     <header class="auth-header">
-        <img src="coachtech-furima-app/logo.png" alt="CoachTech_White Logo">
+        <img src="coachtech-furima-app/logo.svg" alt="CoachTech_White Logo">
     </header>
 
     @yield('content')

@@ -1,110 +1,123 @@
-@startuml
+@startuml er_diagram
+hide circle
+left to right direction
 skinparam linetype ortho
+skinparam monochrome true
 
 entity users {
-    + id : unsigned_bigint <<PK>>
-    --
-    name : varchar(20)
-    email : varchar(255) <<UK>>
-    email_verified_at : timestamp
-    password : varchar(255)
-    postal_code : varchar(8)
-    address : varchar(255)
-    building_name : varchar(255)
-    profile_image_path : varchar(255)
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+name varchar(20) NOT NULL
+email varchar(255) UNIQUE NOT NULL
+email_verified_at timestamp
+password varchar(255) NOT NULL
+created_at timestamp
+updated_at timestamp
+}
+
+entity profiles {
+
+id unsigned bigint <<PK>>
+--
+user_id unsigned bigint <<FK>> NOT NULL
+postal_code varchar(8) NOT NULL
+address varchar(255) NOT NULL
+building_name varchar(255)
+image_path varchar(255)
+created_at timestamp
+updated_at timestamp
 }
 
 entity products {
-    + id : unsigned_bigint <<PK>>
-    --
-    user_id : unsigned_bigint <<FK>>
-    name : varchar(255)
-    brand_name : varchar(255)
-    description : text
-    price : integer
-    condition_id : integer <<FK>>
-    image_path : varchar(255)
-    is_sold : boolean
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+user_id unsigned bigint <<FK>> NOT NULL
+name varchar(255) NOT NULL
+brand_name varchar(255)
+description text NOT NULL
+price integer NOT NULL
+condition_id integer <<FK>> NOT NULL
+image_path varchar(255) NOT NULL
+is_sold TINYINT(1) NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
 entity categories {
-    + id : unsigned_bigint <<PK>>
-    --
-    name : varchar(255) <<UK>>
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+name varchar(255) UNIQUE NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
 entity product_category {
-    + id : unsigned_bigint <<PK>>
-    --
-    product_id : unsigned_bigint <<FK>>
-    category_id : unsigned_bigint <<FK>>
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+product_id unsigned bigint <<FK>> NOT NULL
+category_id unsigned bigint <<FK>> NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
 entity likes {
-    + id : unsigned_bigint <<PK>>
-    --
-    user_id : unsigned_bigint <<FK>>
-    product_id : unsigned_bigint <<FK>>
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+user_id unsigned bigint <<FK>> NOT NULL
+product_id unsigned bigint <<FK>> NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
 entity comments {
-    + id : unsigned_bigint <<PK>>
-    --
-    user_id : unsigned_bigint <<FK>>
-    product_id : unsigned_bigint <<FK>>
-    content : varchar(255)
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+user_id unsigned bigint <<FK>> NOT NULL
+product_id unsigned bigint <<FK>> NOT NULL
+content varchar(255) NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
 entity orders {
-    + id : unsigned_bigint <<PK>>
-    --
-    user_id : unsigned_bigint <<FK>>
-    product_id : unsigned_bigint <<FK>>
-    payment_method : varchar(50)
-    postal_code : varchar(8)
-    address : varchar(255)
-    building_name : varchar(255)
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+user_id unsigned bigint <<FK>> NOT NULL
+product_id unsigned bigint <<FK>> NOT NULL
+profile_id unsigned bigint <<FK>> NOT NULL
+payment_method varchar(50) NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
 entity product_conditions {
-    + id : unsigned_bigint <<PK>>
-    --
-    status_name : varchar(255) <<UK>>
-    --
-    created_at : timestamp
-    updated_at : timestamp
+
+id unsigned bigint <<PK>>
+--
+status_name varchar(255) UNIQUE NOT NULL
+created_at timestamp
+updated_at timestamp
 }
 
-users "1" -- "0..*" products : "出品"
-products "1" -- "0..*" product_category : "カテゴリ"
-categories "1" -- "0..*" product_category : "カテゴリ"
-users "1" -- "0..*" likes : "いいね"
-products "1" -- "0..*" likes : "いいね"
-users "1" -- "0..*" comments : "コメント"
-products "1" -- "0..*" comments : "コメント"
-users "1" -- "0..*" orders : "購入"
-products "1" -- "0..*" orders : "注文"
-product_conditions "1" -- "0..*" products : "状態"
+users "1" -- "1" profiles : has_profile
+users "1" -- "0.." products : has_product
+users "1" -- "0.." likes : has_liked
+users "1" -- "0.." comments : has_comment
+users "1" -- "0.." orders : has_order
 
+products "1" -- "0.." product_category : has_category
+products "1" -- "0.." likes : has_like
+products "1" -- "0.." comments : has_comment
+products "1" -- "0.." orders : has_order
+
+categories "1" -- "0.." product_category : has_product
+product_conditions "1" -- "0.." products : has_condition
+profiles "1" -- "0..*" orders : has_shipping_address
 @enduml
