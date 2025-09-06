@@ -10,10 +10,13 @@ body {
         min-height: 100vh;
      }
 
-.form-group .form-error {
+.form-error {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 4px;
     color: #FF5555;
     font-size: 14px;
-    margin-top: 5px;
+    line-height: 40px;
 }
 
 /* ヘッダー */
