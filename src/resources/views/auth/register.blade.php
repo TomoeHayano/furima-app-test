@@ -24,7 +24,7 @@
 
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}">
+            <input id="email" type="text" name="email" value="{{ old('email') }}">
             @error('email')
                 <p class="form-error">{{ $message }}</p>
             @enderror
@@ -33,17 +33,27 @@
         <div class="form-group">
             <label for="password">パスワード</label>
             <input id="password" type="password" name="password">
+            {{-- ここでは確認用のエラーを表示させない --}}
             @error('password')
-                <p class="form-error">{{ $message }}</p>
+                @if ($message !== 'パスワードと一致しません')
+                    <p class="form-error">{{ $message }}</p>
+                @endif
             @enderror
         </div>
 
         <div class="form-group">
             <label for="password-confirm">確認用パスワード</label>
             <input id="password-confirm" type="password" name="password_confirmation">
+
+            {{-- 通常のエラー --}}
             @error('password_confirmation')
                 <p class="form-error">{{ $message }}</p>
             @enderror
+
+            {{-- 確認用のエラー --}}
+            @if ($errors->has('password') && $errors->first('password') === 'パスワードと一致しません')
+                <p class="form-error">{{ $errors->first('password') }}</p>
+            @endif
         </div>
 
         <button type="submit" class="register-button">
