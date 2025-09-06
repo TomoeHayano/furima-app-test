@@ -10,52 +10,37 @@ use App\Models\Profile;
 
 class UserController extends Controller
 {
-    /**
-     * プロフィール画面（マイページ）を表示する
-     */
+    // プロフィール画面
     public function show(Request $request)
     {
-        $user = Auth::user();
-        $page = $request->query('page', 'default');
-        $products = collect();
+        $user = $request->user();
 
-        if ($page === 'buy') {
-            $products = $user->orders()->with('product')->get()->pluck('product');
-        } elseif ($page === 'sell') {
-            $products = $user->products()->get();
+        // プロフィール未登録なら編集フォームをそのまま表示
+        if (!$user->profile || !$user->profile->address) {
+            return view('mypage.profile_edit', compact('user'));
         }
 
-        return view('user.mypage', compact('user', 'products', 'page'));
+        // プロフィール登録済みなら、商品一覧を表示
+        return view('mypage.show', compact('user'));
     }
 
-    /**
-     * プロフィール設定・編集画面を表示する
-     */
-    public function edit()
+    // プロフィール編集フォーム
+    public function edit(Request $request)
     {
-        $user = Auth::user();
-        $profile = $user->profile ?? new Profile(); // プロフィールがなければ新規作成
-        
-        return view('user.profile_edit', compact('user', 'profile'));
+        $user = $request->user();
+        return view('mypage.profile_edit', compact('user'));
     }
 
-    /**
-     * プロフィール情報を更新する
-     */
-    public function update(ProfileUpdateRequest $request)
+    // プロフィール更新処理
+    public function update(ProfileRequest $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
 
-        // ユーザーテーブルの情報を更新
-        $user->name = $request->input('name');
-        $user->save();
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            $request->only(['postal_code', 'address', 'building_name', 'image_path'])
+        );
 
-        // プロフィールテーブルの情報を更新または新規作成
-        $profile = $user->profile()->firstOrNew(['user_id' => $user->id]);
-        $profile->fill($request->validated());
-        $profile->save();
-
-        // 完了後、指定されたルートにリダイレクト
-        return redirect()->route('product.mylist')->with('success', 'プロフィールを更新しました。');
+        return redirect()->route('user.mypage');
     }
 }
