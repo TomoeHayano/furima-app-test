@@ -11,18 +11,18 @@
     {{-- タブ --}}
     <div class="products-tabs">
         {{-- おすすめ --}}
-        <a href="{{ url('/') }}"
-        class="tab-link {{ request('tab') !== 'mylist' ? 'active' : '' }}">
-        おすすめ
+        <a href="{{ $guest ? url('/') : url('/mylist?tab=recommend') }}"
+            class="tab-link {{ $tab === 'recommend' ? 'active' : '' }}">
+            おすすめ
         </a>
 
-        {{-- マイリスト（ログイン時のみ表示） --}}
-        @auth
-            <a href="{{ url('/?tab=mylist') }}"
-            class="tab-link {{ request('tab') === 'mylist' ? 'active' : '' }}">
-            マイリスト
+        {{-- マイリスト（ログイン時のみ） --}}
+        @unless($guest)
+            <a href="{{ url('/mylist?tab=mylist') }}"
+                class="tab-link {{ $tab === 'mylist' ? 'active' : '' }}">
+                マイリスト
             </a>
-        @endauth
+        @endunless
     </div>
 
     <div class="products-border"></div>
