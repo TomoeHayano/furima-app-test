@@ -1,15 +1,20 @@
 /* メインレイアウト */
 body {
-        font-family: 'Inter', sans-serif;
-        background-color: #FFFFFF;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-     }
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+}
 
+/* ログインなどの認証画面位置を中央寄せ */
+.auth-body main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 82px);
+}
+
+/* バリデーションメッセージ */
 .form-error {
     display: block;
     margin-top: 4px;
@@ -21,6 +26,8 @@ body {
 
 /* ヘッダー */
 .auth-header {
+    display: flex;
+    justify-content: space-between;
     position: absolute;
     top: 0;
     left: 0;
@@ -32,6 +39,56 @@ body {
     padding-left: 25px;
     box-sizing: border-box;
 }
+
+/* ロゴ */
 .auth-header img {
     height: 36px;
+}
+
+/* ナビ全体 */
+.toppage-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+/* 共通リンク（ログイン・ログアウト・マイページ） */
+.header-link {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #FFFFFF;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logout-link {
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* 出品ボタン */
+.header-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+    text-decoration: none;
+    margin-right: 26px; 
 }

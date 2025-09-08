@@ -17,11 +17,7 @@ use App\Http\Controllers\Auth\LoginController;
 */
 
 // 商品一覧（トップ画面）
-Route::get('/', [ProductController::class, 'index'])->name('product.index');
-Route::get('/?tab=mylist', [ProductController::class, 'mylist'])->name('product.mylist');
-
-// 商品詳細
-Route::get('/item/{item_id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
 // 会員登録
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -39,5 +35,8 @@ Route::middleware('auth')->group(function () {
     // プロフィール編集
     Route::get('/mypage/profile', [UserController::class, 'edit'])->name('user.profile.edit');
     Route::post('/mypage/profile', [UserController::class, 'update'])->name('user.profile.update');
-});
 
+    //商品一覧マイリスト
+    Route::get('/mylist', [ProductController::class, 'mylist'])->name('product.mylist');
+});
+    
