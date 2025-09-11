@@ -18,6 +18,22 @@
         <div class="header-logo">
             <img src="{{ asset('images/logo.svg') }}" alt="CoachTech Logo">
         </div>
+
+        @if (!Request::is('login') && !Request::is('register'))
+            <form 
+                action="{{ Auth::check() ? route('products.mylist') : route('products.index') }}" 
+                method="GET" 
+                class="toppage-header-search"
+            >
+                <input type="text" name="keyword" placeholder="なにをお探しですか？"
+                    value="{{ request('keyword') }}">
+                {{-- マイリストにいる場合は tab パラメータを維持 --}}
+                @if (Auth::check() && request('tab') === 'mylist')
+                    <input type="hidden" name="tab" value="mylist">
+                @endif
+            </form>
+        @endif
+
         <nav class="toppage-header-nav">
             @auth
                 {{-- ログアウト --}}

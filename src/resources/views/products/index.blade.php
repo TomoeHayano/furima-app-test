@@ -18,7 +18,7 @@
 
         {{-- マイリスト（ログイン時のみ） --}}
         @unless($guest)
-            <a href="{{ url('/mylist?tab=mylist') }}"
+            <a href="{{ url('/mylist?tab=mylist') }}{{ request('keyword') ? '&keyword='.request('keyword') : '' }}"
                 class="tab-link {{ $tab === 'mylist' ? 'active' : '' }}">
                 マイリスト
             </a>
@@ -35,7 +35,9 @@
                     商品画像
                 </div>
                 <div class="product-name">
-                    {{ $product['name'] }}
+                    <a href="{{ route('products.show', ['item_id' => $product['id']]) }}">
+                        {{ $product['name'] }}
+                    </a>
                 </div>
                 @if ($product['is_sold'])
                     <div class="sold-label">Sold</div>

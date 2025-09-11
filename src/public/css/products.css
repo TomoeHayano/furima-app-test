@@ -71,3 +71,23 @@
     justify-content: left;
     color: #000000;
 }
+
+@media (max-width: 850px) {
+    .products-page {
+    width: 100%;
+    padding: 0 20px;
+    }
+    .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2列表示 */
+    gap: 40px 20px;
+    margin-left: 0;
+    margin-right: 0;
+    }
+    .product-card {
+    max-width: 100%;
+    }
+    .product-image,
+    .product-name {
+        width: 100%;
+    }
+}
