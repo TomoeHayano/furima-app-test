@@ -30,11 +30,11 @@
     {{-- 商品一覧グリッド --}}
     <div class="products-grid">
         @forelse ($products as $product)
-            <div class="product-card">
+            <div class="product-card"> {{-- ✅ products-card → product-card --}}
                 <div class="product-image">
                     商品画像
                 </div>
-                <div class="product-name">
+                <div class="product-name"> {{-- ✅ products-name → product-name --}}
                     <a href="{{ route('products.show', ['item_id' => $product['id']]) }}">
                         {{ $product['name'] }}
                     </a>

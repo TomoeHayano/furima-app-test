@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    /**
+     * ゲスト用おすすめ一覧
+     */
     public function index(Request $request)
     {
         $keyword = $request->input('keyword');
 
-        // ゲスト用おすすめ一覧
         $products = [
-            ['name' => 'おすすめ商品1', 'is_sold' => false],
-            ['name' => 'おすすめ商品2', 'is_sold' => true],
+            ['id' => 1, 'name' => 'おすすめ商品1', 'is_sold' => false],
+            ['id' => 2, 'name' => 'おすすめ商品2', 'is_sold' => true],
         ];
 
-        // 部分一致検索（ゲスト用）
+        // 部分一致検索
         if ($keyword) {
-            $products = array_filter($products, function ($product) use ($keyword) {
+            $products = array_values(array_filter($products, function ($product) use ($keyword) {
                 return str_contains($product['name'], $keyword);
-            });
+            }));
         }
 
         return view('products.index', [
@@ -39,21 +39,21 @@ class ProductController extends Controller
 
         if ($tab === 'recommend') {
             $products = [
-                ['name' => 'おすすめ商品A', 'is_sold' => false],
-                ['name' => 'おすすめ商品B', 'is_sold' => true],
+                ['id' => 3, 'name' => 'おすすめ商品A', 'is_sold' => false],
+                ['id' => 4, 'name' => 'おすすめ商品B', 'is_sold' => true],
             ];
         } else {
             $products = [
-                ['name' => 'マイリスト商品1', 'is_sold' => false],
-                ['name' => 'マイリスト商品2', 'is_sold' => true],
+                ['id' => 5, 'name' => 'マイリスト商品1', 'is_sold' => false],
+                ['id' => 6, 'name' => 'マイリスト商品2', 'is_sold' => true],
             ];
         }
 
-        // 部分一致検索（ログイン後）
+        // 部分一致検索
         if ($keyword) {
-            $products = array_filter($products, function ($product) use ($keyword) {
+            $products = array_values(array_filter($products, function ($product) use ($keyword) {
                 return str_contains($product['name'], $keyword);
-            });
+            }));
         }
 
         return view('products.index', [
@@ -63,22 +63,25 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show($item_id)
+    /**
+     * 商品詳細画面
+     */
+    public function show($itemId)
     {
-        // ダミーデータ（実装時は Product::with(['categories','comments','likes'])->findOrFail($item_id)）
+        // 仮データ（本番はDBから取得）
         $product = [
-            'id' => $item_id,
-            'name' => 'サンプル商品',
-            'brand_name' => 'ブランドX',
+            'id' => $itemId,
+            'name' => "商品サンプル #{$itemId}",
+            'brand' => 'ブランド名サンプル',
             'price' => 47000,
-            'likes' => 3,
-            'comments_count' => 1,
-            'description' => '商品の状態は良好です。傷もありません。',
+            'description' => 'カラー：グレー 新品 商品の状態は良好です。',
             'categories' => ['洋服', 'メンズ'],
             'condition' => '良好',
+            'likes' => 3,
+            'liked' => false,
             'comments' => [
-                ['user' => 'admin', 'content' => 'こちらにコメントが入ります。']
-            ]
+                ['user' => 'admin', 'content' => 'こちらにコメントが入ります。'],
+            ],
         ];
 
         return view('products.show', compact('product'));

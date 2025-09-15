@@ -19,7 +19,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // ログイン成功 → 商品管理画面へ
-            return redirect()->route('product.mylist', ['tab' => 'mylist']);
+            return redirect()->route('products.mylist', ['tab' => 'mylist']);
         }
     }
 }
