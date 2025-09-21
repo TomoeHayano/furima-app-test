@@ -55,5 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/item/{productId}/comment', [ProductController::class, 'storeComment'])
     ->middleware('auth')
     ->name('products.comment.store');
+
+    // 購入画面表示
+    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
+
+    // 購入処理
+    Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
 });
     

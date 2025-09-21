@@ -40,7 +40,7 @@
                     </a>
                 </div>
                 @if ($product['is_sold'])
-                    <div class="sold-label">Sold</div>
+                    <span class="sold-badge">SOLD</span>
                 @endif
             </div>
         @empty

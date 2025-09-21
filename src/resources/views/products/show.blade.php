@@ -44,7 +44,13 @@
 
             {{-- 購入ボタン --}}
             <div class="purchase-area">
-                <button class="purchase-button">購入手続きへ</button>
+                @auth
+                    <form action="{{ route('purchase.create', $product->id) }}" method="GET">
+                        <button type="submit" class="purchase-button">購入手続きへ</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="purchase-button">ログインして購入</a>
+                @endauth
             </div>
         </div>
 

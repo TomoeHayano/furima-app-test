@@ -83,6 +83,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 /* 商品説明 */

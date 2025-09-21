@@ -39,6 +39,7 @@
     margin-right: 68.4px;
 }
 
+/* 商品カード */
 .product-card {
     width: 290px;
     text-align: left;
@@ -70,6 +71,17 @@
     align-items: center;
     justify-content: left;
     color: #000000;
+}
+
+.sold-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: red;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 3px;
 }
 
 @media (max-width: 850px) {
