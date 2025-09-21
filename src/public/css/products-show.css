@@ -8,7 +8,6 @@
     gap: 45px; /* 画像と右エリアの間隔 */
 }
 
-
 /* 左：商品画像 */
 .products-image-area {
     width: 600px;
@@ -160,7 +159,7 @@
         width: 100%;
         max-width: 600px;
         height: auto;
-        aspect-ratio: 1 / 1; /* 正方形比率維持 */
+        aspect-ratio: 1 / 1;
     }
 
     .products-title {

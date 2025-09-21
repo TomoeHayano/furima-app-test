@@ -17,14 +17,20 @@
 
         {{-- 商品タイトル・価格・いいね --}}
         <div class="products-title">
-            <h1>{{ $product['name'] }}</h1>
-            <p class="brand">{{ $product['brand'] }}</p>
-            <p class="price">¥{{ number_format($product['price']) }} (税込)</p>
+            <h1>{{ $product->name }}</h1>
+            <p class="brand">{{ $product->brand_name }}</p>
+            <p class="price">¥{{ number_format($product->price) }} (税込)</p>
 
             <div class="products-actions">
-                {{-- いいねアイコン（見た目だけ切替） --}}
-                <span class="like-icon {{ $product['liked'] ? 'liked' : '' }}">★</span>
-                <span>{{ $product['likes'] }}</span>
+                {{-- いいねアイコン --}}
+                <span
+                    id="like-button"
+                    class="like-icon {{ $liked ? 'liked' : '' }} {{ Auth::guest() ? 'disabled' : '' }}"
+                    data-product-id="{{ $product['id'] }}">
+                    ★
+                </span>
+                <span id="likes-count">{{ $likesCount }}</span>
+
                 {{-- コメントアイコン --}}
                 <span class="comment-icon">💬</span>
                 <span>{{ count($product['comments']) }}</span>
@@ -39,19 +45,19 @@
         {{-- 商品説明 --}}
         <div class="products-description">
             <h2>商品説明</h2>
-            <p>{{ $product['description'] }}</p>
+            <p>{{ $product->description }}</p>
         </div>
 
         {{-- 商品の情報 --}}
         <div class="products-info">
             <h2>商品の情報</h2>
-            <p><strong>カテゴリー:</strong> {{ implode(', ', $product['categories']) }}</p>
-            <p><strong>商品の状態:</strong> {{ $product['condition'] }}</p>
+            <p><strong>カテゴリー:</strong> {{ implode(', ', $product->categories->pluck('name')->toArray()) }}</p>
+            <p><strong>商品の状態:</strong> {{ $product->condition->status_name }}</p>
         </div>
 
         {{-- コメント --}}
         <div class="products-comments">
-            <h2>コメント ({{ count($product['comments']) }})</h2>
+            <h2>コメント ({{ count($product->comments) }})</h2>
             @foreach ($product['comments'] as $comment)
                 <div class="comment-item">
                     <span class="comment-user">{{ $comment['user'] }}</span>:
@@ -67,4 +73,42 @@
         </div>
     </div>
 </div>
+
+{{-- JSで非同期いいね処理 --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const likeButton = document.getElementById('like-button');
+    const likesCount = document.getElementById('likes-count');
+
+    if (likeButton) {
+        // ゲストはクリックできない
+        if (likeButton.classList.contains('disabled')) {
+            return;
+        }
+
+        likeButton.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+
+            fetch(`/item/${productId}/like`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked') {
+                    likeButton.classList.add('liked');
+                } else {
+                    likeButton.classList.remove('liked');
+                }
+                likesCount.textContent = data.likesCount;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+});
+</script>
 @endsection

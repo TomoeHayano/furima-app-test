@@ -22,6 +22,10 @@ Route::get('/', [ProductController::class, 'index'])->name('products.index');
 // 商品詳細
 Route::get('/item/{item_id}', [ProductController::class, 'show'])->name('products.show');
 
+// いいね機能
+Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])->name('products.toggleLike')
+    ->middleware('auth')
+    ->name('products.toggleLike');
 
 // 会員登録
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -42,5 +46,14 @@ Route::middleware('auth')->group(function () {
 
     //商品一覧マイリスト
     Route::get('/mylist', [ProductController::class, 'mylist'])->name('products.mylist');
+
+    //いいね機能
+    Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])
+        ->name('products.toggleLike');
+
+    //コメント機能
+    Route::post('/item/{productId}/comment', [ProductController::class, 'storeComment'])
+    ->middleware('auth')
+    ->name('products.comment.store');
 });
     
