@@ -8,32 +8,38 @@
 
 @section('content')
 <div class="products-detail">
-    {{-- 商品画像 --}}
+    {{-- 左：商品画像 --}}
     <div class="products-image-area">
-        <div class="products-image">商品画像</div>
+        <div class="products-image">
+            @if($product->image_path)
+                <img src="{{ $product->image_path }}" alt="{{ $product->name }}" style="max-width:100%; max-height:100%; object-fit:cover;">
+            @else
+                商品画像
+            @endif
+        </div>
     </div>
 
+    {{-- 右：商品詳細 --}}
     <div class="products-content">
 
-        {{-- 商品タイトル・価格・いいね --}}
+        {{-- 商品タイトル・ブランド・価格 --}}
         <div class="products-title">
             <h1>{{ $product->name }}</h1>
             <p class="brand">{{ $product->brand_name }}</p>
             <p class="price">¥{{ number_format($product->price) }} (税込)</p>
 
+            {{-- いいね・コメント --}}
             <div class="products-actions">
-                {{-- いいねアイコン --}}
                 <span
                     id="like-button"
                     class="like-icon {{ $liked ? 'liked' : '' }} {{ Auth::guest() ? 'disabled' : '' }}"
-                    data-product-id="{{ $product['id'] }}">
+                    data-product-id="{{ $product->id }}">
                     ★
                 </span>
                 <span id="likes-count">{{ $likesCount }}</span>
 
-                {{-- コメントアイコン --}}
                 <span class="comment-icon">💬</span>
-                <span>{{ count($product['comments']) }}</span>
+                <span>{{ $product->comments->count() }}</span>
             </div>
 
             {{-- 購入ボタン --}}
@@ -48,7 +54,7 @@
             <p>{{ $product->description }}</p>
         </div>
 
-        {{-- 商品の情報 --}}
+        {{-- 商品情報 --}}
         <div class="products-info">
             <h2>商品の情報</h2>
             <p><strong>カテゴリー:</strong> {{ implode(', ', $product->categories->pluck('name')->toArray()) }}</p>
@@ -57,19 +63,35 @@
 
         {{-- コメント --}}
         <div class="products-comments">
-            <h2>コメント ({{ count($product->comments) }})</h2>
-            @foreach ($product['comments'] as $comment)
+            <h2>コメント ({{ $product->comments->count() }})</h2>
+
+            {{-- コメント一覧 --}}
+            @foreach ($product->comments as $comment)
                 <div class="comment-item">
-                    <span class="comment-user">{{ $comment['user'] }}</span>:
-                    <span class="comment-text">{{ $comment['content'] }}</span>
+                    <span class="comment-user">{{ $comment->user->name }}</span>:
+                    <span class="comment-text">{{ $comment->content }}</span>
                 </div>
             @endforeach
 
-            {{-- コメント入力欄（見た目だけ） --}}
-            <div class="comment-input">
-                <textarea placeholder="商品のコメントを入力"></textarea>
-                <button class="comment-submit">コメントを送信する</button>
-            </div>
+            {{-- コメント入力欄（ログインユーザーのみ） --}}
+            @auth
+                <div class="comment-input">
+                    <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
+                        @csrf
+                        <textarea 
+                            name="content" 
+                            placeholder="商品のコメントを入力" 
+                            maxlength="255">{{ old('content') }}</textarea>
+
+                        {{-- バリデーションエラー表示 --}}
+                        @error('content')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+
+                        <button type="submit" class="comment-submit">コメントを送信する</button>
+                    </form>
+                </div>
+            @endauth
         </div>
     </div>
 </div>

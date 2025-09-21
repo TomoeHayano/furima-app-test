@@ -13,7 +13,7 @@ class CommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class CommentRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
+    public function messages()
     {
         return [
             'content.required' => 'コメントを入力してください。',
