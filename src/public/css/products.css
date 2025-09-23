@@ -74,13 +74,13 @@
 }
 
 .sold-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background: red;
-    color: #fff;
+    display: inline-block;
+    margin-top: 5px;
+    padding: 2px 8px;
+    font-size: 14px;
     font-weight: bold;
-    padding: 5px 10px;
+    color: #fff;
+    background-color: #ff5555;
     border-radius: 3px;
 }
 

@@ -1,125 +1,224 @@
-/* 商品購入画面全体 */
+/* 商品購入画面 全体 */
 .purchase-container {
+    position: relative;
+    width: 1512px;
+    height: 982px;
+    margin: 120px auto 0; /* ヘッダー分の余白を追加 */
+    padding-top: calc(475px + 93px);
+    background: #FFFFFF;
+}
+
+/* 商品画像エリア */
+.product-image {
+    position: absolute;
+    left: 80px;
+    top: 93px;
+    width: 177.54px;
+    height: 177.54px;
+    background: #D9D9D9;
     display: flex;
-    justify-content: space-between;
-    max-width: 1400px;
-    margin: 150px auto;
-    gap: 40px;
+    align-items: center;
+    justify-content: center;
 }
-
-/* 左カラム */
-.purchase-left {
-    flex: 1;
-}
-
 .product-image img {
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    background: #d9d9d9;
 }
 
-.product-info h1 {
-    font-size: 28px;
-    margin: 15px 0 5px;
+/* 商品名 */
+.product-name {
+    position: absolute;
+    left: 313px;
+    top: 93px;
+    width: 326px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 36px;
+    color: #000;
+    margin: 0;
 }
 
-.product-info .price {
-    font-size: 22px;
-    color: #333;
+/* 商品価格 */
+.product-price {
+    position: absolute;
+    left: 313px;
+    top: 148.47px; /* 商品名から55.47px下 */
+    font-size: 24px;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
 }
 
-/* フォーム */
-.form-group {
-    margin: 30px 0;
+/* 支払い方法 */
+.payment-section {
+    position: absolute;
+    /* left: 80px; */
+    top: 323px; /* 上段の線位置 */
+    width: 805px;
+    height: 120px; /* 少し余裕を持たせる */
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
+/* タイトルラベル */
+.payment-label {
+    position: absolute;
+    left: 115px;
+    top: 30px; /* ← 線から20px下げてぶつからないように */
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
 }
 
+/* プルダウンラッパー */
 .status-dropdown {
-    width: 270px;
-    padding: 10px;
-    border: 1px solid #5F5F5F;
-    border-radius: 5px;
+    position: absolute;
+    left: 176px;
+    top: 90px; /* ← タイトルから40px下に配置 */
+    width: 265px;
+    height: 31px;
+    border: 1px solid #5F5F5F; /* 枠線を細く */
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
 }
 
-.form-group input[type="text"] {
-    width: 90%;
-    padding: 10px;
+/* プルダウン本体 */
+.status-dropdown {
+    width: 269px;
+    height: 31px;
     border: 1px solid #5F5F5F;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 0 8px; /* 上下の余白を削除、左右だけ残す */
+    line-height: 31px; /* 高さと同じにして中央寄せ */
+    background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><polygon points='0,0 12,0 6,7' fill='%235F5F5F'/></svg>") no-repeat right 10px center;
+    background-size: 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-.change-link {
-    margin-left: 15px;
+.line {
+    position: absolute;
+    width: 805px;
+    left: 80px;
+    border: 1px solid #000;
+}
+
+/* 支払い方法の一番上の線を右側の枠線と揃える */
+.product-border { top: 323px; }  /* ← ここを右の枠線に合わせる */
+.payment-border { top: 513px; }
+.address-border { top: 728px; }
+
+/* 配送先 */
+.address-section {
+    position: absolute;
+    top: 513px;         /* 支払い方法より下の線に揃える */
+    width: 805px;
+    height: 120px;      /* 少し余裕を持たせる */
+}
+
+/* タイトルラベル */
+.address-label {
+    position: absolute;
+    left: 115px;
+    top: 30px;          /* 支払い方法と同じ位置 */
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+}
+
+/* 住所テキスト */
+.address-text {
+    position: absolute;
+    left: 176px;        /* 支払い方法のプルダウン位置に合わせる */
+    top: 90px;          /* タイトルから下げる */
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+/* 変更するリンク */
+.address-edit {
+    position: absolute;
+    right: 20px;        /* 枠の右端に配置 */
+    top: 30px;          /* タイトルと同じ高さ */
+    font-size: 20px;
+    font-weight: 400;
     color: #0073CC;
-    font-size: 14px;
     text-decoration: none;
 }
 
-/* エラーメッセージ */
-.form-error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-/* 右カラム */
+/* 右側の確認エリア */
 .purchase-right {
+    position: absolute;
+    top: 93px;       /* 画像と同じ高さ */
+    right: 85px;     /* 右余白 */
     width: 440px;
-    flex-shrink: 0;
 }
 
+/* 確認画面（2段枠） */
 .confirm-surface {
+    width: 100%;
+    height: 230px;
     border: 1px solid #000;
-    border-radius: 4px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .confirm-row {
+    flex: 1;                          /* 均等分割 */
     display: flex;
     justify-content: space-between;
-    padding: 15px;
+    align-items: center;
+    padding: 20px;
     border-bottom: 1px solid #000;
-    font-size: 18px;
+    font-size: 20px;
 }
 .confirm-row:last-child {
     border-bottom: none;
 }
 
 /* 購入ボタン */
-.action-bar {
-    margin-top: 40px;
-}
-
 .purchase-button {
-    width: 100%;
-    padding: 15px;
+    margin-top: 66px;   /* 確認枠からの間隔 */
+    width: 100%;        /* 枠と同じ幅 */
+    height: 60px;
     background: #FF5555;
-    color: white;
-    font-size: 20px;
+    color: #fff;
     border: none;
+    font-size: 26px;
+    font-weight: 700;
     border-radius: 5px;
     cursor: pointer;
 }
-.purchase-button:hover {
-    background: #e64a4a;
-}
 
-/* ========================== */
-/* タブレット対応 (768-850px) */
-/* ========================== */
-@media (max-width: 850px) {
+@media (min-width: 1400px) and (max-width: 1540px) {
     .purchase-container {
-        flex-direction: column;
-        max-width: 100%;
-        padding: 20px;
+        width: 90%; /* 横幅を縮めて中央寄せ */
+        margin: 100px auto 0;
     }
+
+    .product-image {
+        left: 60px; /* 左に寄せすぎない */
+    }
+
+    .product-name {
+        left: 280px;
+    }
+
+    .product-price {
+        left: 280px;
+    }
+
+    .payment-section,
+    .address-section {
+        width: 90%;
+        left: 60px;
+    }
+
     .purchase-right {
-        width: 100%;
+        right: 60px;
     }
 }

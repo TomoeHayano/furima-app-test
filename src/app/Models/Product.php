@@ -76,4 +76,8 @@ class Product extends Model
     {
         return $this->hasOne(Order::class, 'product_id'); 
     }
+
+    protected $casts = [
+        'is_sold' => 'boolean', // tinyint を true/false として扱う
+    ];
 }
