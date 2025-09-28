@@ -41,7 +41,7 @@
         <!-- 郵便番号 -->
         <div class="form-group">
             <label for="postal_code" class="form-label">郵便番号</label>
-            <input type="text" id="postal_code" name="postal_code" class="form-input" value="{{ old('postal_code', $user->profile->postal_code ?? '') }}" placeholder="123-4567" required>
+            <input type="text" id="postal_code" name="postal_code" class="form-input" value="{{ old('postal_code', $user->profile->postal_code ?? '') }}" required>
             @error('postal_code')
                 <p class="error-message">{{ $message }}</p>
             @enderror

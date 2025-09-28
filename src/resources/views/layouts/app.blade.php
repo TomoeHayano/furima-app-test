@@ -8,12 +8,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- 共通CSS --}}
+    <link rel="stylesheet" href="{{ asset('css/reset.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     {{-- ページごとの追加CSS --}}
     @stack('css')
 </head>
 <body class="{{ Request::is('login') || Request::is('register') || Request::is('email/verify') ? 'auth-body' : '' }}">
+
     <header class="auth-header">
         {{-- ロゴ --}}
         <div class="header-logo">
@@ -67,7 +69,7 @@
         @endif
     </header>
 
-    <main>
+   <main class="main-content">
         @yield('content')
     </main>
 </body>

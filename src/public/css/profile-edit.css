@@ -1,12 +1,11 @@
 .profile-edit-content {
-    position: relative;
     width: 100vw;
     min-height: 100vh;
     background: #FFFFFF;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 59px;
+    padding-top: 72px;
 }
 
 .profile-title {
@@ -23,19 +22,23 @@
     width: 680px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .profile-image-section {
+    position: relative;
+    width: 680px;
+    height: 150px;
     display: flex;
     align-items: center;
-    gap: 40px;
     margin-bottom: 76px;
 }
 
 .profile-image-circle {
+    position: absolute;
     width: 150px;
     height: 150px;
+    left: 0px;
     background: #D9D9D9;
     border-radius: 50%;
     display: flex;
@@ -52,8 +55,11 @@
 }
 
 .image-select-button {
+    position: absolute;
     width: 179px;
     height: 49px;
+    left: 190px;
+    top: 51px;
     border: 2px solid #FF5555;
     border-radius: 10px;
     background: transparent;
@@ -76,25 +82,38 @@
 }
 
 .form-group {
-    width: 100%;
-    margin-bottom: 43px;
+    position: relative;
+    width: 680px;
+    height: 92px;
+    margin-bottom: 100px;
+}
+
+.form-group:last-of-type {
+    margin-bottom: 67px;
 }
 
 .form-label {
-    display: block;
-    width: 100%;
+    position: absolute;
+    width: 680px;
+    height: 36px;
+    top: 0px;
+    left: 0px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
+    display: flex;
+    align-items: center;
     color: #000000;
-    margin-bottom: 15px;
 }
 
 .form-input {
-    width: 100%;
+    position: absolute;
+    width: 680px;
     height: 55px;
+    top: 37px;
+    left: 0px;
     box-sizing: border-box;
     border: 1px solid #5F5F5F;
     border-radius: 4px;
@@ -112,13 +131,17 @@
 }
 
 .action-bar {
-    width: 100%;
-    margin-top: 75px;
+    position: relative;
+    width: 680px;
+    height: 60px;
     margin-bottom: 187px;
 }
 
 .update-button {
-    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 680px;
     height: 60px;
     background: #FF5555;
     border-radius: 5px;
@@ -128,6 +151,10 @@
     font-weight: 700;
     font-size: 26px;
     line-height: 31px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
     color: #FFFFFF;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -142,6 +169,9 @@
     font-size: 14px;
     margin-top: 8px;
     font-family: 'Inter', sans-serif;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
 }
 
 /* レスポンシブ対応 */
@@ -149,6 +179,8 @@
     .profile-edit-container {
         padding: 20px;
         padding-top: 100px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .profile-form {
@@ -158,12 +190,27 @@
     
     .profile-image-section {
         flex-direction: column;
+        height: auto;
+        align-items: center;
         gap: 20px;
+    }
+    
+    .profile-image-circle {
+        position: relative;
+        left: auto;
+    }
+    
+    .image-select-button {
+        position: relative;
+        left: auto;
+        top: auto;
     }
     
     .profile-title {
         font-size: 28px;
         margin-bottom: 50px;
+        text-align: center;
+        width: 100%;
     }
     
     .form-group {
