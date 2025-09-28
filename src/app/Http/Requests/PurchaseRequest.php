@@ -14,7 +14,7 @@ class PurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_method' => ['required', 'in:コンビニ払い,カード払い'],
+            'payment_method' => ['required', 'in:コンビニ支払い,カード支払い'],
             'address'        => ['required', 'string', 'max:255'],
         ];
     }

@@ -30,11 +30,15 @@
     {{-- 商品一覧グリッド --}}
     <div class="products-grid">
         @forelse ($products as $product)
-            <div class="product-card"> {{-- ✅ products-card → product-card --}}
+            <div class="product-card">
                 <div class="product-image">
-                    商品画像
+                    @if (!empty($product['image_path']))
+                        <img src="{{ $product['image_path'] }}" alt="{{ $product['name'] }}">
+                    @else
+                        商品画像
+                    @endif
                 </div>
-                <div class="product-name"> {{-- ✅ products-name → product-name --}}
+                <div class="product-name">
                     <a href="{{ route('products.show', ['item_id' => $product['id']]) }}">
                         {{ $product['name'] }}
                     </a>

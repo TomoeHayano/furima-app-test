@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -26,13 +27,16 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         // ユーザー作成
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // 会員登録後、プロフィール画面にリダイレクト
-        return redirect('/mypage');
+        // 自動ログイン
+        Auth::login($user);
+
+        // プロフィール編集画面へ遷移
+        return redirect()->route('user.profile.edit');
     }
 }

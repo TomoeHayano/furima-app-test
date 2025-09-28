@@ -36,7 +36,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 2,
                 'name' => '玉ねぎ3束',
                 'brand_name' => null,
                 'description' => '新鮮な玉ねぎ3束のセット',
@@ -48,7 +48,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 2,
                 'name' => '革靴',
                 'brand_name' => null,
                 'description' => 'クラシックなデザインの革靴',
@@ -60,7 +60,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 3,
                 'name' => 'ノートPC',
                 'brand_name' => null,
                 'description' => '高性能なノートパソコン',
@@ -72,7 +72,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 3,
                 'name' => 'マイク',
                 'brand_name' => null,
                 'description' => '高音質のレコーディング用マイク',
@@ -84,7 +84,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 4,
                 'name' => 'ショルダーバッグ',
                 'brand_name' => null,
                 'description' => 'おしゃれなショルダーバッグ',
@@ -96,7 +96,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 4,
                 'name' => 'タンブラー',
                 'brand_name' => null,
                 'description' => '使いやすいタンブラー',
@@ -108,7 +108,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 5,
                 'name' => 'コーヒーミル',
                 'brand_name' => 'Starbacks',
                 'description' => '手動のコーヒーミル',
@@ -120,7 +120,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 1,
+                'user_id' => 5,
                 'name' => 'メイクセット',
                 'brand_name' => null,
                 'description' => '便利なメイクアップセット',

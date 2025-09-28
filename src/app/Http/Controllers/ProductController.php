@@ -37,6 +37,9 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * マイリスト一覧
+     */
     public function mylist(Request $request)
     {
         $tab = $request->query('tab', 'mylist');
@@ -52,11 +55,9 @@ class ProductController extends Controller
         }
 
         if ($tab === 'recommend') {
-            // 🔹 ログイン中のみ「自分の商品を除外」
+            // ログイン中は自分の商品を除外して全商品
             $query = Product::query()
-                ->when(Auth::check(), function ($q) {
-                    $q->where('user_id', '!=', Auth::id());
-                });
+                ->where('user_id', '!=', Auth::id());
         } else {
             // いいねした商品のみ
             $query = Product::whereHas('likes', function ($q) {
@@ -64,7 +65,6 @@ class ProductController extends Controller
             });
         }
 
-        // 🔹 部分一致検索はそのまま残す
         if ($keyword) {
             $query->where('name', 'like', "%{$keyword}%");
         }

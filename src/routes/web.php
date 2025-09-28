@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -37,15 +38,19 @@ Route::post('/login', [LoginController::class, 'login']);
 
 // 認証後
 Route::middleware('auth')->group(function () {
-    // プロフィール画面（初回は設定フォーム、登録済みなら一覧＋編集ボタン）
+    
+    // 新規登録後に使う（初回なら編集画面 → 登録済なら商品一覧へ）
     Route::get('/mypage', [UserController::class, 'show'])->name('user.mypage');
 
     // プロフィール編集
     Route::get('/mypage/profile', [UserController::class, 'edit'])->name('user.profile.edit');
     Route::post('/mypage/profile', [UserController::class, 'update'])->name('user.profile.update');
-
+    
     //商品一覧マイリスト
     Route::get('/mylist', [ProductController::class, 'mylist'])->name('products.mylist');
+    
+    // マイページ画面（登録済みプロフィール確認用）
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
     //いいね機能
     Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])

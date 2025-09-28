@@ -25,12 +25,19 @@ class OrderController extends Controller
      */
     public function store(PurchaseRequest $request, $item_id)
     {
+
         $product = Product::findOrFail($item_id);
+
+        // すでに売り切れの場合は購入不可
+        if ($product->is_sold) {
+            return redirect()->back()->withErrors(['商品はすでに売り切れています']);
+        }
 
         // 注文情報を保存
         Order::create([
             'user_id'       => Auth::id(),
             'product_id'    => $product->id,
+            'profile_id'    => null, 
             'payment_method'=> $request->payment_method,
             'address'       => $request->address,
         ]);
