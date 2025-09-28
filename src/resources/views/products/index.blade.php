@@ -8,17 +8,22 @@
 
 @section('content')
 <div class="products-page">
+    @php
+        $keywordQuery = request()->filled('keyword')
+            ? ['keyword' => request('keyword')]
+            : [];
+    @endphp
     {{-- タブ --}}
     <div class="products-tabs">
         {{-- おすすめ --}}
-        <a href="{{ $guest ? url('/') : url('/mylist?tab=recommend') }}"
+        <a href="{{ $guest ? route('products.index', $keywordQuery) : route('products.mylist', array_merge(['tab' => 'recommend'], $keywordQuery)) }}"
             class="tab-link {{ $tab === 'recommend' ? 'active' : '' }}">
             おすすめ
         </a>
 
         {{-- マイリスト（ログイン時のみ） --}}
         @unless($guest)
-            <a href="{{ url('/mylist?tab=mylist') }}{{ request('keyword') ? '&keyword='.request('keyword') : '' }}"
+            <a href="{{ route('products.mylist', array_merge(['tab' => 'mylist'], $keywordQuery)) }}"
                 class="tab-link {{ $tab === 'mylist' ? 'active' : '' }}">
                 マイリスト
             </a>

@@ -24,10 +24,10 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:20'],
+            'name' => ['required', 'max:20'],
             'image_path' => ['nullable', 'mimes:jpeg,png'],
-            'postal_code' => ['required', 'string', 'regex:/^\d{3}-\d{4}$/'],
-            'address' => ['required', 'string'],
+            'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
+            'address' => ['required'],
         ];
     }
 
@@ -39,7 +39,7 @@ class ProfileRequest extends FormRequest
             'image_path.mimes' => 'プロフィール画像はjpegまたはpng形式のファイルを選択してください。',
             'postal_code.required' => '郵便番号を入力してください。',
             'postal_code.regex' => '郵便番号は「123-4567」の形式で入力してください。',
-            'address.required' => '住所を入力してください。'
+            'address.required' => '住所を入力してください。',
         ];
     }
 }

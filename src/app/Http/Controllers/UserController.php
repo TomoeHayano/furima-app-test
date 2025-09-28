@@ -74,6 +74,6 @@ class UserController extends Controller
             );
         }
 
-        return redirect()->route('products.index')->with('success', 'プロフィールを更新しました！');
+        return redirect()->route('products.mylist', ['tab' => 'mylist'])->with('success', 'プロフィールを更新しました！');
     }
 }

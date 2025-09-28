@@ -10,7 +10,7 @@
 <div class="profile-edit-content">
     <h1 class="profile-title">プロフィール設定</h1>
     
-     <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="profile-form">
+     <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="profile-form" novalidate>
         @csrf
         
         <!-- プロフィール画像 -->
@@ -24,36 +24,44 @@
                 画像を選択する
                 <input type="file" id="image_path" name="image_path" accept="image/jpeg,image/png" style="display: none;">
             </label>
-            @error('image_path')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
+            @if ($errors->has('image_path'))
+                @foreach ($errors->get('image_path') as $message)
+                    <p class="error-message">{{ $message }}</p>
+                @endforeach
+            @endif
         </div>
 
         <!-- ユーザー名 -->
         <div class="form-group">
             <label for="name" class="form-label">ユーザー名</label>
-            <input type="text" id="name" name="name" class="form-input" value="{{ old('name', $user->name) }}" required>
-            @error('name')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
+            <input type="text" id="name" name="name" class="form-input{{ $errors->has('name') ? ' is-error' : '' }}" value="{{ old('name', $user->name) }}" required>
+            @if ($errors->has('name'))
+                @foreach ($errors->get('name') as $message)
+                    <p class="error-message">{{ $message }}</p>
+                @endforeach
+            @endif
         </div>
 
         <!-- 郵便番号 -->
         <div class="form-group">
             <label for="postal_code" class="form-label">郵便番号</label>
-            <input type="text" id="postal_code" name="postal_code" class="form-input" value="{{ old('postal_code', $user->profile->postal_code ?? '') }}" required>
-            @error('postal_code')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
+            <input type="text" id="postal_code" name="postal_code" class="form-input{{ $errors->has('postal_code') ? ' is-error' : '' }}" value="{{ old('postal_code', $user->profile->postal_code ?? '') }}" placeholder="123-4567" required>
+            @if ($errors->has('postal_code'))
+                @foreach ($errors->get('postal_code') as $message)
+                    <p class="error-message">{{ $message }}</p>
+                @endforeach
+            @endif
         </div>
 
         <!-- 住所 -->
         <div class="form-group">
             <label for="address" class="form-label">住所</label>
-            <input type="text" id="address" name="address" class="form-input" value="{{ old('address', $user->profile->address ?? '') }}" required>
-            @error('address')
-                <p class="error-message">{{ $message }}</p>
-            @enderror
+            <input type="text" id="address" name="address" class="form-input{{ $errors->has('address') ? ' is-error' : '' }}" value="{{ old('address', $user->profile->address ?? '') }}" required>
+            @if ($errors->has('address'))
+                @foreach ($errors->get('address') as $message)
+                    <p class="error-message">{{ $message }}</p>
+                @endforeach
+            @endif
         </div>
 
         <!-- 建物名 -->

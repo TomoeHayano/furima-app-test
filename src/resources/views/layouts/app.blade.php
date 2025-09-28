@@ -23,6 +23,22 @@
         </div>
 
         @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
+            @php
+                $currentKeyword = request('keyword');
+                $currentTab = null;
+
+                if (Auth::check()) {
+                    $currentTab = request('tab');
+
+                    if (!$currentTab && \Illuminate\Support\Facades\Route::currentRouteNamed('products.index')) {
+                        $currentTab = 'recommend';
+                    }
+
+                    if (!$currentTab) {
+                        $currentTab = 'mylist';
+                    }
+                }
+            @endphp
             {{-- 検索フォーム --}}
             <form
                 action="{{ Auth::check() ? route('products.mylist') : route('products.index') }}"
@@ -33,11 +49,11 @@
                     type="text" 
                     name="keyword" 
                     placeholder="なにをお探しですか？"
-                    value="{{ request('keyword') }}"
+                    value="{{ $currentKeyword }}"
                 >
-                {{-- マイリストにいる場合は tab パラメータを維持 --}}
-                @if (Auth::check() && request('tab') === 'mylist')
-                    <input type="hidden" name="tab" value="mylist">
+                {{-- タブ状態を保持 --}}
+                @if ($currentTab)
+                    <input type="hidden" name="tab" value="{{ $currentTab }}">
                 @endif
             </form>
 
