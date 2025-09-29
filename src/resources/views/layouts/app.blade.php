@@ -67,10 +67,10 @@
                     </form>
 
                     {{-- マイページ --}}
-                    <a href="#" class="header-link">マイページ</a>
+                    <a href="{{ route('user.mypage') }}" class="header-link">マイページ</a>
 
                     {{-- 出品 --}}
-                    <a href="#" class="header-button">出品</a>
+                    <a href="{{ route('sell.create') }}" class="header-button">出品</a>
                 @endauth
 
                 @guest

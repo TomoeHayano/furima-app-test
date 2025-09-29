@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SellController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -49,9 +49,6 @@ Route::middleware('auth')->group(function () {
     //商品一覧マイリスト
     Route::get('/mylist', [ProductController::class, 'mylist'])->name('products.mylist');
     
-    // マイページ画面（登録済みプロフィール確認用）
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-
     //いいね機能
     Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])
         ->name('products.toggleLike');
@@ -66,5 +63,11 @@ Route::middleware('auth')->group(function () {
 
     // 購入処理
     Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
+
+    // 商品出品画面
+    Route::get('/sell', [SellController::class, 'create'])->name('sell.create');
+
+    // 商品出品処理
+    Route::post('/sell', [SellController::class, 'store'])->name('sell.store');
 });
     

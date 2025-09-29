@@ -194,7 +194,7 @@
     cursor: pointer;
 }
 
-@media (min-width: 1400px) and (max-width: 1540px) {
+@media (min-width: 768px) and (max-width: 850px)  {
     .purchase-container {
         width: 90%; /* 横幅を縮めて中央寄せ */
         margin: 100px auto 0;

@@ -17,11 +17,16 @@ class UserController extends Controller
 
         // プロフィール未登録 → 編集画面を表示
         if (!$user->profile || !$user->profile->address) {
-            return view('mypage.profile_edit', compact('user'));
+            return redirect()->route('user.profile.edit');
         }
 
-        // プロフィール登録済み → 商品一覧へリダイレクト
-        return redirect()->route('products.index');
+        // 出品 / 購入 タブ切替
+        $page = $request->query('page', 'sell');
+        $products = ($page === 'buy')
+            ? $user->orders()->with('product')->get()->pluck('product')
+            : $user->products;
+
+        return view('mypage.profile', compact('user', 'products', 'page'));
     }
 
     // プロフィール編集フォーム

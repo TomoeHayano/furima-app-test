@@ -1,0 +1,229 @@
+/* プロフィール画面 */
+.profile-container {
+    width: 100%;
+    max-width: 1400px;
+    min-height: calc(100vh - 82px);
+    margin: 0 auto;
+    background: #FFFFFF;
+    padding: 76px 60px 0 60px;
+}
+
+/* ユーザー情報セクション */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 77px;
+}
+
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #D9D9D9;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-details {
+    margin-left: clamp(48px, 6vw, 120px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(80px, 18vw, 220px);
+}
+
+.user-name {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+}
+
+.profile-edit-button {
+    width: 310px;
+    height: 59px;
+    border: 2px solid #FF5555;
+    border-radius: 10px;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 31px;
+    color: #FF5555;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.profile-edit-button:hover {
+    background: #FF5555;
+    color: #FFFFFF;
+}
+
+/* タブセクション */
+.tab-section {
+    position: relative;
+    width: 100%;
+    max-width: 1512px;
+    height: 47px;
+    margin: 0 auto 59px;
+}
+
+.tab-list {
+    display: flex;
+    gap: clamp(32px, 6vw, 60px);
+    padding-left: clamp(24px, 4vw, 60px);
+}
+
+.tab-item {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: #5F5F5F;
+    text-decoration: none;
+    padding: 8px 0;
+    transition: color 0.3s ease;
+}
+
+.tab-item.active {
+    color: #FF0000;
+}
+
+.tab-underline {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: clamp(100%, 1512px, 1512px);
+    max-width: 1512px;
+    transform: translateX(-50%);
+    height: 2px;
+    background: #5F5F5F;
+}
+
+/* 商品一覧セクション */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 64px 36px;
+    margin-bottom: 80px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 290px;
+    margin: 0 auto;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.product-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #D9D9D9;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-name {
+    width: 100%;
+    height: 30px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+    margin-top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.empty-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    color: #5F5F5F;
+    padding: 100px 0;
+}
+ 
+@media (min-width: 768px) and (max-width: 850px) {
+    .profile-container {
+        max-width: 90vw;
+        padding: 40px 24px 0 24px;
+    }
+
+    .user-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .user-name {
+        font-size: 26px;
+    }
+
+    .profile-edit-button {
+        width: 220px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .user-details {
+        margin-left: 32px;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+
+    .tab-section {
+        margin-bottom: 40px;
+    }
+
+    .tab-item {
+        font-size: 18px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+        gap: 36px 24px;
+    }
+}
+
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .profile-container {
+        max-width: 92vw;
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+
+    .user-details {
+        margin-left: clamp(56px, 4vw, 96px);
+        gap: clamp(96px, 14vw, 180px);
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(4, minmax(260px, 1fr));
+        gap: 56px 32px;
+    }
+}
