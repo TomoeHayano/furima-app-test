@@ -40,7 +40,19 @@
             <div class="product-card">
                 <div class="product-image-wrapper">
                     @if ($product && $product->image_path)
-                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
+                        @php
+                            $imagePath = $product->image_path;
+                            if (preg_match('/^https?:\/\//', $imagePath)) {
+                                $imageUrl = $imagePath;
+                            } elseif (str_starts_with($imagePath, '/storage/')) {
+                                $imageUrl = asset(ltrim($imagePath, '/'));
+                            } elseif (str_starts_with($imagePath, 'storage/')) {
+                                $imageUrl = asset($imagePath);
+                            } else {
+                                $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
+                            }
+                        @endphp
+                        <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
                     @endif
                 </div>
                 <p class="product-name">{{ $product->name ?? '商品名' }}</p>
