@@ -32,29 +32,44 @@
         <div class="payment-section">
             <div class="payment-label-wrapper">
                 <label for="payment_method" class="payment-label">支払い方法</label>
-            </div>
-            <div class="payment-select-wrapper">
-                <select id="payment_method" name="payment_method" class="status-dropdown" required>
+                <select id="payment_method" name="payment_method" class="status-dropdown">
                     <option value="" disabled hidden selected>選択してください</option>
                     <option value="コンビニ支払い">コンビニ支払い</option>
                     <option value="カード支払い">カード支払い</option>
                 </select>
-                @error('payment_method')
+                {{-- @error('payment_method')
                     <p class="form-error">{{ $message }}</p>
-                @enderror
+                @enderror --}}
             </div>
         </div>
 
+        @error('payment_method')
+            <p class="form-error payment-error">{{ $message }}</p>
+        @enderror
         {{-- 下線 --}}
         <hr class="line payment-border">
 
         {{-- 配送先 --}}
         <div class="address-section">
             <span class="address-label">配送先</span>
-            <span class="address-text">〒 XXX-YYYY ここには住所と建物が入ります</span>
-            <a href="#" class="address-edit">変更する</a>
+            @if($user->profile)
+                <span class="address-text">
+                    〒{{ $user->profile->postal_code }}
+                    {{ $user->profile->address }}
+                    {{ $user->profile->building }}
+                </span>
+            @else
+                <span class="address-text">住所が登録されていません</span>
+            @endif
+            <a href="{{ route('purchase.address.edit', $product->id) }}" class="address-edit">変更する</a>
         </div>
 
+        <input type="hidden" name="address"
+            value="{{ $user->profile ? '〒'.$user->profile->postal_code.' '.$user->profile->address.' '.$user->profile->building : '' }}">
+
+        @error('address')
+            <p class="form-error address-error">{{ $message }}</p>
+        @enderror
         {{-- 下線 --}}
         <hr class="line address-border">
 
@@ -72,6 +87,7 @@
             </div>
 
             {{-- 購入ボタン --}}
+            {{-- <button href="{{ route('purchase.create', $product->id) }}" class="purchase-button">購入する</button> --}}
             <button type="submit" class="purchase-button">購入する</button>
         </div>
     </form>

@@ -3,7 +3,7 @@
     position: relative;
     width: 1512px;
     height: 982px;
-    margin: 120px auto 0; /* ヘッダー分の余白を追加 */
+    margin: auto ; /* ヘッダー分の余白を追加 */
     padding-top: calc(475px + 93px);
     background: #FFFFFF;
 }
@@ -192,6 +192,27 @@
     font-weight: 700;
     border-radius: 5px;
     cursor: pointer;
+}
+
+/* 共通エラー */
+.form-error {
+    position: absolute;
+    font-size: 14px;
+    font-weight: 700;
+    color: red;
+}
+
+/* 支払い方法のエラー */
+.payment-error {
+    left: 176px;
+    top: 513px;
+    transform: translateY(-100%);
+
+/* 配送先住所のエラー */
+.address-error {
+    left: 176px;
+    top: 728px;
+    transform: translateY(-100%);
 }
 
 @media (min-width: 768px) and (max-width: 850px)  {

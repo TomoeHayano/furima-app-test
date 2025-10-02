@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -58,12 +59,18 @@ Route::middleware('auth')->group(function () {
     ->middleware('auth')
     ->name('products.comment.store');
 
-    // 購入画面表示
-    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
-
+    // 住所編集
+    Route::get('/purchase/address/{item_id}', [AddressController::class, 'edit'])->name('purchase.address.edit');
+    Route::post('/purchase/address/{item_id}', [AddressController::class, 'update'])->name('purchase.address.update');
+    
     // 購入処理
+    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
     Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
 
+    // Stripeコールバック
+    Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('purchase.success');
+    Route::get('/purchase/cancel', [OrderController::class, 'cancel'])->name('purchase.cancel');
+    
     // 商品出品画面
     Route::get('/sell', [SellController::class, 'create'])->name('sell.create');
 

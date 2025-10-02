@@ -8,6 +8,7 @@
 
 @section('content')
 <div class="products-detail">
+
     {{-- 左：商品画像 --}}
     <div class="products-image-area">
         <div class="products-image">

@@ -5,7 +5,7 @@
     min-height: calc(100vh - 82px);
     margin: 0 auto;
     background: #FFFFFF;
-    padding: 76px 60px 0 60px;
+    padding: 76px 60px 120px 60px;
 }
 
 /* ユーザー情報セクション */
@@ -172,7 +172,7 @@
 @media (min-width: 768px) and (max-width: 850px) {
     .profile-container {
         max-width: 90vw;
-        padding: 40px 24px 0 24px;
+        padding: 40px 24px 120px 24px;
     }
 
     .user-avatar {

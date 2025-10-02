@@ -1,0 +1,99 @@
+/* 送付先住所変更画面 */
+.address-edit-container {
+    position: relative;
+    width: 1512px;
+    height: 982px;
+    background: #FFFFFF;
+}
+
+/* タイトル */
+.address-title {
+    position: absolute;
+    width: 180px;
+    height: 44px;
+    left: 659px;
+    top: 128px;
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+}
+
+/* ラベル共通 */
+.address-edit-container label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* 入力欄共通 */
+.address-edit-container input {
+    box-sizing: border-box;
+    width: 680px;
+    height: 45px;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 18px;
+}
+
+/* 郵便番号 */
+.postal-code-label {
+    position: absolute;
+    left: 416px;
+    top: 275px;
+}
+#postal_code {
+    position: absolute;
+    left: 416px;
+    top: 311px;
+}
+
+/* 住所 */
+.address-label {
+    position: absolute;
+    left: 416px;
+    top: 424px;
+}
+#address {
+    position: absolute;
+    left: 416px;
+    top: 460px;
+}
+
+/* 建物名 */
+.building-label {
+    position: absolute;
+    left: 416px;
+    top: 595px;
+}
+#building_name {
+    position: absolute;
+    left: 416px;
+    top: 631px;
+}
+
+/* 更新ボタン */
+.address-edit-container .submit-button {
+    position: absolute;
+    width: 680px;
+    height: 60px;
+    left: 416px;
+    top: 787px;
+
+    background: #FF5555;
+    border-radius: 5px;
+    border: none;
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
