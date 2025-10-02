@@ -179,18 +179,50 @@
     margin: 0 0 30px 0;
 }
 
-.products-info p {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 29px;
-    color: #000000;
-    margin: 0 0 30px 0;
+/* 商品状態 全体ラッパー */
+.condition-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 62px; /* ラベルと状態の間隔 */
 }
 
-.products-info p strong {
+/* ラベル部分 */
+.condition-label {
     font-weight: 700;
+    font-size: 24px;
+    color: #000;
+}
+
+/* 状態テキスト */
+.condition-text {
+    font-size: 20px;
+    font-weight: 500;
+    color: #000; /* テキストのみなので黒固定 */
+}
+
+/* カテゴリー全体 */
+.category-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 62px; /* ラベルとタグの間に余白 */
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.category-wrapper .category-tags {
+    display: flex;
+    gap: 23px; /* ← カテゴリ同士の間隔 */
+}
+
+/* タグ1つずつ */
+.category-tag {
+    display: inline-block;
+    background: #D9D9D9; /* グレー背景 */
+    border-radius: 15px; /* 丸み */
+    padding: 5px 12px; /* 上下・左右の余白 */
+    font-size: 20px;
+    color: #000;
 }
 
 /* コメントエリア */
@@ -277,7 +309,8 @@
     color: #000000;
     resize: none;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin-bottom: 48px;
+
 }
 
 .comment-submit {
@@ -301,11 +334,13 @@
 }
 
 /* エラーメッセージ */
-.form-error {
+.comment-input .form-error {
     color: #FF5555;
     font-size: 14px;
-    margin-top: 8px;
+    margin-top: 8;
+    bottom: 10px;
     font-family: 'Inter', sans-serif;
+    margin: 0;
 }
 
 /* タブレット対応 (768-850px) */

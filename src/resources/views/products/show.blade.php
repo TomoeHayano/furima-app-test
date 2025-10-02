@@ -66,8 +66,18 @@
         {{-- 商品情報 --}}
         <div class="products-info">
             <h2>商品の情報</h2>
-            <p><strong>カテゴリー:</strong> {{ implode(', ', $product->categories->pluck('name')->toArray()) }}</p>
-            <p><strong>商品の状態:</strong> {{ $product->condition->status_name }}</p>
+            <div class="category-wrapper">
+                <strong>カテゴリー</strong>
+                <div class="category-tags">
+                    @foreach($product->categories as $category)
+                        <span class="category-tag">{{ $category->name }}</span>
+                    @endforeach
+                </div>
+            </div>
+            <div class="condition-wrapper">
+                <strong class="condition-label">商品の状態</strong>
+                <span class="condition-text">{{ $product->condition->status_name }}</span>
+            </div>
         </div>
 
         {{-- コメント --}}
@@ -89,8 +99,8 @@
                         @csrf
                         <textarea 
                             name="content" 
-                            placeholder="商品のコメントを入力" 
-                            maxlength="255">{{ old('content') }}</textarea>
+                            maxlength="255">{{ old('content') }}
+                        </textarea>
 
                         {{-- バリデーションエラー表示 --}}
                         @error('content')
