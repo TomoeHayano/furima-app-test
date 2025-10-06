@@ -10,7 +10,8 @@
 <div class="profile-edit-content">
     <h1 class="profile-title">プロフィール設定</h1>
     
-     <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="profile-form" novalidate>
+    <!-- プロフィール編集フォーム -->
+    <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="profile-form" novalidate>
         @csrf
         
         <!-- プロフィール画像 -->

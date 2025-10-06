@@ -8,6 +8,8 @@ use App\Http\Controllers\SellController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\VerificationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,27 @@ use App\Http\Controllers\Auth\LoginController;
 | 会員登録 → プロフィール画面までのルート定義
 |
 */
+
+// 会員登録
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+// メール認証
+Route::get('/email/verify', [VerificationController::class, 'notice'])
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.resend');
+
+// ログイン
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
 // 商品一覧（トップ画面）
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
@@ -28,14 +51,6 @@ Route::get('/item/{item_id}', [ProductController::class, 'show'])->name('product
 Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])->name('products.toggleLike')
     ->middleware('auth')
     ->name('products.toggleLike');
-
-// 会員登録
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-
-// ログイン
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
 
 // 認証後
 Route::middleware('auth')->group(function () {

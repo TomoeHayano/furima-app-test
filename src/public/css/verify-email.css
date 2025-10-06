@@ -1,0 +1,50 @@
+.verify-container {
+    position: relative;
+    width: 1512px;
+    height: 982px;
+    background: #FFFFFF;
+    text-align: center;
+}
+
+/* メインテキスト */
+.verify-text {
+    position: absolute;
+    width: 720px;
+    height: 58px;
+    left: 399px;
+    top: 319px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #000000;
+}
+
+/* 認証ボタン */
+.verify-button {
+    position: absolute;
+    width: 257px;
+    height: 69px;
+    left: 628px;
+    top: 439px;
+    background: #D9D9D9;
+    border: 1px solid #000;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000;
+    cursor: pointer;
+}
+
+/* 再送リンク */
+.resend-button {
+    position: absolute;
+    left: 41.53%;
+    right: 41.47%;
+    top: 57.03%;
+    font-size: 20px;
+    color: #0073CC;
+    background: none;
+    border: none;
+    cursor: pointer;
+}

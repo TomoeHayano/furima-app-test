@@ -8,6 +8,7 @@
 
 @section('content')
 <div class="products-page">
+
     @php
         $keywordQuery = request()->filled('keyword')
             ? ['keyword' => request('keyword')]

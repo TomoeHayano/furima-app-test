@@ -23,6 +23,7 @@
     {{-- 下線 --}}
     <hr class="line product-border">
 
+    {{-- 購入フォーム --}}
     <form action="{{ route('purchase.store', $product->id) }}" method="POST">
         @csrf
 

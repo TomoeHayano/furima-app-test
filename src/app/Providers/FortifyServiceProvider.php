@@ -16,6 +16,8 @@ use Laravel\Fortify\Fortify;
 use App\Http\Responses\LoginResponse;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
+use App\Models\User;
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -50,6 +52,5 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::redirects('register', '/mypage/profile');
 
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
-        
     }
 }

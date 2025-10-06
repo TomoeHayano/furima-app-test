@@ -2,8 +2,6 @@
 
 @section('title', 'ログイン')
 
-@section('body-class', 'auth-body')
-
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 @endpush
@@ -11,7 +9,8 @@
 @section('content')
 <div class="auth-content">
     <h1 class="auth-title">ログイン</h1>
-
+    
+    {{-- ログインフォーム --}}
     <form method="POST" action="{{ route('login') }}">
         @csrf
 

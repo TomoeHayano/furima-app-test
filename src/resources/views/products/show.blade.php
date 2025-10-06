@@ -95,6 +95,8 @@
             {{-- コメント入力欄（ログインユーザーのみ） --}}
             @auth
                 <div class="comment-input">
+                    
+                    {{-- コメント投稿フォーム --}}
                     <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
                         @csrf
                         <textarea 

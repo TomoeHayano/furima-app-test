@@ -8,8 +8,9 @@
 
 @section('content')
 <div class="sell">
-<h1 class="sell-title">商品の出品</h1>
+    <h1 class="sell-title">商品の出品</h1>
     
+    {{-- 出品フォーム --}}
     <form action="{{ route('sell.store') }}" method="post" enctype="multipart/form-data">
         @csrf
     

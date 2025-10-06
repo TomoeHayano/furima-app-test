@@ -6,6 +6,7 @@
 
 @section('content')
 <div class="profile-container">
+
     <!-- ユーザー情報 -->
     <div class="user-info">
         <div class="user-avatar">
