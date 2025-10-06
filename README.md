@@ -22,10 +22,11 @@
 - php artisan db:seed
 
 ## 開発環境
-- 商品一覧画面(トップ画面):
-- 会員登録:http://
+- 商品一覧画面(トップ画面):http://localhost/
+- 会員登録:http://localhost/register
 - ログイン画面:http://login
 - phpMyAdmin:http://localhost:8080
+- mailHog:http://localhost:8025
 
 ## 使用技術（実行環境）
 - nginx:1.21.1
