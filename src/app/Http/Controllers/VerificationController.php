@@ -10,7 +10,13 @@ class VerificationController extends Controller
     // 認証誘導画面表示
     public function notice()
     {
-        return view('auth.verify-email');
+        return view('auth.verify-email', ['mode' => 'guide']);
+    }
+
+    // 認証画面表示
+    public function prompt()
+    {
+        return view('auth.verify-email', ['mode' => 'prompt']);
     }
 
     // 認証完了処理
@@ -25,6 +31,6 @@ class VerificationController extends Controller
     {
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('message', '認証メールを再送しました。');
+        return back()->with('status', '認証メールを再送しました。');
     }
 }

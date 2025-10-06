@@ -29,8 +29,12 @@ Route::get('/email/verify', [VerificationController::class, 'notice'])
     ->middleware('auth')
     ->name('verification.notice');
 
+Route::get('/email/verify/prompt', [VerificationController::class, 'prompt'])
+    ->middleware('auth')
+    ->name('verification.prompt');
+
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-    ->middleware(['auth', 'signed'])
+    ->middleware(['auth', 'signed', 'throttle:6,1'])
     ->name('verification.verify');
 
 Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
@@ -53,7 +57,7 @@ Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])-
     ->name('products.toggleLike');
 
 // 認証後
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     
     // 新規登録後に使う（初回なら編集画面 → 登録済なら商品一覧へ）
     Route::get('/mypage', [UserController::class, 'show'])->name('user.mypage');

@@ -49,7 +49,3 @@ services:
       - "8025:8025"
     networks:
       - default
-
-networks:
-  default:
-    name: coachtech-furima-app_default

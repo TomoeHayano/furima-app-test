@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -33,10 +34,13 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // 認証メール送信
+        event(new Registered($user));
+
         // 自動ログイン
         Auth::login($user);
 
-        // プロフィール編集画面へ遷移
-        return redirect()->route('user.profile.edit');
+        // メール認証画面へ誘導
+        return redirect()->route('verification.notice');
     }
 }

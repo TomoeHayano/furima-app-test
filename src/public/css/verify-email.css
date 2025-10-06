@@ -39,12 +39,36 @@
 /* 再送リンク */
 .resend-button {
     position: absolute;
-    left: 41.53%;
-    right: 41.47%;
-    top: 57.03%;
+    left: 628px;
+    right: 628px;
     font-size: 20px;
     color: #0073CC;
     background: none;
     border: none;
     cursor: pointer;
+}
+
+.resend-button--guide {
+    top: 540px;
+}
+
+.resend-button--prompt {
+    top: 500px;
+}
+
+.verify-status {
+    position: absolute;
+    width: 720px;
+    left: 399px;
+    font-weight: 600;
+    font-size: 18px;
+    color: #FF0000;
+}
+
+.verify-status--guide {
+    top: 610px;
+}
+
+.verify-status--prompt {
+    top: 560px;
 }

@@ -18,9 +18,17 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            if (!Auth::user()->hasVerifiedEmail()) {
+                // 未認証ユーザーは誘導画面へ
+                return redirect()->route('verification.notice');
+            }
+
             // ログイン成功 → 商品管理画面へ
             return redirect()->route('products.mylist', ['tab' => 'mylist']);
         }
+
+        return back()->withErrors([
+            'email' => '認証情報が正しくありません。',
+        ]);
     }
 }
-
