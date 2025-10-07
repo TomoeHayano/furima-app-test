@@ -55,9 +55,11 @@
             <span class="address-label">配送先</span>
             @if($user->profile)
                 <span class="address-text">
-                    〒{{ $user->profile->postal_code }}
+                    〒{{ $user->profile->postal_code }}<br><br>
                     {{ $user->profile->address }}
-                    {{ $user->profile->building }}
+                    @if(!empty($user->profile->building_name))
+                        <br><br>{{ $user->profile->building_name }}
+                    @endif
                 </span>
             @else
                 <span class="address-text">住所が登録されていません</span>
@@ -66,7 +68,7 @@
         </div>
 
         <input type="hidden" name="address"
-            value="{{ $user->profile ? '〒'.$user->profile->postal_code.' '.$user->profile->address.' '.$user->profile->building : '' }}">
+            value="{{ $user->profile ? '〒'.$user->profile->postal_code.' '.$user->profile->address.' '.$user->profile->building_name : '' }}">
 
         @error('address')
             <p class="form-error address-error">{{ $message }}</p>

@@ -298,6 +298,11 @@
     margin: 0 0 48px 0;
 }
 
+.comment-input form {
+    position: relative;
+    margin-bottom: 48px;
+}
+
 .comment-input textarea {
     width: 570px;
     height: 246px;
@@ -309,8 +314,8 @@
     color: #000000;
     resize: none;
     box-sizing: border-box;
-    margin-bottom: 48px;
-
+    display: block;
+    margin-bottom: 0;
 }
 
 .comment-submit {
@@ -327,6 +332,7 @@
     color: #FFFFFF;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 48px;
 }
 
 .comment-submit:hover {
@@ -336,9 +342,8 @@
 /* エラーメッセージ */
 .comment-input .form-error {
     color: #FF5555;
+    top: 254px;
     font-size: 14px;
-    margin-top: 8;
-    bottom: 10px;
     font-family: 'Inter', sans-serif;
     margin: 0;
 }

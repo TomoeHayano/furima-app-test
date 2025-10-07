@@ -26,6 +26,7 @@ class AddressController extends Controller
         $profile->update([
             'postal_code' => $request->postal_code,
             'address'     => $request->address,
+            'building_name' => $request->building_name,
         ]);
 
         // 更新後は購入画面へ戻す

@@ -122,6 +122,8 @@
     font-size: 16px;
     color: #000000;
     background: #FFFFFF;
+    margin-bottom: 100px;
+
 }
 
 .form-input:focus {
