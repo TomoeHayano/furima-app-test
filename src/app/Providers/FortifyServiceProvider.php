@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Validation\ValidationException;
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\UserController;
 use App\Actions\Fortify\ResetUserPassword;
@@ -52,5 +53,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::redirects('register', '/mypage/profile');
 
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+
     }
 }
