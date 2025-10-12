@@ -6,6 +6,7 @@
 - git clone https://github.com/TomoeHayano/furima-app-test.git
 
 - docker-compose up -d --build
+docker-compose up -d
 
 ## laravel環境構築
 
@@ -33,4 +34,15 @@
 - mysql:8.0.26
 - docker:3.8
 - php:8.1
+
+##　env環境
+- STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いいたします。
+
+##　Unitテスト実行方法
+- このプロジェクトでは、LaravelのFeatureテストを一部実装しています。
+テスト実行環境はDockerコンテナ内で完結します。
+
+### 実行手順
+- docker-compose exec php bash
+- php artisan key:generate (初回のみ)
 
