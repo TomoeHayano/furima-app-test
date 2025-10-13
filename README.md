@@ -3,10 +3,10 @@
 
 ## Dokerビルド
 
-- git clone https://github.com/TomoeHayano/furima-app-test.git
+- git clone：https://github.com/TomoeHayano/furima-app-test.git
 
 - docker-compose up -d --build
-docker-compose up -d
+- docker-compose up -d
 
 ## laravel環境構築
 
@@ -35,14 +35,18 @@ docker-compose up -d
 - docker:3.8
 - php:8.1
 
-##　env環境
+## Stripe実行方法（支払い方法選択）
+- テスト用クレジットカード：4242 4242 4242 4242（有効期限・CVC は任意の未来日と 3 桁）
+
+### env環境
 - STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いいたします。
 
-##　Unitテスト実行方法
+## Unitテスト実行方法
 - このプロジェクトでは、LaravelのFeatureテストを一部実装しています。
 テスト実行環境はDockerコンテナ内で完結します。
 
 ### 実行手順
 - docker-compose exec php bash
 - php artisan key:generate (初回のみ)
+- php artisan test tests/Feature/＊各ファイル名＊
 

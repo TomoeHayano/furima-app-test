@@ -84,7 +84,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // 購入処理
     Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
-    Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
+Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
 
     // Stripeコールバック
     Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('purchase.success');

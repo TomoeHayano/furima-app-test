@@ -31,16 +31,12 @@ class LogoutTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        // ユーザーとしてログイン状態にする
+        
         $response = $this->actingAs($user);
-
-        // ログアウトを実行
         $response = $this->post('/logout');
 
-        // ゲスト状態（未ログイン）になっていることを確認
         $this->assertGuest();
 
-        // トップ画面へリダイレクトされることを確認
         $response->assertRedirect('/'); 
     }
 
@@ -49,19 +45,14 @@ class LogoutTest extends TestCase
      */
     public function test_ログアウト後_認証が必要なページにアクセスできない(): void
     {
-        // ログイン状態のユーザーを作成
+        
         $user = User::factory()->create();
 
-        // ログイン状態にする
+        
         $this->actingAs($user);
-
-        // ログアウトを実行
         $this->post('/logout');
 
-        // ログイン後でないとアクセスできないページにアクセス
         $response = $this->get('/mypage');
-
-        // ログイン画面にリダイレクトされることを確認
         $response->assertRedirect('/login');
     }
 }
