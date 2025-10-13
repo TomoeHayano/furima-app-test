@@ -26,8 +26,22 @@
     {{-- 購入フォーム --}}
     <form action="{{ route('purchase.store', $product->id) }}" method="POST">
         @csrf
-
-        <input type="hidden" name="address" value="〒123-4567 東京都渋谷区テスト町1-2-3 テストマンション101号">
+        @php
+            $shippingPostalCode = data_get($shippingAddress, 'postal_code') ?? optional($user->profile)->postal_code;
+            $shippingAddressLine = data_get($shippingAddress, 'address') ?? optional($user->profile)->address;
+            $shippingBuilding = data_get($shippingAddress, 'building_name') ?? optional($user->profile)->building_name;
+            $formattedAddressParts = [];
+            if ($shippingPostalCode) {
+                $formattedAddressParts[] = '〒' . $shippingPostalCode;
+            }
+            if ($shippingAddressLine) {
+                $formattedAddressParts[] = $shippingAddressLine;
+            }
+            if ($shippingBuilding) {
+                $formattedAddressParts[] = $shippingBuilding;
+            }
+            $formattedAddress = implode(' ', $formattedAddressParts);
+        @endphp
 
         {{-- 支払い方法 --}}
         <div class="payment-section">
@@ -53,12 +67,14 @@
         {{-- 配送先 --}}
         <div class="address-section">
             <span class="address-label">配送先</span>
-            @if($user->profile)
+            @if($shippingPostalCode || $shippingAddressLine)
                 <span class="address-text">
-                    〒{{ $user->profile->postal_code }}<br><br>
-                    {{ $user->profile->address }}
-                    @if(!empty($user->profile->building_name))
-                        <br><br>{{ $user->profile->building_name }}
+                    @if($shippingPostalCode)
+                        〒{{ $shippingPostalCode }}<br><br>
+                    @endif
+                    {{ $shippingAddressLine }}
+                    @if(!empty($shippingBuilding))
+                        <br><br>{{ $shippingBuilding }}
                     @endif
                 </span>
             @else
@@ -67,8 +83,7 @@
             <a href="{{ route('purchase.address.edit', $product->id) }}" class="address-edit">変更する</a>
         </div>
 
-        <input type="hidden" name="address"
-            value="{{ $user->profile ? '〒'.$user->profile->postal_code.' '.$user->profile->address.' '.$user->profile->building_name : '' }}">
+        <input type="hidden" name="address" value="{{ $shippingPostalCode || $shippingAddressLine ? $formattedAddress : '' }}">
 
         @error('address')
             <p class="form-error address-error">{{ $message }}</p>

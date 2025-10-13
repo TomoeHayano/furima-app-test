@@ -20,6 +20,9 @@ class Order extends Model
         'product_id',
         'profile_id',
         'payment_method',
+        'shipping_postal_code',
+        'shipping_address',
+        'shipping_building_name',
     ];
 
     /**

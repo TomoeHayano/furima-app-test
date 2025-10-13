@@ -24,6 +24,9 @@ class OrderFactory extends Factory
             'product_id' => Product::factory(),
             'profile_id' => Profile::factory(),
             'payment_method' => $this->faker->randomElement(['credit', 'cash', 'bank_transfer']),
+            'shipping_postal_code' => $this->faker->regexify('[0-9]{3}-[0-9]{4}'),
+            'shipping_address' => $this->faker->address(),
+            'shipping_building_name' => $this->faker->optional()->secondaryAddress(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

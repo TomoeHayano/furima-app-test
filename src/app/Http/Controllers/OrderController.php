@@ -8,7 +8,6 @@ use App\Http\Requests\PurchaseRequest;
 use App\Models\Product;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -19,8 +18,9 @@ class OrderController extends Controller
     {   
         $product = Product::with('user')->findOrFail($item_id);
         $user = Auth::user()->load('profile');
+        $shippingAddress = session("shipping_addresses.{$product->id}");
 
-        return view('products.order', compact('product', 'user'));
+        return view('products.order', compact('product', 'user', 'shippingAddress'));
     }
 
     /**
@@ -29,10 +29,16 @@ class OrderController extends Controller
     public function store(PurchaseRequest $request, $item_id)
     {
         $product = Product::findOrFail($item_id);
+        $shippingAddress = session("shipping_addresses.{$product->id}");
+        $profile = Auth::user()->profile;
 
         // すでに売り切れの場合は購入不可
         if ($product->is_sold) {
             return redirect()->back()->withErrors(['商品はすでに売り切れています']);
+        }
+
+        if (!$shippingAddress && !$profile) {
+            return redirect()->back()->withErrors(['address' => '配送先住所を登録してください。']);
         }
 
         $paymentMethod = $request->input('payment_method');
@@ -84,6 +90,8 @@ class OrderController extends Controller
     public function success($item_id)
     {
         $product = Product::findOrFail($item_id);
+        $shippingAddress = session("shipping_addresses.{$product->id}");
+        $profile = Auth::user()->profile;
 
         // 注文を保存
         Order::create([
@@ -91,8 +99,12 @@ class OrderController extends Controller
             'product_id'     => $product->id,
             'profile_id'     => Auth::user()->profile->id ?? null,
             'payment_method' => 'Stripeテスト決済',
-            'address'        => Auth::user()->profile->address ?? '',
+            'shipping_postal_code' => data_get($shippingAddress, 'postal_code') ?? optional($profile)->postal_code,
+            'shipping_address' => data_get($shippingAddress, 'address') ?? optional($profile)->address,
+            'shipping_building_name' => data_get($shippingAddress, 'building_name') ?? optional($profile)->building_name,
         ]);
+
+        session()->forget("shipping_addresses.{$product->id}");
 
         // 商品を売り切れに更新
         $product->update(['is_sold' => 1]);

@@ -13,20 +13,26 @@ class AddressController extends Controller
     {
         $product = Product::findOrFail($item_id);
         $profile = Auth::user()->profile;
+        $shippingAddress = session("shipping_addresses.{$product->id}");
 
-        return view('products.edit', compact('product', 'profile'));
+        return view('products.edit', [
+            'product' => $product,
+            'profile' => $profile,
+            'shippingAddress' => $shippingAddress,
+        ]);
     }
 
     // 住所更新処理
     public function update(AddressRequest $request, $item_id)
     {
         $product = Product::findOrFail($item_id);
-        $profile = Auth::user()->profile;
 
-        $profile->update([
-            'postal_code' => $request->postal_code,
-            'address'     => $request->address,
-            'building_name' => $request->building_name,
+        session([
+            "shipping_addresses.{$product->id}" => [
+                'postal_code' => $request->postal_code,
+                'address' => $request->address,
+                'building_name' => $request->building_name,
+            ],
         ]);
 
         // 更新後は購入画面へ戻す
