@@ -1,7 +1,9 @@
 .verify-container {
     position: relative;
-    width: 1512px;
+    width: 100%;
+    max-width: 1512px;
     height: 982px;
+    margin: 0 auto;
     background: #FFFFFF;
     text-align: center;
 }
@@ -11,8 +13,9 @@
     position: absolute;
     width: 720px;
     height: 58px;
-    left: 399px;
+    left: 50%;
     top: 319px;
+    transform: translateX(-50%);
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
@@ -25,8 +28,9 @@
     position: absolute;
     width: 257px;
     height: 69px;
-    left: 628px;
+    left: 50%;
     top: 439px;
+    transform: translateX(-50%);
     background: #D9D9D9;
     border: 1px solid #000;
     border-radius: 10px;
@@ -39,8 +43,8 @@
 /* 再送リンク */
 .resend-button {
     position: absolute;
-    left: 628px;
-    right: 628px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 20px;
     color: #0073CC;
     background: none;
@@ -59,7 +63,8 @@
 .verify-status {
     position: absolute;
     width: 720px;
-    left: 399px;
+    left: 50%;
+    transform: translateX(-50%);
     font-weight: 600;
     font-size: 18px;
     color: #FF0000;
@@ -71,4 +76,21 @@
 
 .verify-status--prompt {
     top: 560px;
+}
+
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .verify-container {
+        max-width: 1400px;
+    }
+
+    .verify-text,
+    .verify-status {
+        width: clamp(640px, 52vw, 720px);
+    }
+
+    .verify-button,
+    .resend-button {
+        width: clamp(240px, 18vw, 257px);
+    }
 }

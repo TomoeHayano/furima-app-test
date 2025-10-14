@@ -17,7 +17,7 @@
         <div class="form-group postal-code-group">
             <label for="postal_code" class="form-label">郵便番号</label>
             <input type="text" name="postal_code" id="postal_code" class="form-input"
-                value="{{ old('postal_code', data_get($shippingAddress, 'postal_code') ?? optional($profile)->postal_code ?? '') }}" placeholder="123-4567">
+                value="{{ old('postal_code', optional($shippingAddress)['postal_code'] ?? optional($profile)->postal_code ?? '') }}">
             @error('postal_code')
                 <p class="form-error">{{ $message }}</p>
             @enderror
@@ -26,7 +26,7 @@
         <div class="form-group address-group">
             <label for="address" class="form-label">住所</label>
             <input type="text" name="address" id="address" class="form-input"
-                value="{{ old('address', data_get($shippingAddress, 'address') ?? optional($profile)->address ?? '') }}" placeholder="東京都渋谷区渋谷1-2-3">
+                value="{{ old('address', optional($shippingAddress)['address'] ?? optional($profile)->address ?? '') }}">
             @error('address')
                 <p class="form-error">{{ $message }}</p>
             @enderror
@@ -35,7 +35,7 @@
         <div class="form-group building-group">
             <label for="building_name" class="form-label">建物名</label>
             <input type="text" name="building_name" id="building_name" class="form-input"
-                value="{{ old('building_name', data_get($shippingAddress, 'building_name') ?? optional($profile)->building_name ?? '') }}" placeholder="サンプルビル101号室">
+                value="{{ old('building_name', array_key_exists('building_name', (array) $shippingAddress) ? $shippingAddress['building_name'] : optional($profile)->building_name ?? '') }}">
             @error('building_name')
                 <p class="form-error">{{ $message }}</p>
             @enderror

@@ -5,7 +5,6 @@
     box-sizing: border-box;
     background-color: #FFFFFF;
     text-align: center;
-    margin-top: 82px;
 }
 
 .auth-title {
@@ -85,14 +84,18 @@
     text-decoration: none;
 }
 
-@media (min-width: 768px) and (max-width: 850px) {
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
     .auth-content {
-        padding: 20px;
-    }   
-    .auth-title {
-        font-size: 28px;
+        max-width: 640px;
+        padding: clamp(32px, 4vw, 48px);
     }
-    .form-group label {
-        font-size: 20px;
+
+    .auth-title {
+        margin-bottom: clamp(108px, 8vw, 132.55px);
+    }
+
+    .login-button {
+        max-width: clamp(260px, 20vw, 300px);
     }
 }

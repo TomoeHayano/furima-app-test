@@ -1,9 +1,10 @@
 /* 商品購入画面 全体 */
 .purchase-container {
     position: relative;
-    width: 1512px;
+    width: 100%;
+    max-width: 1512px;
     height: 982px;
-    margin: auto ; /* ヘッダー分の余白を追加 */
+    margin: 0 auto; /* ヘッダー分の余白を追加 */
     padding-top: calc(475px + 93px);
     background: #FFFFFF;
 }
@@ -103,7 +104,12 @@
     position: absolute;
     width: 805px;
     left: 80px;
-    border: 1px solid #000;
+}
+
+.line.single-line {
+    border: none;
+    border-top: 1px solid #000;
+    margin: 0;
 }
 
 /* 支払い方法の一番上の線を右側の枠線と揃える */
@@ -207,6 +213,7 @@
     left: 176px;
     top: 513px;
     transform: translateY(-100%);
+}
 
 /* 配送先住所のエラー */
 .address-error {
@@ -215,31 +222,49 @@
     transform: translateY(-100%);
 }
 
-@media (min-width: 768px) and (max-width: 850px)  {
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
     .purchase-container {
-        width: 90%; /* 横幅を縮めて中央寄せ */
-        margin: 100px auto 0;
+        max-width: 1400px;
     }
 
     .product-image {
-        left: 60px; /* 左に寄せすぎない */
+        left: clamp(56px, 4.5vw, 72px);
     }
 
-    .product-name {
-        left: 280px;
-    }
-
+    .product-name,
     .product-price {
-        left: 280px;
+        left: clamp(240px, 18vw, 300px);
     }
 
     .payment-section,
-    .address-section {
-        width: 90%;
-        left: 60px;
+    .address-section,
+    .line {
+        left: clamp(56px, 4.5vw, 72px);
+        width: clamp(680px, 50vw, 780px);
+    }
+
+    .payment-label,
+    .address-label {
+        left: clamp(84px, 6vw, 102px);
+    }
+
+    .status-dropdown,
+    .address-text,
+    .payment-error,
+    .address-error {
+        left: clamp(140px, 10.5vw, 164px);
     }
 
     .purchase-right {
-        right: 60px;
+        right: clamp(56px, 6vw, 72px);
+        width: clamp(340px, 26vw, 400px);
+    }
+}
+
+@media (min-width: 1400px) and (max-width: 1430px) {
+    .product-name,
+    .product-price {
+        left: calc(clamp(56px, 4.5vw, 72px) + 177.54px + 60px);
     }
 }

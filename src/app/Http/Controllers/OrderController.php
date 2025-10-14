@@ -94,14 +94,22 @@ class OrderController extends Controller
         $profile = Auth::user()->profile;
 
         // 注文を保存
+        $useSessionShipping = is_array($shippingAddress);
+
         Order::create([
             'user_id'        => Auth::id(),
             'product_id'     => $product->id,
             'profile_id'     => Auth::user()->profile->id ?? null,
             'payment_method' => 'Stripeテスト決済',
-            'shipping_postal_code' => data_get($shippingAddress, 'postal_code') ?? optional($profile)->postal_code,
-            'shipping_address' => data_get($shippingAddress, 'address') ?? optional($profile)->address,
-            'shipping_building_name' => data_get($shippingAddress, 'building_name') ?? optional($profile)->building_name,
+            'shipping_postal_code' => $useSessionShipping
+                ? data_get($shippingAddress, 'postal_code', null)
+                : optional($profile)->postal_code,
+            'shipping_address' => $useSessionShipping
+                ? data_get($shippingAddress, 'address', null)
+                : optional($profile)->address,
+            'shipping_building_name' => $useSessionShipping
+                ? data_get($shippingAddress, 'building_name', '')
+                : optional($profile)->building_name,
         ]);
 
         session()->forget("shipping_addresses.{$product->id}");

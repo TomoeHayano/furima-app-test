@@ -176,79 +176,27 @@
     left: 0;
 }
 
-/* レスポンシブ対応 */
-@media (min-width: 768px) and (max-width: 850px) {
-    .profile-edit-container {
-        padding-left: 44px;
-        padding-right: 44px;
-        padding-top: 40px;
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .profile-edit-content {
+        padding-top: 64px;
     }
-    
-    .profile-title {
-        font-size: 32px;
-        margin-bottom: 60px;
-        text-align: center;
-    }
-    
-    .profile-form {
-        width: 100%;
-        max-width: 680px;
-        align-items: center;
-    }
-    
-    .profile-image-section {
-        width: 100%;
-        max-width: 680px;
-        justify-content: center;
-        margin-bottom: 60px;
-    }
-    
-    .profile-image-circle {
-        position: relative;
-        left: auto;
-    }
-    
-    .image-select-button {
-        position: relative;
-        left: auto;
-        top: auto;
-        margin-left: 40px;
-    }
-    
-    .form-group {
-        width: 100%;
-        max-width: 680px;
-        margin-bottom: 80px;
-    }
-    
-    .form-label {
-        position: relative;
-        width: 100%;
-        margin-bottom: 15px;
-    }
-    
-    .form-input {
-        position: relative;
-        width: 100%;
-        top: 0px;
-        left: 0px;
-    }
-    
-    .action-bar {
-        width: 100%;
-        max-width: 680px;
-        margin-bottom: 100px;
-    }
-    
+
+    .profile-form,
+    .profile-image-section,
+    .form-group,
+    .form-label,
+    .form-input,
+    .action-bar,
     .update-button {
-        width: 100%;
-        left: 0px;
-        top: 0px;
+        width: min(640px, 44vw);
     }
-    
-    .error-message {
-        position: relative;
-        bottom: auto;
-        margin-top: 8px;
+
+    .profile-image-section {
+        justify-content: center;
+    }
+
+    .image-select-button {
+        left: 190px;
     }
 }

@@ -21,15 +21,22 @@
     </div>
 
     {{-- 下線 --}}
-    <hr class="line product-border">
+    <hr class="line product-border single-line">
 
     {{-- 購入フォーム --}}
     <form action="{{ route('purchase.store', $product->id) }}" method="POST">
         @csrf
         @php
-            $shippingPostalCode = data_get($shippingAddress, 'postal_code') ?? optional($user->profile)->postal_code;
-            $shippingAddressLine = data_get($shippingAddress, 'address') ?? optional($user->profile)->address;
-            $shippingBuilding = data_get($shippingAddress, 'building_name') ?? optional($user->profile)->building_name;
+            $useSessionShipping = is_array($shippingAddress);
+            $shippingPostalCode = $useSessionShipping
+                ? data_get($shippingAddress, 'postal_code', '')
+                : optional($user->profile)->postal_code;
+            $shippingAddressLine = $useSessionShipping
+                ? data_get($shippingAddress, 'address', '')
+                : optional($user->profile)->address;
+            $shippingBuilding = $useSessionShipping
+                ? data_get($shippingAddress, 'building_name', '')
+                : optional($user->profile)->building_name;
             $formattedAddressParts = [];
             if ($shippingPostalCode) {
                 $formattedAddressParts[] = '〒' . $shippingPostalCode;
@@ -62,7 +69,7 @@
             <p class="form-error payment-error">{{ $message }}</p>
         @enderror
         {{-- 下線 --}}
-        <hr class="line payment-border">
+        <hr class="line payment-border single-line">
 
         {{-- 配送先 --}}
         <div class="address-section">
@@ -89,7 +96,7 @@
             <p class="form-error address-error">{{ $message }}</p>
         @enderror
         {{-- 下線 --}}
-        <hr class="line address-border">
+        <hr class="line address-border single-line">
 
         {{-- 右側 確認エリア --}}
         <div class="purchase-right">

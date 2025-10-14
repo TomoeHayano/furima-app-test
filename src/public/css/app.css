@@ -118,3 +118,20 @@ body {
     padding: 0 12px;
     font-size: 16px;
 }
+
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .toppage-header-nav {
+        gap: clamp(24px, 2.5vw, 36px);
+        padding-right: clamp(16px, 2vw, 32px);
+    }
+
+    .toppage-header-search {
+        left: clamp(320px, 30vw, 450px);
+        width: clamp(380px, 32vw, 520px);
+    }
+
+    .header-button {
+        margin-right: clamp(16px, 1.8vw, 24px);
+    }
+}

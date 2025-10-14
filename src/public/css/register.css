@@ -6,7 +6,6 @@ padding: 40px;
 box-sizing: border-box;
 background-color: #FFFFFF;
 text-align: center;
-margin-top: 82px;
 }
 
 .auth-content .auth-title {
@@ -19,6 +18,10 @@ margin-bottom: 20px;
 
 .form-group {
 text-align: left;
+margin-bottom: 74px;
+}
+
+.form-group:last-of-type {
 margin-bottom: 20px;
 }
 
@@ -70,17 +73,25 @@ color: #0073CC;
 text-decoration: none;
 }
 
+.form-errors ul {
+    margin: 0;
+    padding-left: 20px;
+}
 
-@media (max-width: 850px) {
-.auth-content {
-padding: 20px;
-}
-.auth-content .auth-title {
-font-size: 28px;
-}
-.form-group label {
-font-size: 20px;
-}
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .auth-content {
+        max-width: 640px;
+        padding: clamp(32px, 4vw, 48px);
+    }
+
+    .auth-content .auth-title {
+        margin-bottom: clamp(24px, 3vw, 32px);
+    }
+
+    .register-button {
+        max-width: clamp(260px, 20vw, 300px);
+    }
 }
 
 /* バリデーション */
@@ -95,7 +106,3 @@ font-size: 20px;
     margin-bottom: 20px;
     text-align: left;
 }*/
-.form-errors ul {
-    margin: 0;
-    padding-left: 20px;
-}

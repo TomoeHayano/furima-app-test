@@ -55,6 +55,15 @@
     margin-bottom: 8px;
 }
 
+label[for="brand_name"],
+label[for="description"] {
+    margin-top: 72px;
+}
+
+label[for="price"] {
+    margin-top: 72px;
+}
+
 /* 商品画像エリア */
 .sell__section input[type="file"] {
     display: none;
@@ -302,59 +311,13 @@
     .sell__section textarea,
     .sell__section select,
     .sell__button,
-    .sell__image-upload {
-        width: 600px;
-    }
-}
-
-/* タブレット画面 (768-850px) */
-@media (min-width: 768px) and (max-width: 850px) {
-    .sell {
-        padding: 40px 40px 0 40px;
-    }
-    
-    .sell__title {
-        font-size: 32px;
-        margin-bottom: 60px;
-        text-align: center;
-    }
-    
-    .sell form {
-        width: 100%;
-        max-width: 680px;
-        margin: 0 auto;
-    }
-    
-    .sell__section h2 {
-        font-size: 26px;
-    }
-    
-    .sell__section > label {
-        font-size: 20px;
-    }
-    
-    .sell__section input[type="text"],
-    .sell__section input[type="number"],
-    .sell__section textarea,
-    .sell__section select,
-    .sell__button,
-    .sell__image-upload {
-        width: 100%;
+    .sell__image-upload,
+    .sell__preview,
+    .sell__price-wrapper {
+        width: min(640px, 44vw);
     }
     
     .sell__categories {
-        gap: 10px;
-        margin-bottom: 50px;
-    }
-    
-    .sell__categories span {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-    
-    .sell__button {
-        font-size: 22px;
-        margin-top: 60px;
-        margin-bottom: 60px;
+        gap: clamp(12px, 1.5vw, 18px);
     }
 }
