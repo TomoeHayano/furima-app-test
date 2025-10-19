@@ -3,8 +3,7 @@
 
 ## Dokerビルド
 
-- git clone：https://github.com/TomoeHayano/furima-app-test.git
-
+- git clone git@github.com:TomoeHayano/furima-app-test.git
 - docker-compose up -d --build
 - docker-compose up -d
 
