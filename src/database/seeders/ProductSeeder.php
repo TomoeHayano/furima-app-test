@@ -72,7 +72,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 3,
+                'user_id' => 1,
                 'name' => 'マイク',
                 'brand_name' => null,
                 'description' => '高音質のレコーディング用マイク',
@@ -96,7 +96,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 4,
+                'user_id' => 1,
                 'name' => 'タンブラー',
                 'brand_name' => null,
                 'description' => '使いやすいタンブラー',
@@ -108,7 +108,7 @@ class ProductSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'user_id' => 5,
+                'user_id' => 1,
                 'name' => 'コーヒーミル',
                 'brand_name' => 'Starbacks',
                 'description' => '手動のコーヒーミル',
