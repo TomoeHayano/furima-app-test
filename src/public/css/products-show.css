@@ -293,6 +293,7 @@
 .comment-text {
     display: block;
     width: 570px;
+    box-sizing: border-box;
     min-height: 70px;
     background: #E5E5E5;
     border-radius: 5px;
@@ -307,7 +308,8 @@
 
 /* コメント入力 */
 .comment-input {
-    margin-top: 50px;
+    margin-top: 41px;
+    position: relative;
 }
 
 .comment-input h3 {
@@ -317,7 +319,11 @@
     font-size: 28px;
     line-height: 34px;
     color: #000000;
-    margin: 0 0 48px 0;
+    margin: 0 0 9px 0;
+    width: 570px;
+    height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 .comment-input form {

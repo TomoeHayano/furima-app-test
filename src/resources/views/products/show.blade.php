@@ -85,7 +85,7 @@
             <h2>コメント ({{ $product->comments->count() }})</h2>
 
             {{-- コメント一覧 --}}
-            @foreach ($product->comments as $comment)
+@foreach ($product->comments as $comment)
                 @php
                     $profileImagePath = optional($comment->user->profile)->image_path;
                     $profileImageUrl = null;
@@ -107,16 +107,17 @@
                         </div>
                         <span class="comment-user-name">{{ $comment->user->name }}:</span>
                     </div>
-                    <span class="comment-text">{{ $comment->content }}</span>
-                </div>
-            @endforeach
+    <span class="comment-text">{{ $comment->content }}</span>
+</div>
+@endforeach 
 
-            {{-- コメント入力欄（ログインユーザーのみ） --}}
-            @auth
+{{-- コメント入力欄（ログインユーザーのみ） --}}
+@auth
                 <div class="comment-input">
-                    
-                    {{-- コメント投稿フォーム --}}
-                    <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
+                    <h3 class="comment-input-title">商品へのコメント</h3>
+        
+        {{-- コメント投稿フォーム --}}
+        <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
                         @csrf
                         <textarea name="content" maxlength="255">{{ old('content') }}</textarea>
 
