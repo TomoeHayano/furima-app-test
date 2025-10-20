@@ -12,12 +12,12 @@ class ProductSeeder extends Seeder
     {
         DB::table('products')->insert([
             [
-                'user_id' => 1, // 仮ユーザーID（usersに1が存在する前提）
+                'user_id' => 1,
                 'name' => '腕時計',
                 'brand_name' => 'Rolax',
                 'description' => 'スタイリッシュなデザインのメンズ腕時計',
                 'price' => 15000,
-                'condition_id' => 1, // 「良好」に対応するID
+                'condition_id' => 1,
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Armani+Mens+Clock.jpg',
                 'is_sold' => 0,
                 'created_at' => now(),
@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
                 'brand_name' => '西芝',
                 'description' => '高速で信頼性の高いハードディスク',
                 'price' => 5000,
-                'condition_id' => 2, // 「目立った傷や汚れなし」
+                'condition_id' => 2,
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/HDD+Hard+Disk.jpg',
                 'is_sold' => 0,
                 'created_at' => now(),
@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
                 'brand_name' => null,
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'price' => 300,
-                'condition_id' => 3, // 「やや傷や汚れあり」
+                'condition_id' => 3,
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
                 'is_sold' => 0,
                 'created_at' => now(),
@@ -53,7 +53,7 @@ class ProductSeeder extends Seeder
                 'brand_name' => null,
                 'description' => 'クラシックなデザインの革靴',
                 'price' => 4000,
-                'condition_id' => 4, // 「状態が悪い」
+                'condition_id' => 4,
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
                 'is_sold' => 0,
                 'created_at' => now(),

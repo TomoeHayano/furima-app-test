@@ -17,13 +17,11 @@
         {{-- 商品画像 --}}
         <div class="sell__section">
             <label for="image">商品画像</label>
-                <div class="sell__image-upload" style="width:680px; height:150px; border:1px dashed #5F5F5F; border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-                    <input type="file" name="image" id="image" accept="image/jpeg,image/png" style="display:none;">
-                    <label for="image" class="sell__image-button" style="cursor:pointer; color:#FF5555; font-weight:700;">画像を選択する</label>
-                    
-                    {{-- プレビュー表示（枠の中に表示される） --}}
-                    <img id="preview-image" src="" alt="プレビュー画像" style="max-width:100%; max-height:100%; display:none; object-fit:contain;">
-                </div>
+            <div class="sell__image-upload" id="image-upload">
+                <input type="file" name="image" id="image" accept="image/jpeg,image/png">
+                <img id="preview-image" src="" alt="プレビュー画像" class="sell__image-preview">
+                <label for="image" class="sell__image-button">画像を選択する</label>
+            </div>
 
             @error('image')
                 <p class="error">{{ $message }}</p>
@@ -100,23 +98,35 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('image');
-    if (!input) return;
+    const preview = document.getElementById('preview-image');
+    const uploadWrapper = document.getElementById('image-upload');
+
+    if (!input || !preview || !uploadWrapper) return;
+
+    const resetPreview = () => {
+        preview.src = '';
+        uploadWrapper.classList.remove('has-image');
+    };
+
     input.addEventListener('change', function(e) {
         const file = e.target.files[0];
-        const preview = document.getElementById('preview-image');
-        
+
         if (file) {
             const reader = new FileReader();
             reader.onload = function(event) {
                 preview.src = event.target.result;
-                preview.style.display = 'block';
+                uploadWrapper.classList.add('has-image');
             };
             reader.readAsDataURL(file);
         } else {
-            preview.src = '';
-            preview.style.display = 'none';
+            resetPreview();
         }
     });
+
+    // 初期状態でプレビューが存在する場合（将来の拡張に備えて）
+    if (preview.getAttribute('src')) {
+        uploadWrapper.classList.add('has-image');
+    }
 });
 </script>
 @endsection

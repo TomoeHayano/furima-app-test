@@ -86,8 +86,27 @@
 
             {{-- コメント一覧 --}}
             @foreach ($product->comments as $comment)
+                @php
+                    $profileImagePath = optional($comment->user->profile)->image_path;
+                    $profileImageUrl = null;
+
+                    if ($profileImagePath) {
+                        $profileImageUrl = filter_var($profileImagePath, FILTER_VALIDATE_URL)
+                            ? $profileImagePath
+                            : asset('storage/' . ltrim($profileImagePath, '/'));
+                    }
+                @endphp
                 <div class="comment-item">
-                    <span class="comment-user">{{ $comment->user->name }}</span>:
+                    <div class="comment-user">
+                        <div class="comment-avatar">
+                            @if ($profileImageUrl)
+                                <img src="{{ $profileImageUrl }}" alt="{{ $comment->user->name }}のプロフィール画像">
+                            @else
+                                <span class="comment-avatar-fallback">{{ mb_substr($comment->user->name ?? '', 0, 1) ?: '?' }}</span>
+                            @endif
+                        </div>
+                        <span class="comment-user-name">{{ $comment->user->name }}:</span>
+                    </div>
                     <span class="comment-text">{{ $comment->content }}</span>
                 </div>
             @endforeach
@@ -99,10 +118,7 @@
                     {{-- コメント投稿フォーム --}}
                     <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
                         @csrf
-                        <textarea 
-                            name="content" 
-                            maxlength="255">{{ old('content') }}
-                        </textarea>
+                        <textarea name="content" maxlength="255">{{ old('content') }}</textarea>
 
                         {{-- バリデーションエラー表示 --}}
                         @error('content')

@@ -20,6 +20,8 @@
 
 - php artisan db:seed
 
+- artisan storage:link
+
 ## 開発環境
 - 商品一覧画面(トップ画面):http://localhost/
 - 会員登録:http://localhost/register

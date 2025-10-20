@@ -82,7 +82,7 @@ class ProductController extends Controller
      */
     public function show($item_id)
     {
-        $product = Product::with(['comments.user', 'categories', 'condition'])
+        $product = Product::with(['comments.user.profile', 'categories', 'condition'])
             ->findOrFail($item_id);
 
         // 合計いいね数
