@@ -45,15 +45,23 @@
 
             {{-- 購入ボタン --}}
             <div class="purchase-area">
-                @auth
-                    <form action="{{ route('purchase.create', $product->id) }}" method="GET">
-                        <button type="submit" class="purchase-button">購入手続きへ</button>
-                    </form>
+                @if ($isPurchasedByUser)
+                    <button type="button" class="purchase-button purchased-button">購入手続きへ</button>
+                    <p class="purchased-message" role="alert" aria-live="polite" hidden>この商品は購入済みです</p>
+                @elseif ($product->is_sold)
+                    <button type="button" class="purchase-button sold-out-button">購入手続きへ</button>
+                    <p class="sold-out-message" role="alert" aria-live="polite" hidden>売り切れです</p>
                 @else
-                    <form action="{{ route('login') }}" method="GET">
-                        <button type="submit" class="purchase-button">購入手続きへ</button>
-                    </form>
-                @endauth
+                    @auth
+                        <form action="{{ route('purchase.create', $product->id) }}" method="GET">
+                            <button type="submit" class="purchase-button">購入手続きへ</button>
+                        </form>
+                    @else
+                        <form action="{{ route('login') }}" method="GET">
+                            <button type="submit" class="purchase-button">購入手続きへ</button>
+                        </form>
+                    @endauth
+                @endif
             </div>
         </div>
 
@@ -139,6 +147,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     const likeButton = document.getElementById('like-button');
     const likesCount = document.getElementById('likes-count');
+    const soldOutButton = document.querySelector('.sold-out-button');
+    const soldOutMessage = document.querySelector('.sold-out-message');
+    const purchasedButton = document.querySelector('.purchased-button');
+    const purchasedMessage = document.querySelector('.purchased-message');
 
     if (likeButton) {
         // ゲストはクリックできない
@@ -167,6 +179,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 likesCount.textContent = data.likesCount;
             })
             .catch(error => console.error('Error:', error));
+        });
+    }
+
+    if (soldOutButton) {
+        soldOutButton.addEventListener('click', function () {
+            if (soldOutMessage) {
+                soldOutMessage.hidden = false;
+                soldOutMessage.textContent = '売り切れです';
+            } else {
+                alert('売り切れです');
+            }
+        });
+    }
+
+    if (purchasedButton) {
+        purchasedButton.addEventListener('click', function () {
+            if (purchasedMessage) {
+                purchasedMessage.hidden = false;
+                purchasedMessage.textContent = 'この商品は購入済みです';
+            } else {
+                alert('この商品は購入済みです');
+            }
         });
     }
 });

@@ -18,9 +18,14 @@
 
     <header class="auth-header">
         {{-- ロゴ --}}
-        <div class="header-logo">
+        @php
+            $logoLink = Auth::check()
+                ? route('products.mylist', ['tab' => 'mylist'])
+                : route('products.index');
+        @endphp
+        <a href="{{ $logoLink }}" class="header-logo">
             <img src="{{ asset('images/logo.svg') }}" alt="CoachTech Logo">
-        </div>
+        </a>
 
         @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
             @php
@@ -39,6 +44,7 @@
                     }
                 }
             @endphp
+            
             {{-- 検索フォーム --}}
             <form
                 action="{{ Auth::check() ? route('products.mylist') : route('products.index') }}"

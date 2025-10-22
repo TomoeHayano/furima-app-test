@@ -56,7 +56,15 @@
                         <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
                     @endif
                 </div>
-                <p class="product-name">{{ $product->name ?? '商品名' }}</p>
+                @if ($product)
+                    <p class="product-name">
+                        <a href="{{ route('products.show', ['item_id' => $product->id]) }}">
+                            {{ $product->name }}
+                        </a>
+                    </p>
+                @else
+                    <p class="product-name">商品名</p>
+                @endif
             </div>
         @empty
             <p class="empty-message">商品はありません</p>

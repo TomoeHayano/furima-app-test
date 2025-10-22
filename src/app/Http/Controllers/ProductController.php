@@ -82,7 +82,7 @@ class ProductController extends Controller
      */
     public function show($item_id)
     {
-        $product = Product::with(['comments.user.profile', 'categories', 'condition'])
+        $product = Product::with(['comments.user.profile', 'categories', 'condition', 'order'])
             ->findOrFail($item_id);
 
         // 合計いいね数
@@ -93,7 +93,9 @@ class ProductController extends Controller
             ? $product->likes()->where('user_id', Auth::id())->exists()
             : false;
 
-        return view('products.show', compact('product', 'liked', 'likesCount'));
+        $isPurchasedByUser = Auth::check() && optional($product->order)->user_id === Auth::id();
+
+        return view('products.show', compact('product', 'liked', 'likesCount', 'isPurchasedByUser'));
     }
 
     /**

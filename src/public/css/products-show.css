@@ -138,6 +138,33 @@
     background: #e74c3c;
 }
 
+.sold-out-button,
+.purchased-button {
+    background: #B0B0B0;
+}
+
+.sold-out-button:hover,
+.purchased-button:hover {
+    background: #a0a0a0;
+}
+
+.sold-out-message,
+.purchased-message {
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.sold-out-message {
+    color: #FF5555;
+}
+
+.purchased-message {
+    color: #FF5555;
+}
+
 /* 商品説明 */
 .products-description {
     width: 570px;
