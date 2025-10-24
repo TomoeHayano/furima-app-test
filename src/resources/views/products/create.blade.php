@@ -15,12 +15,12 @@
         @csrf
     
         {{-- 商品画像 --}}
-        <div class="sell__section">
+        <div class="sell-section">
             <label for="image">商品画像</label>
-            <div class="sell__image-upload" id="image-upload">
+            <div class="sell-image-upload" id="image-upload">
                 <input type="file" name="image" id="image" accept="image/jpeg,image/png">
-                <img id="preview-image" src="" alt="プレビュー画像" class="sell__image-preview">
-                <label for="image" class="sell__image-button">画像を選択する</label>
+                <img id="preview-image" src="" alt="プレビュー画像" class="sell-image-preview">
+                <label for="image" class="sell-image-button">画像を選択する</label>
             </div>
 
             @error('image')
@@ -29,12 +29,12 @@
         </div>
         
         {{-- 商品の詳細 --}}
-        <div class="sell__section">
+        <div class="sell-section">
             <h2>商品の詳細</h2>
             
             {{-- カテゴリー --}}
             <label>カテゴリー</label>
-            <div class="sell__categories">
+            <div class="sell-categories">
                 @foreach($categories as $category)
                     <label>
                         <input type="checkbox" name="category_ids[]" value="{{ $category->id }}">
@@ -60,7 +60,7 @@
         </div>
         
         {{-- 商品名と説明 --}}
-        <div class="sell__section">
+        <div class="sell-section">
             <h2>商品名と説明</h2>
             
             <label for="name">商品名</label>
@@ -80,10 +80,10 @@
         </div>
         
         {{-- 価格 --}}
-        <div class="sell__section">
+        <div class="sell-section">
             <label for="price">販売価格</label>
-            <div class="sell__price-wrapper">
-                <span class="sell__price-symbol">¥</span>
+            <div class="sell-price-wrapper">
+                <span class="sell-price-symbol">¥</span>
                 <input type="number" name="price" id="price" value="{{ old('price') }}" placeholder="3000">
             </div>
             @error('price')
@@ -91,7 +91,7 @@
             @enderror
         </div>
         
-        <button type="submit" class="sell__button">出品する</button>
+        <button type="submit" class="sell-button">出品する</button>
     </form>
 </div>
 

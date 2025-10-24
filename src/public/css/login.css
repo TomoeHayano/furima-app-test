@@ -18,12 +18,12 @@
 }
 
 /* メール入力のエラー非表示時の余白 */
-#email:not(:has(+ .form-error)) {
+.auth-input-email:not(:has(+ .form-error)) {
     margin-bottom: 71.6px;
 }
 
 /* パスワード入力のエラー非表示時の余白 */
-#password:not(:has(+ .form-error)) {
+.auth-input-password:not(:has(+ .form-error)) {
     margin-bottom: 79.64px;
 }
 

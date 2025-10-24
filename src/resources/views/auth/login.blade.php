@@ -16,7 +16,7 @@
 
         <div class="form-group @error('email') has-error @enderror">
             <label for="email">メールアドレス</label>
-            <input id="email" type="text" name="email" value="{{ old('email') }}">
+            <input id="email" class="auth-input auth-input-email" type="text" name="email" value="{{ old('email') }}">
             @error('email')
                 <p class="form-error">{{ $message }}</p>
             @enderror
@@ -24,7 +24,7 @@
 
        <div class="form-group">
             <label for="password">パスワード</label>
-            <input id="password" type="password" name="password">
+            <input id="password" class="auth-input auth-input-password" type="password" name="password">
             @error('password')
                 <p class="form-error">{{ $message }}</p>
             @enderror

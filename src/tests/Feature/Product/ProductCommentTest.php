@@ -24,7 +24,7 @@ class ProductCommentTest extends TestCase
           'content' => 'テストコメント',
         ]);
 
-    $response->assertRedirect(route('products.show', ['item_id' => $product->id]));
+    $response->assertRedirect(route('products.show', ['itemId' => $product->id]));
 
     $this->assertDatabaseHas('comments', [
       'user_id'    => $user->id,
@@ -32,7 +32,7 @@ class ProductCommentTest extends TestCase
       'content'    => 'テストコメント',
     ]);
 
-    $detailResponse = $this->actingAs($user)->get(route('products.show', ['item_id' => $product->id]));
+    $detailResponse = $this->actingAs($user)->get(route('products.show', ['itemId' => $product->id]));
     $detailResponse->assertSee('コメント (1)');
     $detailResponse->assertSee('テストコメント');
   }
@@ -65,12 +65,12 @@ class ProductCommentTest extends TestCase
     $product = Product::factory()->create();
 
     $response = $this->actingAs($user)
-        ->from(route('products.show', ['item_id' => $product->id]))
+        ->from(route('products.show', ['itemId' => $product->id]))
         ->post(route('products.comment.store', $product->id), [
           'content' => '',
         ]);
 
-    $response->assertRedirect(route('products.show', ['item_id' => $product->id]));
+    $response->assertRedirect(route('products.show', ['itemId' => $product->id]));
     $response->assertSessionHasErrors('content');
   }
 
@@ -84,12 +84,12 @@ class ProductCommentTest extends TestCase
     $longComment = str_repeat('あ', 256);
 
     $response = $this->actingAs($user)
-        ->from(route('products.show', ['item_id' => $product->id]))
+        ->from(route('products.show', ['itemId' => $product->id]))
         ->post(route('products.comment.store', $product->id), [
           'content' => $longComment,
         ]);
 
-    $response->assertRedirect(route('products.show', ['item_id' => $product->id]));
+    $response->assertRedirect(route('products.show', ['itemId' => $product->id]));
     $response->assertSessionHasErrors('content');
   }
 }

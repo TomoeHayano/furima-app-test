@@ -45,7 +45,7 @@
                     @endif
                 </div>
                 <div class="product-name">
-                    <a href="{{ route('products.show', ['item_id' => $product['id']]) }}">
+                    <a href="{{ route('products.show', ['itemId' => $product['id']]) }}">
                         {{ $product['name'] }}
                     </a>
                 </div>

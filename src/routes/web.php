@@ -48,7 +48,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
 // 商品詳細
-Route::get('/item/{item_id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/item/{itemId}', [ProductController::class, 'show'])->name('products.show');
 
 // いいね機能
 Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])->name('products.toggleLike')
@@ -78,15 +78,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
   ->name('products.comment.store');
 
   // 住所編集
-  Route::get('/purchase/address/{item_id}', [AddressController::class, 'edit'])->name('purchase.address.edit');
-  Route::post('/purchase/address/{item_id}', [AddressController::class, 'update'])->name('purchase.address.update');
+  Route::get('/purchase/address/{itemId}', [AddressController::class, 'edit'])->name('purchase.address.edit');
+  Route::post('/purchase/address/{itemId}', [AddressController::class, 'update'])->name('purchase.address.update');
 
   // 購入処理
-  Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
-  Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
+  Route::get('/purchase/{itemId}', [OrderController::class, 'create'])->name('purchase.create');
+  Route::post('/purchase/{itemId}', [OrderController::class, 'store'])->name('purchase.store');
 
   // Stripeコールバック
-  Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('purchase.success');
+  Route::get('/purchase/{itemId}/success', [OrderController::class, 'success'])->name('purchase.success');
   Route::get('/purchase/cancel', [OrderController::class, 'cancel'])->name('purchase.cancel');
 
   // 商品出品画面

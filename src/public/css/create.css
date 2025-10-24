@@ -26,12 +26,12 @@
 }
 
 /* セクション */
-.sell__section {
+.sell-section {
     margin-bottom: 36px;
 }
 
 /* セクション見出し */
-.sell__section h2 {
+.sell-section h2 {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 700;
@@ -44,7 +44,7 @@
 }
 
 /* ラベル（通常） */
-.sell__section > label {
+.sell-section > label {
     display: block;
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -65,11 +65,11 @@ label[for="price"] {
 }
 
 /* 商品画像エリア */
-.sell__section input[type="file"] {
+.sell-section input[type="file"] {
     display: none;
 }
 
-.sell__image-upload {
+.sell-image-upload {
     position: relative;
     width: 680px;
     min-height: 150px;
@@ -87,7 +87,7 @@ label[for="price"] {
     transition: padding 0.3s ease, margin 0.3s ease;
 }
 
-.sell__image-preview {
+.sell-image-preview {
     display: none;
     max-width: min(100%, 680px);
     width: auto;
@@ -95,24 +95,24 @@ label[for="price"] {
     border-radius: 4px;
 }
 
-.sell__image-upload.has-image {
+.sell-image-upload.has-image {
     padding: 0;
     margin-bottom: 56px;
     background: transparent;
     border: none;
 }
 
-.sell__image-upload.has-image .sell__image-preview {
+.sell-image-upload.has-image .sell-image-preview {
     display: block;
     margin-bottom: 24px;
 }
 
-.sell__image-upload.has-image .sell__image-button {
+.sell-image-upload.has-image .sell-image-button {
     margin-top: 0;
 }
 
 /* 画像選択ボタン */
-.sell__section label.sell__image-button {
+.sell-section label.sell-image-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -135,17 +135,17 @@ label[for="price"] {
     margin-bottom: 0;
 }
 
-.sell__image-upload.has-image .sell__image-button {
+.sell-image-upload.has-image .sell-image-button {
     align-self: center;
 }
 
-.sell__image-button:hover {
+.sell-image-button:hover {
     background: #FF5555;
     color: #FFFFFF;
 }
 
 /* カテゴリー */
-.sell__categories {
+.sell-categories {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
@@ -153,16 +153,16 @@ label[for="price"] {
     margin-bottom: 65px;
 }
 
-.sell__categories label {
+.sell-categories label {
     display: inline-block;
     margin-bottom: 0;
 }
 
-.sell__categories input[type="checkbox"] {
+.sell-categories input[type="checkbox"] {
     display: none;
 }
 
-.sell__categories span {
+.sell-categories span {
     display: inline-block;
     padding: 8px 16px;
     border: 2px solid #FF5655;
@@ -177,18 +177,18 @@ label[for="price"] {
     transition: all 0.2s ease;
 }
 
-.sell__categories input[type="checkbox"]:checked + span {
+.sell-categories input[type="checkbox"]:checked + span {
     background: #FF5655;
     color: #FFFFFF;
 }
 
-.sell__categories span:hover {
+.sell-categories span:hover {
     background: #FF5655;
     color: #FFFFFF;
 }
 
 /* セレクトボックス */
-.sell__section select {
+.sell-section select {
     width: 680px;
     height: 45px;
     border: 1px solid #5F5F5F;
@@ -211,7 +211,7 @@ label[for="price"] {
 }
 
 /* テキスト入力 */
-.sell__section input[type="text"] {
+.sell-section input[type="text"] {
     width: 680px;
     height: 45px;
     border: 1px solid #5F5F5F;
@@ -225,7 +225,7 @@ label[for="price"] {
 }
 
 /* テキストエリア */
-.sell__section textarea {
+.sell-section textarea {
     width: 680px;
     height: 125px;
     border: 1px solid #5F5F5F;
@@ -240,13 +240,13 @@ label[for="price"] {
 }
 
 /* 価格入力ラッパー */
-.sell__price-wrapper {
+.sell-price-wrapper {
     position: relative;
     width: 680px;
 }
 
 /* 価格入力フィールド */
-.sell__section input[type="number"] {
+.sell-section input[type="number"] {
     width: 100%;
     height: 45px;
     border: 1px solid #5F5F5F;
@@ -260,7 +260,7 @@ label[for="price"] {
 }
 
 /* ¥記号 */
-.sell__price-symbol {
+.sell-price-symbol {
     position: absolute;
     left: 12px;
     top: 50%;
@@ -276,18 +276,18 @@ label[for="price"] {
 }
 
 /* 数値入力の矢印を非表示 */
-.sell__section input[type="number"]::-webkit-inner-spin-button,
-.sell__section input[type="number"]::-webkit-outer-spin-button {
+.sell-section input[type="number"]::-webkit-inner-spin-button,
+.sell-section input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-.sell__section input[type="number"] {
+.sell-section input[type="number"] {
     -moz-appearance: textfield;
 }
 
 /* 出品ボタン */
-.sell__button {
+.sell-button {
     width: 680px;
     height: 60px;
     background: #FF5555;
@@ -305,7 +305,7 @@ label[for="price"] {
     margin-bottom: 152px;
 }
 
-.sell__button:hover {
+.sell-button:hover {
     background: #e74c3c;
 }
 
@@ -321,17 +321,17 @@ label[for="price"] {
 /* PC画面 (1400-1540px) */
 @media (min-width: 1400px) and (max-width: 1540px) {
     .sell form,
-    .sell__section input[type="text"],
-    .sell__section input[type="number"],
-    .sell__section textarea,
-    .sell__section select,
-    .sell__button,
-    .sell__image-upload,
-    .sell__price-wrapper {
+    .sell-section input[type="text"],
+    .sell-section input[type="number"],
+    .sell-section textarea,
+    .sell-section select,
+    .sell-button,
+    .sell-image-upload,
+    .sell-price-wrapper {
         width: min(640px, 44vw);
     }
     
-    .sell__categories {
+    .sell-categories {
         gap: clamp(12px, 1.5vw, 18px);
     }
 }
