@@ -10,6 +10,7 @@
     gap: 48px;
 }
 
+/* 画面タイトル */
 .address-title {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
@@ -19,6 +20,7 @@
     text-align: center;
 }
 
+/* 入力フォーム全体 */
 .address-form {
     width: 100%;
     max-width: 680px;
@@ -27,23 +29,28 @@
     gap: 0;
 }
 
+/* 入力フィールドブロック */
 .form-group {
     display: flex;
     flex-direction: column;
 }
 
+/* 郵便番号フィールド */
 .postal-code-group {
     margin-bottom: 90px;
 }
 
+/* 住所フィールド */
 .address-group {
     margin-bottom: 90px;
 }
 
+/* 建物名フィールド */
 .building-group {
     margin-bottom: 111px;
 }
 
+/* 入力ラベル */
 .form-label {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
@@ -53,6 +60,7 @@
     margin-bottom: 12px;
 }
 
+/* 入力フィールド */
 .form-input {
     width: 100%;
     box-sizing: border-box;
@@ -64,24 +72,28 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* 入力フィールドのフォーカス */
 .form-input:focus {
     outline: none;
     border-color: #ff5555;
     box-shadow: 0 0 0 3px rgba(255, 85, 85, 0.2);
 }
 
+/* バリデーションメッセージ */
 .form-error {
     margin-top: 8px;
     font-size: 14px;
     color: #ff5555;
 }
 
+/* ボタンコンテナ */
 .form-actions {
     width: 100%;
     margin-top: 0;
     display: flex;
 }
 
+/* 更新ボタン */
 .submit-button {
     width: 100%;
     box-sizing: border-box;

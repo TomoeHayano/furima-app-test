@@ -59,9 +59,6 @@
                     <option value="コンビニ支払い">コンビニ支払い</option>
                     <option value="カード支払い">カード支払い</option>
                 </select>
-                {{-- @error('payment_method')
-                    <p class="form-error">{{ $message }}</p>
-                @enderror --}}
             </div>
         </div>
 
@@ -112,7 +109,6 @@
             </div>
 
             {{-- 購入ボタン --}}
-            {{-- <button href="{{ route('purchase.create', $product->id) }}" class="purchase-button">購入する</button> --}}
             <button type="submit" class="purchase-button">購入する</button>
         </div>
     </form>

@@ -8,44 +8,44 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'user_id',
-        'product_id',
-        'profile_id',
-        'payment_method',
-        'shipping_postal_code',
-        'shipping_address',
-        'shipping_building_name',
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array<int, string>
+   */
+  protected $fillable = [
+    'user_id',
+    'product_id',
+    'profile_id',
+    'payment_method',
+    'shipping_postal_code',
+    'shipping_address',
+    'shipping_building_name',
+  ];
 
-    /**
-     * Get the user that owns the order.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+  /**
+   * Get the user that owns the order.
+   */
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
 
-    /**
-     * Get the product that the order belongs to.
-     */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
+  /**
+   * Get the product that the order belongs to.
+   */
+  public function product(): BelongsTo
+  {
+    return $this->belongsTo(Product::class);
+  }
 
-    /**
-     * Get the profile that the order belongs to.
-     */
-    public function profile(): BelongsTo
-    {
-        return $this->belongsTo(Profile::class);
-    }
+  /**
+   * Get the profile that the order belongs to.
+   */
+  public function profile(): BelongsTo
+  {
+    return $this->belongsTo(Profile::class);
+  }
 }

@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SellController;
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
-
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,42 +57,41 @@ Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])-
 
 // 認証後
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // 新規登録後に使う（初回なら編集画面 → 登録済なら商品一覧へ）
-    Route::get('/mypage', [UserController::class, 'show'])->name('user.mypage');
 
-    // プロフィール編集
-    Route::get('/mypage/profile', [UserController::class, 'edit'])->name('user.profile.edit');
-    Route::post('/mypage/profile', [UserController::class, 'update'])->name('user.profile.update');
-    
-    //商品一覧マイリスト
-    Route::get('/mylist', [ProductController::class, 'mylist'])->name('products.mylist');
-    
-    //いいね機能
-    Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])
-        ->name('products.toggleLike');
+  // 新規登録後に使う（初回なら編集画面 → 登録済なら商品一覧へ）
+  Route::get('/mypage', [UserController::class, 'show'])->name('user.mypage');
 
-    //コメント機能
-    Route::post('/item/{productId}/comment', [ProductController::class, 'storeComment'])
-    ->middleware('auth')
-    ->name('products.comment.store');
+  // プロフィール編集
+  Route::get('/mypage/profile', [UserController::class, 'edit'])->name('user.profile.edit');
+  Route::post('/mypage/profile', [UserController::class, 'update'])->name('user.profile.update');
 
-    // 住所編集
-    Route::get('/purchase/address/{item_id}', [AddressController::class, 'edit'])->name('purchase.address.edit');
-    Route::post('/purchase/address/{item_id}', [AddressController::class, 'update'])->name('purchase.address.update');
-    
-    // 購入処理
-    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
-Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
+  //商品一覧マイリスト
+  Route::get('/mylist', [ProductController::class, 'mylist'])->name('products.mylist');
 
-    // Stripeコールバック
-    Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('purchase.success');
-    Route::get('/purchase/cancel', [OrderController::class, 'cancel'])->name('purchase.cancel');
-    
-    // 商品出品画面
-    Route::get('/sell', [SellController::class, 'create'])->name('sell.create');
+  //いいね機能
+  Route::post('/item/{productId}/like', [ProductController::class, 'toggleLike'])
+      ->name('products.toggleLike');
 
-    // 商品出品処理
-    Route::post('/sell', [SellController::class, 'store'])->name('sell.store');
+  //コメント機能
+  Route::post('/item/{productId}/comment', [ProductController::class, 'storeComment'])
+  ->middleware('auth')
+  ->name('products.comment.store');
+
+  // 住所編集
+  Route::get('/purchase/address/{item_id}', [AddressController::class, 'edit'])->name('purchase.address.edit');
+  Route::post('/purchase/address/{item_id}', [AddressController::class, 'update'])->name('purchase.address.update');
+
+  // 購入処理
+  Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('purchase.create');
+  Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('purchase.store');
+
+  // Stripeコールバック
+  Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('purchase.success');
+  Route::get('/purchase/cancel', [OrderController::class, 'cancel'])->name('purchase.cancel');
+
+  // 商品出品画面
+  Route::get('/sell', [SellController::class, 'create'])->name('sell.create');
+
+  // 商品出品処理
+  Route::post('/sell', [SellController::class, 'store'])->name('sell.store');
 });
-    

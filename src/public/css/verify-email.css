@@ -1,3 +1,4 @@
+/* ページコンテナ */
 .verify-container {
     position: relative;
     width: 100%;
@@ -8,7 +9,7 @@
     text-align: center;
 }
 
-/* メインテキスト */
+/* メインメッセージ */
 .verify-text {
     position: absolute;
     width: 720px;
@@ -40,7 +41,7 @@
     cursor: pointer;
 }
 
-/* 再送リンク */
+/* 認証メール再送リンク */
 .resend-button {
     position: absolute;
     left: 50%;
@@ -60,6 +61,7 @@
     top: 500px;
 }
 
+/* ステータスメッセージ */
 .verify-status {
     position: absolute;
     width: 720px;

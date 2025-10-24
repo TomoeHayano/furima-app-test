@@ -226,14 +226,14 @@
 .condition-text {
     font-size: 20px;
     font-weight: 500;
-    color: #000; /* テキストのみなので黒固定 */
+    color: #000;
 }
 
 /* カテゴリー全体 */
 .category-wrapper {
     display: flex;
     align-items: center;
-    gap: 62px; /* ラベルとタグの間に余白 */
+    gap: 62px;
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 20px;
@@ -241,15 +241,15 @@
 
 .category-wrapper .category-tags {
     display: flex;
-    gap: 23px; /* ← カテゴリ同士の間隔 */
+    gap: 23px;
 }
 
 /* タグ1つずつ */
 .category-tag {
     display: inline-block;
-    background: #D9D9D9; /* グレー背景 */
-    border-radius: 15px; /* 丸み */
-    padding: 5px 12px; /* 上下・左右の余白 */
+    background: #D9D9D9;
+    border-radius: 15px;
+    padding: 5px 12px;
     font-size: 20px;
     color: #000;
 }

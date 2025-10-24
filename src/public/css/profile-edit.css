@@ -1,3 +1,4 @@
+/* プロフィール編集ページ全体 */
 .profile-edit-content {
     width: 100vw;
     min-height: 100vh;
@@ -8,6 +9,7 @@
     padding-top: 72px;
 }
 
+/* 画面タイトル */
 .profile-title {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -18,6 +20,7 @@
     margin-bottom: 94px;
 }
 
+/* 入力フォーム全体 */
 .profile-form {
     width: 680px;
     display: flex;
@@ -25,6 +28,7 @@
     align-items: flex-start;
 }
 
+/* プロフィール画像セクション */
 .profile-image-section {
     position: relative;
     width: 680px;
@@ -34,6 +38,7 @@
     margin-bottom: 76px;
 }
 
+/* プロフィール画像の枠 */
 .profile-image-circle {
     position: absolute;
     width: 150px;
@@ -47,6 +52,7 @@
     overflow: hidden;
 }
 
+/* 表示中のプロフィール画像 */
 .current-image {
     width: 100%;
     height: 100%;
@@ -54,6 +60,7 @@
     border-radius: 50%;
 }
 
+/* 画像変更ボタン */
 .image-select-button {
     position: absolute;
     width: 179px;
@@ -76,11 +83,13 @@
     transition: all 0.3s ease;
 }
 
+/* 画像変更ボタンのホバー */
 .image-select-button:hover {
     background: #FF5555;
     color: #FFFFFF;
 }
 
+/* 入力フィールドブロック */
 .form-group {
     position: relative;
     width: 680px;
@@ -88,10 +97,12 @@
     margin-bottom: 100px;
 }
 
+/* 最終フィールドの余白調整 */
 .form-group:last-of-type {
     margin-bottom: 67px;
 }
 
+/* 入力ラベル */
 .form-label {
     position: absolute;
     width: 680px;
@@ -108,6 +119,7 @@
     color: #000000;
 }
 
+/* 入力フィールド */
 .form-input {
     position: absolute;
     width: 680px;
@@ -123,15 +135,16 @@
     color: #000000;
     background: #FFFFFF;
     margin-bottom: 100px;
-
 }
 
+/* 入力フィールドのフォーカス */
 .form-input:focus {
     outline: none;
     border-color: #FF5555;
     box-shadow: 0 0 0 2px rgba(255, 85, 85, 0.1);
 }
 
+/* 送信ボタンエリア */
 .action-bar {
     position: relative;
     width: 680px;
@@ -139,6 +152,7 @@
     margin-bottom: 187px;
 }
 
+/* 更新ボタン */
 .update-button {
     position: absolute;
     left: 0px;
@@ -162,10 +176,12 @@
     transition: background-color 0.3s ease;
 }
 
+/* 更新ボタンのホバー */
 .update-button:hover {
     background: #e74c3c;
 }
 
+/* バリデーションメッセージ */
 .error-message {
     color: #FF5555;
     font-size: 14px;

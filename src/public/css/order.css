@@ -4,7 +4,7 @@
     width: 100%;
     max-width: 1512px;
     height: 982px;
-    margin: 0 auto; /* ヘッダー分の余白を追加 */
+    margin: 0 auto;
     padding-top: calc(475px + 93px);
     background: #FFFFFF;
 }
@@ -44,7 +44,7 @@
 .product-price {
     position: absolute;
     left: 313px;
-    top: 148.47px; /* 商品名から55.47px下 */
+    top: 148.47px;
     font-size: 24px;
     font-weight: 600;
     color: #000;
@@ -54,17 +54,16 @@
 /* 支払い方法 */
 .payment-section {
     position: absolute;
-    /* left: 80px; */
-    top: 323px; /* 上段の線位置 */
+    top: 323px;
     width: 805px;
-    height: 120px; /* 少し余裕を持たせる */
+    height: 120px;
 }
 
 /* タイトルラベル */
 .payment-label {
     position: absolute;
     left: 115px;
-    top: 30px; /* ← 線から20px下げてぶつからないように */
+    top: 30px;
     font-size: 20px;
     font-weight: 700;
     color: #000;
@@ -74,10 +73,10 @@
 .status-dropdown {
     position: absolute;
     left: 176px;
-    top: 90px; /* ← タイトルから40px下に配置 */
+    top: 90px;
     width: 265px;
     height: 31px;
-    border: 1px solid #5F5F5F; /* 枠線を細く */
+    border: 1px solid #5F5F5F;
     border-radius: 4px;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
@@ -91,8 +90,8 @@
     border: 1px solid #5F5F5F;
     border-radius: 4px;
     font-size: 16px;
-    padding: 0 8px; /* 上下の余白を削除、左右だけ残す */
-    line-height: 31px; /* 高さと同じにして中央寄せ */
+    padding: 0 8px;
+    line-height: 31px;
     background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><polygon points='0,0 12,0 6,7' fill='%235F5F5F'/></svg>") no-repeat right 10px center;
     background-size: 12px;
     appearance: none;
@@ -100,6 +99,7 @@
     -moz-appearance: none;
 }
 
+/* セクション区切り線 */
 .line {
     position: absolute;
     width: 805px;
@@ -113,23 +113,23 @@
 }
 
 /* 支払い方法の一番上の線を右側の枠線と揃える */
-.product-border { top: 323px; }  /* ← ここを右の枠線に合わせる */
+.product-border { top: 323px; }
 .payment-border { top: 513px; }
 .address-border { top: 728px; }
 
 /* 配送先 */
 .address-section {
     position: absolute;
-    top: 513px;         /* 支払い方法より下の線に揃える */
+    top: 513px;
     width: 805px;
-    height: 120px;      /* 少し余裕を持たせる */
+    height: 120px;
 }
 
 /* タイトルラベル */
 .address-label {
     position: absolute;
     left: 115px;
-    top: 30px;          /* 支払い方法と同じ位置 */
+    top: 30px;
     font-size: 20px;
     font-weight: 700;
     color: #000;
@@ -138,8 +138,8 @@
 /* 住所テキスト */
 .address-text {
     position: absolute;
-    left: 176px;        /* 支払い方法のプルダウン位置に合わせる */
-    top: 90px;          /* タイトルから下げる */
+    left: 176px;
+    top: 90px;
     font-size: 20px;
     font-weight: 600;
     color: #000;
@@ -148,8 +148,8 @@
 /* 変更するリンク */
 .address-edit {
     position: absolute;
-    right: 20px;        /* 枠の右端に配置 */
-    top: 30px;          /* タイトルと同じ高さ */
+    right: 20px;
+    top: 30px;
     font-size: 20px;
     font-weight: 400;
     color: #0073CC;
@@ -159,8 +159,8 @@
 /* 右側の確認エリア */
 .purchase-right {
     position: absolute;
-    top: 93px;       /* 画像と同じ高さ */
-    right: 85px;     /* 右余白 */
+    top: 93px;
+    right: 85px;
     width: 440px;
 }
 
@@ -174,7 +174,7 @@
 }
 
 .confirm-row {
-    flex: 1;                          /* 均等分割 */
+    flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -188,8 +188,8 @@
 
 /* 購入ボタン */
 .purchase-button {
-    margin-top: 66px;   /* 確認枠からの間隔 */
-    width: 100%;        /* 枠と同じ幅 */
+    margin-top: 66px;
+    width: 100%;
     height: 60px;
     background: #FF5555;
     color: #fff;
@@ -259,12 +259,5 @@
     .purchase-right {
         right: clamp(56px, 6vw, 72px);
         width: clamp(340px, 26vw, 400px);
-    }
-}
-
-@media (min-width: 1400px) and (max-width: 1430px) {
-    .product-name,
-    .product-price {
-        left: calc(clamp(56px, 4.5vw, 72px) + 177.54px + 60px);
     }
 }

@@ -8,22 +8,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductCondition extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'status_name',
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array<int, string>
+   */
+  protected $fillable = [
+    'status_name',
+  ];
 
-    /**
-     * Get the products for the product condition.
-     */
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class, 'condition_id');
-    }
+  /**
+   * Get the products for the product condition.
+   */
+  public function products(): HasMany
+  {
+    return $this->hasMany(Product::class, 'condition_id');
+  }
 }

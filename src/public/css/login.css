@@ -1,3 +1,4 @@
+/* 認証フォーム全体 */
 .auth-content {
     width: 100%;
     max-width: 680px;
@@ -7,22 +8,26 @@
     text-align: center;
 }
 
+/* 画面タイトル */
 .auth-title {
     font-weight: 700;
     font-size: 36px;
     line-height: 44px;
     color: #000000;
-    margin-bottom: 132.55px; /* タイトル → メールアドレス */
+    margin-bottom: 132.55px;
 }
 
+/* メール入力のエラー非表示時の余白 */
 #email:not(:has(+ .form-error)) {
     margin-bottom: 71.6px;
 }
 
+/* パスワード入力のエラー非表示時の余白 */
 #password:not(:has(+ .form-error)) {
     margin-bottom: 79.64px;
 }
 
+/* 入力フィールドブロック */
 .form-group {
     position: relative;
     text-align: left;
@@ -30,10 +35,12 @@
     min-height: 90px;
 }
 
+/* エラー表示時のブロック余白 */
 .form-group:has(.form-error) {
-  margin-bottom: 20px; /* エラーがあるときは狭める */
+    margin-bottom: 20px;
 }
 
+/* 入力ラベル */
 .form-group label {
     font-weight: 700;
     font-size: 24px;
@@ -43,6 +50,7 @@
     margin-bottom: 5px;
 }
 
+/* 入力フィールド */
 .form-group input {
     box-sizing: border-box;
     width: 100%;
@@ -59,6 +67,7 @@
     color: #A0A0A0;
 }
 
+/* ログインボタン */
 .login-button {
     width: 100%;
     max-width: 300px;
@@ -73,6 +82,7 @@
     cursor: pointer;
 }
 
+/* 新規登録リンク */
 .register-link {
     display: block;
     margin-top: 20px;
