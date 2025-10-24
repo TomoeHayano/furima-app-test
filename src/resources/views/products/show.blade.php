@@ -45,7 +45,10 @@
 
             {{-- 購入ボタン --}}
             <div class="purchase-area">
-                @if ($isPurchasedByUser)
+                @if ($isOwner)
+                    <button type="button" class="purchase-button owner-button">購入する</button>
+                    <p class="owner-message" role="alert" aria-live="polite" hidden>購入できません</p>
+                @elseif ($isPurchasedByUser)
                     <button type="button" class="purchase-button purchased-button">購入手続きへ</button>
                     <p class="purchased-message" role="alert" aria-live="polite" hidden>この商品は購入済みです</p>
                 @elseif ($product->is_sold)
@@ -151,6 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const soldOutMessage = document.querySelector('.sold-out-message');
     const purchasedButton = document.querySelector('.purchased-button');
     const purchasedMessage = document.querySelector('.purchased-message');
+    const ownerButton = document.querySelector('.owner-button');
+    const ownerMessage = document.querySelector('.owner-message');
 
     if (likeButton) {
         // ゲストはクリックできない
@@ -200,6 +205,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 purchasedMessage.textContent = 'この商品は購入済みです';
             } else {
                 alert('この商品は購入済みです');
+            }
+        });
+    }
+
+    if (ownerButton) {
+        ownerButton.addEventListener('click', function () {
+            if (ownerMessage) {
+                ownerMessage.hidden = false;
+                ownerMessage.textContent = '購入できません';
+            } else {
+                alert('購入できません');
             }
         });
     }

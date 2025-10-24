@@ -93,9 +93,12 @@ class ProductController extends Controller
             ? $product->likes()->where('user_id', Auth::id())->exists()
             : false;
 
-        $isPurchasedByUser = Auth::check() && optional($product->order)->user_id === Auth::id();
+        $authUserId = Auth::id();
 
-        return view('products.show', compact('product', 'liked', 'likesCount', 'isPurchasedByUser'));
+        $isPurchasedByUser = Auth::check() && optional($product->order)->user_id === $authUserId;
+        $isOwner = Auth::check() && $product->user_id === $authUserId;
+
+        return view('products.show', compact('product', 'liked', 'likesCount', 'isPurchasedByUser', 'isOwner'));
     }
 
     /**

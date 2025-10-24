@@ -139,17 +139,20 @@
 }
 
 .sold-out-button,
-.purchased-button {
+.purchased-button,
+.owner-button {
     background: #B0B0B0;
 }
 
 .sold-out-button:hover,
-.purchased-button:hover {
+.purchased-button:hover,
+.owner-button:hover {
     background: #a0a0a0;
 }
 
 .sold-out-message,
-.purchased-message {
+.purchased-message,
+.owner-message {
     margin-top: 16px;
     font-family: 'Inter', sans-serif;
     font-size: 24px;
@@ -157,11 +160,9 @@
     text-align: center;
 }
 
-.sold-out-message {
-    color: #FF5555;
-}
-
-.purchased-message {
+.sold-out-message,
+.purchased-message,
+.owner-message {
     color: #FF5555;
 }
 
