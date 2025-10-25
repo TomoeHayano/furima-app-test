@@ -45,6 +45,7 @@ class MyListTest extends TestCase
    */
   public function test_マイリストでは_購入済み商品にSOLDバッジが表示される(): void
   {
+    /** @var User $user */
     $user = User::factory()->create();
 
     $soldProduct = Product::factory()->create([

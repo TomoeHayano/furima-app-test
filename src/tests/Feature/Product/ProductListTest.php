@@ -78,6 +78,7 @@ class ProductListTest extends TestCase
   public function test_自分が出品した商品は_一覧に表示されない(): void
   {
     // ログインユーザーを作成
+    /** @var User $user */
     $user = User::factory()->create();
 
     // 自分が出品した商品

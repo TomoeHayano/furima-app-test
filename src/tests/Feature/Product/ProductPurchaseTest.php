@@ -72,6 +72,7 @@ class ProductPurchaseTest extends TestCase
       'is_sold' => false,
     ]);
 
+    /** @var User $buyer */
     $buyer = User::factory()->create();
     Profile::factory()->for($buyer)->create([
       'postal_code'   => '123-4567',

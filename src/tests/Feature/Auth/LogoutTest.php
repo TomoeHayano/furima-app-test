@@ -26,6 +26,7 @@ class LogoutTest extends TestCase
   public function test_ログイン中のユーザーがログアウトした場合_トップページにリダイレクトされる(): void
   {
     // テスト用ユーザーを作成
+    /** @var User $user */
     $user = User::factory()->create([
       'email'    => 'logouttest@example.com',
       'password' => bcrypt('password123'),
@@ -45,7 +46,7 @@ class LogoutTest extends TestCase
    */
   public function test_ログアウト後_認証が必要なページにアクセスできない(): void
   {
-
+    /** @var User $user */
     $user = User::factory()->create();
 
 

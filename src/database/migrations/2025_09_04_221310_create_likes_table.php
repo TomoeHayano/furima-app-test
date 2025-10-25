@@ -17,7 +17,6 @@ class CreateLikesTable extends Migration
       $table->id();
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
       $table->unsignedBigInteger('product_id');
-      // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
       $table->timestamps();
     });
   }

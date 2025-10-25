@@ -30,7 +30,8 @@ class ProductSearchTest extends TestCase
    * 検索キーワードがマイリストタブへの遷移後も保持されることを確認する
    */
   public function test_検索状態がマイリストでも保持される(): void
-  {
+  { 
+    /** @var User $user */
     $user = User::factory()->create();
     Product::factory()->create(['name' => 'カメラバッグ']);
 

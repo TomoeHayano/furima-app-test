@@ -55,11 +55,18 @@ STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いい
 - このプロジェクトでは、LaravelのFeatureテストを一部実装しています。<br>
 テスト実行環境はDockerコンテナ内で完結します。
 
-### 実行手順
+### 初期設定
 - docker-compose exec php bash
 - mysql -u root -p<br>
 ※ パスワード: root
 - CREATE DATABASE demo_test;
-- php artisan key:generate (初回のみ)
+- exit
+- exit
+- docker-compose exec php bash
+- php artisan key:generate
+- php artisan migrate:fresh --env=testing
+
+### 実行手順
+- docker-compose exec php bash
 - php artisan test tests/Feature/＊各ファイル名＊
 

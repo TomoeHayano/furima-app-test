@@ -16,10 +16,11 @@ class ProductLikeTest extends TestCase
    * いいねアイコンを押下すると、いいねが登録されてカウントが増える
    */
   public function test_いいねアイコンを押下すると_いいねが登録される(): void
-  {
+  { 
+    /** @var User $user */
     $user    = User::factory()->create();
     $product = Product::factory()->create();
-
+    
     $response = $this->actingAs($user)->postJson("/item/{$product->id}/like");
 
     $response->assertStatus(200)
@@ -38,7 +39,8 @@ class ProductLikeTest extends TestCase
    * いいね済みアイコンは押下後に「liked」ステータスが返却される（色変化トリガー）
    */
   public function test_いいね登録後は_レスポンスがlikedステータスを返す(): void
-  {
+  { 
+    /** @var User $user */
     $user    = User::factory()->create();
     $product = Product::factory()->create();
 
@@ -52,7 +54,8 @@ class ProductLikeTest extends TestCase
    * いいね済みの状態で再度押下すると、いいねが解除されカウントが減る
    */
   public function test_再度いいねアイコンを押下すると_いいねが解除される(): void
-  {
+  { 
+    /** @var User $user */
     $user    = User::factory()->create();
     $product = Product::factory()->create();
 

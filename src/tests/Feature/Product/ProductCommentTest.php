@@ -16,6 +16,7 @@ class ProductCommentTest extends TestCase
    */
   public function test_ログインユーザーは_コメントを送信できる(): void
   {
+    /** @var User $user */
     $user    = User::factory()->create();
     $product = Product::factory()->create();
 

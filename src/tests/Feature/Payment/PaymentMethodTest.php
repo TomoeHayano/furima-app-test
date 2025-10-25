@@ -24,6 +24,7 @@ class PaymentMethodTest extends TestCase
       'price'   => 5000,
     ]);
 
+    /** @var User $buyer */
     $buyer = User::factory()->create();
     Profile::factory()->for($buyer)->create([
       'postal_code' => '123-4567',
