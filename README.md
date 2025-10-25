@@ -57,6 +57,9 @@ STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いい
 
 ### 実行手順
 - docker-compose exec php bash
+- mysql -u root -p<br>
+※ パスワード: root
+- CREATE DATABASE demo_test;
 - php artisan key:generate (初回のみ)
 - php artisan test tests/Feature/＊各ファイル名＊
 
