@@ -18,6 +18,7 @@ class UserInfoTest extends TestCase
    */
   public function test_プロフィールページで_必要な情報が表示される(): void
   {
+    /** @var User $user */
     $user = User::factory()->create([
       'name' => 'プロフィール太郎',
     ]);

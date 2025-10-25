@@ -17,6 +17,7 @@ class MyListTest extends TestCase
    */
   public function test_マイリストには_いいねした商品だけが表示される(): void
   {
+    /** @var User $user */
     $user = User::factory()->create();
 
     $likedProducts  = Product::factory()->count(2)->create();

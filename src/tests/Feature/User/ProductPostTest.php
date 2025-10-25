@@ -21,6 +21,7 @@ class ProductPostTest extends TestCase
   {
     Storage::fake('public');
 
+    /** @var User $user */
     $user      = User::factory()->create();
     $categoryA = Category::factory()->create(['name' => '家電']);
     $categoryB = Category::factory()->create(['name' => 'ゲーム']);
@@ -63,9 +64,18 @@ class ProductPostTest extends TestCase
       'category_id' => $categoryB->id,
     ]);
 
-    Storage::disk('public')->assertExists($product->image_path ? str_replace('/storage/', '', $product->image_path) : '');
-  }
+    $imagePath = $product->image_path
+      ? parse_url($product->image_path, PHP_URL_PATH)
+      : null;
+    $storagePath = $imagePath ? ltrim($imagePath, '/') : null;
+    if ($storagePath) {
+      $storagePath = preg_replace('#^storage/#', '', $storagePath);
+    }
 
+    $this->assertNotEmpty($storagePath);
+    $this->assertTrue(Storage::disk('public')->exists($storagePath));
+  }
+  
   private function createTemporaryImage(): UploadedFile
   {
     $tmpFile  = tempnam(sys_get_temp_dir(), 'img');

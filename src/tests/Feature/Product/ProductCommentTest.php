@@ -62,6 +62,7 @@ class ProductCommentTest extends TestCase
    */
   public function test_コメント未入力の場合は_バリデーションエラーとなる(): void
   {
+    /** @var User $user */
     $user    = User::factory()->create();
     $product = Product::factory()->create();
 
@@ -80,6 +81,7 @@ class ProductCommentTest extends TestCase
    */
   public function test_コメントが255文字を超えると_バリデーションエラーとなる(): void
   {
+    /** @var User $user */
     $user        = User::factory()->create();
     $product     = Product::factory()->create();
     $longComment = str_repeat('あ', 256);

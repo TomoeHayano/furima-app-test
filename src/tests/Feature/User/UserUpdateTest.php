@@ -16,6 +16,7 @@ class UserUpdateTest extends TestCase
    */
   public function test_プロフィール編集画面に_既存の情報が初期値として表示される(): void
   {
+    /** @var User $user */
     $user = User::factory()->create([
       'name' => '初期ユーザー名',
     ]);
