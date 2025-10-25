@@ -17,7 +17,9 @@ class OrderController extends Controller
     public function create($itemId)
     {
         $product         = Product::with('user')->findOrFail($itemId);
-        $user            = Auth::user()->load('profile');
+        /** @var User $user */
+        $user = Auth::user();
+        $user->load('profile');
         $shippingAddress = session("shipping_addresses.{$product->id}");
 
         return view('products.order', compact('product', 'user', 'shippingAddress'));

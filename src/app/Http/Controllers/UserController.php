@@ -11,7 +11,8 @@ class UserController extends Controller
 {
     // マイページ（新規登録後の初回設定用）
     public function show(Request $request)
-    {
+    {   
+        /** @var User $user */
         $user = Auth::user();
 
         // プロフィール未登録 → 編集画面を表示
