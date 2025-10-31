@@ -33,9 +33,14 @@
             <div class="products-actions">
                 <span
                     id="like-button"
-                    class="like-icon {{ $liked ? 'liked' : '' }} {{ Auth::guest() ? 'disabled' : '' }}"
+                    class="like-icon {{ $liked ? 'liked' : '' }}"
+                    role="button"
+                    aria-label="いいね"
+                    aria-pressed="{{ $liked ? 'true' : 'false' }}"
                     data-product-id="{{ $product->id }}">
-                    ★
+                    <svg class="like-icon-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
                 </span>
                 <span id="likes-count">{{ $likesCount }}</span>
 
@@ -96,7 +101,7 @@
             <h2>コメント ({{ $product->comments->count() }})</h2>
 
             {{-- コメント一覧 --}}
-@foreach ($product->comments as $comment)
+            @foreach ($product->comments as $comment)
                 @php
                     $profileImagePath = optional($comment->user->profile)->image_path;
                     $profileImageUrl = null;
@@ -118,17 +123,17 @@
                         </div>
                         <span class="comment-user-name">{{ $comment->user->name }}:</span>
                     </div>
-    <span class="comment-text">{{ $comment->content }}</span>
-</div>
-@endforeach 
+                    <span class="comment-text">{{ $comment->content }}</span>
+                </div>
+            @endforeach
 
-{{-- コメント入力欄（ログインユーザーのみ） --}}
-@auth
+            {{-- コメント入力欄 --}}
+            @auth
                 <div class="comment-input">
                     <h3 class="comment-input-title">商品へのコメント</h3>
-        
-        {{-- コメント投稿フォーム --}}
-        <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
+
+                    {{-- コメント投稿フォーム --}}
+                    <form action="{{ route('products.comment.store', $product->id) }}" method="POST">
                         @csrf
                         <textarea name="content" maxlength="255">{{ old('content') }}</textarea>
 
@@ -139,6 +144,12 @@
 
                         <button type="submit" class="comment-submit">コメントを送信する</button>
                     </form>
+                </div>
+            @else
+                <div class="comment-input">
+                    <h3 class="comment-input-title">商品へのコメント</h3>
+                    <p class="comment-login-notice">コメントを投稿するにはログインが必要です。</p>
+                    <button type="button" class="comment-submit comment-login-button">コメントを送信する</button>
                 </div>
             @endauth
         </div>
@@ -156,36 +167,52 @@ document.addEventListener('DOMContentLoaded', function () {
     const purchasedMessage = document.querySelector('.purchased-message');
     const ownerButton = document.querySelector('.owner-button');
     const ownerMessage = document.querySelector('.owner-message');
+    const loginUrl = @json(route('login'));
+    const isAuthenticated = @json(Auth::check());
 
     if (likeButton) {
-        // ゲストはクリックできない
-        if (likeButton.classList.contains('disabled')) {
-            return;
+        if (!isAuthenticated) {
+            likeButton.addEventListener('click', function () {
+                window.location.href = loginUrl;
+            });
+        } else {
+            likeButton.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+
+                fetch(`/item/${productId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = loginUrl;
+                        return null;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) {
+                        return;
+                    }
+                    const isLiked = data.status === 'liked';
+                    likeButton.classList.toggle('liked', isLiked);
+                    likeButton.setAttribute('aria-pressed', isLiked ? 'true' : 'false');
+                    likesCount.textContent = data.likesCount;
+                })
+                .catch(error => console.error('Error:', error));
+            });
         }
-
-        likeButton.addEventListener('click', function () {
-            const productId = this.dataset.productId;
-
-            fetch(`/item/${productId}/like`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'liked') {
-                    likeButton.classList.add('liked');
-                } else {
-                    likeButton.classList.remove('liked');
-                }
-                likesCount.textContent = data.likesCount;
-            })
-            .catch(error => console.error('Error:', error));
-        });
     }
+
+    document.querySelectorAll('.comment-login-button').forEach(button => {
+        button.addEventListener('click', function () {
+            window.location.href = loginUrl;
+        });
+    });
 
     if (soldOutButton) {
         soldOutButton.addEventListener('click', function () {

@@ -56,15 +56,17 @@
 /* 会員登録ボタン */
 .register-button {
     width: 100%;
-    max-width: 300px;
-    padding: 15px;
-    margin-top: 20px;
+    padding: 15px 0;
+    margin-top: 116px;
     background: #FF5555;
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
     font-weight: 700;
     font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
@@ -97,7 +99,4 @@
         margin-bottom: clamp(24px, 3vw, 32px);
     }
 
-    .register-button {
-        max-width: clamp(260px, 20vw, 300px);
-    }
 }

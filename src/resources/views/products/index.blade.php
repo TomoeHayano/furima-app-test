@@ -22,13 +22,13 @@
             おすすめ
         </a>
 
-        {{-- マイリスト（ログイン時のみ） --}}
-        @unless($guest)
-            <a href="{{ route('products.mylist', array_merge(['tab' => 'mylist'], $keywordQuery)) }}"
-                class="tab-link {{ $tab === 'mylist' ? 'active' : '' }}">
-                マイリスト
-            </a>
-        @endunless
+        {{-- マイリスト --}}
+        <a href="{{ $guest
+                ? route('products.index', array_merge(['tab' => 'mylist'], $keywordQuery))
+                : route('products.mylist', array_merge(['tab' => 'mylist'], $keywordQuery)) }}"
+            class="tab-link {{ $tab === 'mylist' ? 'active' : '' }}">
+            マイリスト
+        </a>
     </div>
 
     <div class="products-border"></div>

@@ -16,23 +16,30 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $tab     = $request->query('tab', 'recommend');
         $keyword = $request->input('keyword');
 
-        // 全商品を取得（ログイン中は自分の商品を除外）
-        $query = Product::query()
-            ->when(Auth::check(), function ($q) {
-                $q->where('user_id', '!=', Auth::id());
-            });
+        if ($tab === 'recommend') {
+            // 全商品を取得（ログイン中は自分の商品を除外）
+            $query = Product::query()
+                ->when(Auth::check(), function ($q) {
+                    $q->where('user_id', '!=', Auth::id());
+                });
 
-        if ($keyword) {
-            $query->where('name', 'like', "%{$keyword}%");
+            if ($keyword) {
+                $query->where('name', 'like', "%{$keyword}%");
+            }
+
+            $products = $query->get(['id', 'name', 'image_path', 'is_sold']);
+        } else {
+            // ゲストのマイリストタブは空表示
+            $tab      = 'mylist';
+            $products = collect();
         }
-
-        $products = $query->get(['id', 'name', 'image_path', 'is_sold']);
 
         return view('products.index', [
             'products' => $products,
-            'tab'      => 'recommend',
+            'tab'      => $tab,
             'guest'    => Auth::guest(),
         ]);
     }
