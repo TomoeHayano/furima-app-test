@@ -11,6 +11,7 @@ class ProductSeeder extends Seeder
   {
     DB::table('products')->insert([
       [
+        'id'           => 'CO01',
         'user_id'      => 1,
         'name'         => '腕時計',
         'brand_name'   => 'Rolax',
@@ -23,6 +24,7 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
+        'id'           => 'CO02',
         'user_id'      => 1,
         'name'         => 'HDD',
         'brand_name'   => '西芝',
@@ -35,6 +37,7 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
+        'id'           => 'CO03',
         'user_id'      => 1,
         'name'         => '玉ねぎ3束',
         'brand_name'   => null,
@@ -47,6 +50,7 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
+        'id'           => 'CO04',
         'user_id'      => 1,
         'name'         => '革靴',
         'brand_name'   => null,
@@ -59,6 +63,7 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
+        'id'           => 'CO05',
         'user_id'      => 1,
         'name'         => 'ノートPC',
         'brand_name'   => null,
@@ -71,7 +76,8 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
-        'user_id'      => 1,
+        'id'           => 'CO06',
+        'user_id'      => 2,
         'name'         => 'マイク',
         'brand_name'   => null,
         'description'  => '高音質のレコーディング用マイク',
@@ -83,7 +89,8 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
-        'user_id'      => 1,
+        'id'           => 'CO07',
+        'user_id'      => 2,
         'name'         => 'ショルダーバッグ',
         'brand_name'   => null,
         'description'  => 'おしゃれなショルダーバッグ',
@@ -95,7 +102,8 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
-        'user_id'      => 1,
+        'id'           => 'CO08',
+        'user_id'      => 2,
         'name'         => 'タンブラー',
         'brand_name'   => null,
         'description'  => '使いやすいタンブラー',
@@ -107,7 +115,8 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
-        'user_id'      => 1,
+        'id'           => 'CO09',
+        'user_id'      => 2,
         'name'         => 'コーヒーミル',
         'brand_name'   => 'Starbacks',
         'description'  => '手動のコーヒーミル',
@@ -119,7 +128,8 @@ class ProductSeeder extends Seeder
         'updated_at'   => now(),
       ],
       [
-        'user_id'      => 1,
+        'id'           => 'CO10',
+        'user_id'      => 2,
         'name'         => 'メイクセット',
         'brand_name'   => null,
         'description'  => '便利なメイクアップセット',

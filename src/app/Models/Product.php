@@ -13,6 +13,9 @@ class Product extends Model
 {
   use HasFactory;
 
+  public $incrementing = false;
+  protected $keyType = 'string';
+
   /**
    * The attributes that are mass assignable.
    *
@@ -80,4 +83,21 @@ class Product extends Model
   protected $casts = [
     'is_sold' => 'boolean', // tinyint を true/false として扱う
   ];
+
+  protected static function booted()
+  {
+    static::creating(function (Product $product) {
+      if (! $product->id) {
+        $product->id = self::generateProductId();
+      }
+    });
+  }
+
+  protected static function generateProductId(): string
+  {
+    $latestId = self::orderBy('id', 'desc')->value('id');
+    $latest   = $latestId ? (int) substr($latestId, 2) : 0;
+
+    return 'CO' . str_pad((string) ($latest + 1), 2, '0', STR_PAD_LEFT);
+  }
 }

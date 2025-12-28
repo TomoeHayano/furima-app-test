@@ -61,7 +61,6 @@ STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いい
 ※ パスワード: root
 - CREATE DATABASE demo_test;
 - exit
-- exit
 - docker-compose exec php bash
 - php artisan key:generate
 - php artisan migrate:fresh --env=testing

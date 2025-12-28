@@ -19,6 +19,7 @@ class ProductFactory extends Factory
   public function definition()
   {
     return [
+      'id'           => 'CO' . str_pad((string) $this->faker->unique()->numberBetween(1, 99), 2, '0', STR_PAD_LEFT),
       'user_id'      => User::factory(), // 出品者（usersテーブルと紐づく）
       'name'         => $this->faker->words(2, true), // 例: "スニーカー Nike"
       'brand_name'   => $this->faker->company(), // 例: "NIKE"
