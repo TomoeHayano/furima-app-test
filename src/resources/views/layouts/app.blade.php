@@ -17,78 +17,80 @@
 <body class="{{ Request::is('login') || Request::is('register') || Request::is('email/verify') ? 'auth-body' : '' }}">
 
     <header class="auth-header">
-        {{-- ロゴ --}}
-        @php
-            $logoLink = Auth::check()
-                ? route('products.mylist', ['tab' => 'mylist'])
-                : route('products.index');
-        @endphp
-        <a href="{{ $logoLink }}" class="header-logo">
-            <img src="{{ asset('images/logo.svg') }}" alt="CoachTech Logo">
-        </a>
-
-        @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
+        <div class="auth-header-inner">
+            {{-- ロゴ --}}
             @php
-                $currentKeyword = request('keyword');
-                $currentTab = null;
-
-                if (Auth::check()) {
-                    $currentTab = request('tab');
-
-                    if (!$currentTab && \Illuminate\Support\Facades\Route::currentRouteNamed('products.index')) {
-                        $currentTab = 'recommend';
-                    }
-
-                    if (!$currentTab) {
-                        $currentTab = 'mylist';
-                    }
-                }
+                $logoLink = Auth::check()
+                    ? route('products.mylist', ['tab' => 'mylist'])
+                    : route('products.index');
             @endphp
-            
-            {{-- 検索フォーム --}}
-            <form
-                action="{{ Auth::check() ? route('products.mylist') : route('products.index') }}"
-                method="GET"
-                class="toppage-header-search"
-            >
-                <input 
-                    type="text" 
-                    name="keyword" 
-                    placeholder="なにをお探しですか？"
-                    value="{{ $currentKeyword }}"
+            <a href="{{ $logoLink }}" class="header-logo">
+                <img src="{{ asset('images/logo.svg') }}" alt="CoachTech Logo">
+            </a>
+
+            @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
+                @php
+                    $currentKeyword = request('keyword');
+                    $currentTab = null;
+
+                    if (Auth::check()) {
+                        $currentTab = request('tab');
+
+                        if (!$currentTab && \Illuminate\Support\Facades\Route::currentRouteNamed('products.index')) {
+                            $currentTab = 'recommend';
+                        }
+
+                        if (!$currentTab) {
+                            $currentTab = 'mylist';
+                        }
+                    }
+                @endphp
+                
+                {{-- 検索フォーム --}}
+                <form
+                    action="{{ Auth::check() ? route('products.mylist') : route('products.index') }}"
+                    method="GET"
+                    class="toppage-header-search"
                 >
-                {{-- タブ状態を保持 --}}
-                @if ($currentTab)
-                    <input type="hidden" name="tab" value="{{ $currentTab }}">
-                @endif
-            </form>
+                    <input 
+                        type="text" 
+                        name="keyword" 
+                        placeholder="なにをお探しですか？"
+                        value="{{ $currentKeyword }}"
+                    >
+                    {{-- タブ状態を保持 --}}
+                    @if ($currentTab)
+                        <input type="hidden" name="tab" value="{{ $currentTab }}">
+                    @endif
+                </form>
 
-            {{-- ナビゲーション --}}
-            <nav class="toppage-header-nav">
-                @auth
-                    {{-- ログアウト --}}
-                    <form method="POST" action="{{ route('logout') }}" class="header-nav-item">
-                        @csrf
-                        <button type="submit" class="header-link logout-link">ログアウト</button>
-                    </form>
+                {{-- ナビゲーション --}}
+                <nav class="toppage-header-nav">
+                    @auth
+                        {{-- ログアウト --}}
+                        <form method="POST" action="{{ route('logout') }}" class="header-nav-item">
+                            @csrf
+                            <button type="submit" class="header-link logout-link">ログアウト</button>
+                        </form>
 
-                    {{-- マイページ --}}
-                    <a href="{{ route('user.mypage') }}" class="header-link">マイページ</a>
+                        {{-- マイページ --}}
+                        <a href="{{ route('user.mypage') }}" class="header-link">マイページ</a>
 
-                    {{-- 出品 --}}
-                    <a href="{{ route('sell.create') }}" class="header-button">出品</a>
-                @endauth
+                        {{-- 出品 --}}
+                        <a href="{{ route('sell.create') }}" class="header-button">出品</a>
+                    @endauth
 
-                @guest
-                    {{-- ログイン --}}
-                    <a href="{{ route('login') }}" class="header-link">ログイン</a>
+                    @guest
+                        {{-- ログイン --}}
+                        <a href="{{ route('login') }}" class="header-link">ログイン</a>
 
-                    {{-- ゲストはログイン画面に誘導 --}}
-                    <a href="{{ route('login') }}" class="header-link">マイページ</a>
-                    <a href="{{ route('login') }}" class="header-button">出品</a>
-                @endguest
-            </nav>
-        @endif
+                        {{-- ゲストはログイン画面に誘導 --}}
+                        <a href="{{ route('login') }}" class="header-link">マイページ</a>
+                        <a href="{{ route('login') }}" class="header-button">出品</a>
+                    @endguest
+                </nav>
+            @endif
+        </div>
     </header>
 
    <main class="main-content">

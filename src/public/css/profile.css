@@ -86,7 +86,8 @@
 .tab-list {
     display: flex;
     gap: clamp(32px, 6vw, 60px);
-    padding-left: clamp(24px, 4vw, 60px);
+    padding-left: 0; /* 写真（商品グリッド）の左位置に揃える */
+    padding-right: 0;
 }
 
 .tab-item {
@@ -109,11 +110,13 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: clamp(100%, 1512px, 1512px);
-    max-width: 1512px;
-    transform: translateX(-50%);
+    width: 100vw;            /* ビューポート幅いっぱいに伸ばす */
+    max-width: none;
+    min-width: 0;
+    transform: translateX(-50%); /* 画面中央基準で左右均等に広げる */
     height: 2px;
     background: #5F5F5F;
+    pointer-events: none;
 }
 
 /* 商品一覧セクション */
@@ -122,6 +125,7 @@
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 64px 36px;
     margin-bottom: 80px;
+    justify-items: start; /* 左寄せでそろえる */
 }
 
 .product-card {
@@ -129,7 +133,7 @@
     flex-direction: column;
     width: 100%;
     max-width: 290px;
-    margin: 0 auto;
+    margin: 0; /* 左にそろえる */
 }
 
 .product-image-wrapper {
@@ -207,7 +211,6 @@
 
     .tab-underline {
         width: 100%;
-        max-width: 92vw;
     }
 
     .products-grid {
