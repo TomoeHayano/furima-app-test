@@ -120,7 +120,9 @@ class OrderController extends Controller
         // 商品を売り切れに更新
         $product->update(['is_sold' => 1]);
 
-        return redirect()->route('products.index')->with('success', '決済が完了しました！');
+        return redirect()
+            ->route('products.show', ['itemId' => $product->id])
+            ->with('success', '決済が完了しました！');
     }
 
     /**

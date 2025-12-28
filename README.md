@@ -69,3 +69,16 @@ STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いい
 - docker-compose exec php bash
 - php artisan test tests/Feature/＊各ファイル名＊
 
+### ユーザー情報
+- name：Seller One<br>
+email：seller1@example.com<br>
+password：111111111<br>
+       
+- name：Seller Two<br>
+email：seller2@example.com<br>
+passwor：111111111<br>
+
+- name：Unassigned User<br>
+email：user3@example.com<br>
+password：111111111
+

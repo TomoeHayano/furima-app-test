@@ -31,6 +31,10 @@
                class="tab-item {{ $page === 'buy' ? 'active' : '' }}">
                 購入した商品
             </a>
+            <a href="{{ route('user.mypage', ['page' => 'progress']) }}" 
+               class="tab-item {{ $page === 'progress' ? 'active' : '' }}">
+                取引中の商品
+            </a>
         </div>
         <div class="tab-underline"></div>
     </div>

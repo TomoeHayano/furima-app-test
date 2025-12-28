@@ -22,9 +22,16 @@ class UserController extends Controller
 
         // 出品 / 購入 タブ切替
         $page     = $request->query('page', 'sell');
-        $products = ($page === 'buy')
-            ? $user->orders()->with('product')->get()->pluck('product')
-            : $user->products;
+        if ($page === 'buy') {
+            $products = $user->orders()->with('product')->get()->pluck('product')->filter();
+        } elseif ($page === 'progress') {
+            // 取引中（購入済み or 販売済み）をまとめて表示
+            $boughtProducts = $user->orders()->with('product')->get()->pluck('product')->filter();
+            $soldProducts   = $user->products()->whereHas('order')->get();
+            $products       = $soldProducts->merge($boughtProducts)->unique('id');
+        } else {
+            $products = $user->products;
+        }
 
         return view('mypage.profile', compact('user', 'products', 'page'));
     }
