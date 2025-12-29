@@ -54,8 +54,7 @@
                     <button type="button" class="purchase-button owner-button">購入する</button>
                     <p class="owner-message" role="alert" aria-live="polite" hidden>購入できません</p>
                 @elseif ($isPurchasedByUser)
-                    <button type="button" class="purchase-button purchased-button">購入手続きへ</button>
-                    <p class="purchased-message" role="alert" aria-live="polite" hidden>この商品は購入済みです</p>
+                    <a href="{{ route('user.mypage', ['page' => 'progress']) }}" class="purchase-button purchased-button">購入済み</a>
                 @elseif ($product->is_sold)
                     <button type="button" class="purchase-button sold-out-button">購入手続きへ</button>
                     <p class="sold-out-message" role="alert" aria-live="polite" hidden>売り切れです</p>
@@ -163,8 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const likesCount = document.getElementById('likes-count');
     const soldOutButton = document.querySelector('.sold-out-button');
     const soldOutMessage = document.querySelector('.sold-out-message');
-    const purchasedButton = document.querySelector('.purchased-button');
-    const purchasedMessage = document.querySelector('.purchased-message');
     const ownerButton = document.querySelector('.owner-button');
     const ownerMessage = document.querySelector('.owner-message');
     const loginUrl = @json(route('login'));
@@ -221,17 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 soldOutMessage.textContent = '売り切れです';
             } else {
                 alert('売り切れです');
-            }
-        });
-    }
-
-    if (purchasedButton) {
-        purchasedButton.addEventListener('click', function () {
-            if (purchasedMessage) {
-                purchasedMessage.hidden = false;
-                purchasedMessage.textContent = 'この商品は購入済みです';
-            } else {
-                alert('この商品は購入済みです');
             }
         });
     }

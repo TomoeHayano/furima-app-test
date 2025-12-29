@@ -3,3 +3,4 @@ er_diagram.drawio
 er_diagram.puml
 /docker/mysql/data
 .DS_Store
+**/.DS_Store

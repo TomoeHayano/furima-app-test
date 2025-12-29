@@ -28,7 +28,7 @@
                 <img src="{{ asset('images/logo.svg') }}" alt="CoachTech Logo">
             </a>
 
-            @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
+            @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify') && !Request::is('transactions/*/chat'))
                 @php
                     $currentKeyword = request('keyword');
                     $currentTab = null;

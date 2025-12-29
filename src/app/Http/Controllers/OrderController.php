@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -99,7 +100,7 @@ class OrderController extends Controller
         // 注文を保存
         $useSessionShipping = is_array($shippingAddress);
 
-        Order::create([
+        $order = Order::create([
             'user_id'              => Auth::id(),
             'product_id'           => $product->id,
             'profile_id'           => $profileId,
@@ -120,9 +121,19 @@ class OrderController extends Controller
         // 商品を売り切れに更新
         $product->update(['is_sold' => 1]);
 
+        // 取引ルーム作成（1注文=1取引）
+        Transaction::firstOrCreate(
+            ['order_id' => $order->id],
+            [
+                'buyer_id'  => Auth::id(),
+                'seller_id' => $product->user_id,
+            ]
+        );
+
+        // 取引中タブへ遷移
         return redirect()
-            ->route('products.show', ['itemId' => $product->id])
-            ->with('success', '決済が完了しました！');
+            ->route('user.mypage', ['page' => 'progress'])
+            ->with('success', '決済が完了しました');
     }
 
     /**

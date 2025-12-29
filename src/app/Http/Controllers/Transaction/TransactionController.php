@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Transaction\BuyerCompleteRequest;
-use App\Http\Requests\Transaction\SellerCompleteRequest;
 use App\Mail\TransactionBuyerCompletedMail;
 use App\Models\Transaction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -61,7 +60,7 @@ class TransactionController extends Controller
             && $transaction->seller_completed_at === null
             && $transaction->completed_at === null;
 
-        return view('transactions.chat.show', compact(
+        return view('transactions.show', compact(
             'transaction',
             'sidebarTransactions',
             'messages',
@@ -72,11 +71,15 @@ class TransactionController extends Controller
         ));
     }
 
-    public function completeByBuyer(BuyerCompleteRequest $request, Transaction $transaction): RedirectResponse
+    public function completeByBuyer(Request $request, Transaction $transaction): RedirectResponse
     {
         $userId = (int) Auth::id();
         abort_unless((int) $transaction->buyer_id === $userId, 403);
         abort_unless($transaction->completed_at === null, 400);
+
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'between:1,5'],
+        ]);
 
         $transaction->buyer_rating = (int) $request->input('rating');
         $transaction->buyer_rated_at = now();
@@ -89,16 +92,20 @@ class TransactionController extends Controller
 
         $this->completeIfPossible($transaction);
 
-        // FN014：送信後はトップへ
-        return redirect()->to('/');
+        // FN014：送信後は購入した商品タブへ
+        return redirect()->route('user.mypage', ['page' => 'buy']);
     }
 
-    public function completeBySeller(SellerCompleteRequest $request, Transaction $transaction): RedirectResponse
+    public function completeBySeller(Request $request, Transaction $transaction): RedirectResponse
     {
         $userId = (int) Auth::id();
         abort_unless((int) $transaction->seller_id === $userId, 403);
         abort_unless($transaction->completed_at === null, 400);
         abort_unless($transaction->buyer_completed_at !== null, 400); // 購入者完了後のみ
+
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'between:1,5'],
+        ]);
 
         $transaction->seller_rating = (int) $request->input('rating');
         $transaction->seller_rated_at = now();
@@ -107,8 +114,8 @@ class TransactionController extends Controller
 
         $this->completeIfPossible($transaction);
 
-        // FN014：送信後はトップへ
-        return redirect()->to('/');
+        // FN014：送信後は購入した商品タブへ
+        return redirect()->route('user.mypage', ['page' => 'buy']);
     }
 
     private function completeIfPossible(Transaction $transaction): void

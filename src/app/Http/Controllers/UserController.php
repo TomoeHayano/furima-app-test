@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,18 +24,71 @@ class UserController extends Controller
 
         // 出品 / 購入 タブ切替
         $page     = $request->query('page', 'sell');
+        $transactions = collect();
+
+        $baseProgressQuery = Transaction::query()
+            ->whereNull('completed_at')
+            ->where(static function (Builder $query) use ($user): void {
+                $query->where('buyer_id', $user->id)
+                    ->orWhere('seller_id', $user->id);
+            });
+
+        // 取引中未読合計はタブを開いていなくても表示する
+        $progressUnreadTotal = (int) (clone $baseProgressQuery)
+            ->withCount(['messages as unread_count' => static function (Builder $query) use ($user): void {
+                $query->whereNull('read_at')
+                    ->where('sender_id', '!=', $user->id);
+            }])
+            ->get()
+            ->sum('unread_count');
+
         if ($page === 'buy') {
-            $products = $user->orders()->with('product')->get()->pluck('product')->filter();
+            // 購入者として取引完了した商品のみ
+            $completedBuyerTransactions = Transaction::query()
+                ->where('buyer_id', $user->id)
+                ->whereNotNull('completed_at')
+                ->with(['order.product'])
+                ->orderByDesc('completed_at')
+                ->get()
+                ->filter(static function (Transaction $transaction): bool {
+                    return $transaction->order !== null && $transaction->order->product !== null;
+                })
+                ->values();
+
+            $products = $completedBuyerTransactions
+                ->map(static fn (Transaction $transaction) => optional($transaction->order)->product)
+                ->filter();
         } elseif ($page === 'progress') {
-            // 取引中（購入済み or 販売済み）をまとめて表示
-            $boughtProducts = $user->orders()->with('product')->get()->pluck('product')->filter();
-            $soldProducts   = $user->products()->whereHas('order')->get();
-            $products       = $soldProducts->merge($boughtProducts)->unique('id');
+            // 取引中（購入者・出品者両方）を表示
+            $transactions = (clone $baseProgressQuery)
+                ->with(['order.product'])
+                ->withCount(['messages as unread_count' => static function (Builder $query) use ($user): void {
+                    $query->whereNull('read_at')
+                        ->where('sender_id', '!=', $user->id);
+                }])
+                ->orderByDesc('updated_at')
+                ->get()
+                ->filter(static function (Transaction $transaction): bool {
+                    return $transaction->order !== null && $transaction->order->product !== null;
+                })
+                ->values();
+
+            $progressUnreadTotal = (int) $transactions->sum('unread_count');
+
+            $products = $transactions
+                ->map(static fn (Transaction $transaction) => optional($transaction->order)->product)
+                ->filter();
         } else {
             $products = $user->products;
         }
 
-        return view('mypage.profile', compact('user', 'products', 'page'));
+        return view('mypage.profile', compact(
+            'user',
+            'products',
+            'page',
+            'transactions',
+            'progressUnreadTotal'
+        ));
     }
 
     // プロフィール編集フォーム

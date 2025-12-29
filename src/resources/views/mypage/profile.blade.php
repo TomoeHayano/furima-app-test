@@ -34,6 +34,9 @@
             <a href="{{ route('user.mypage', ['page' => 'progress']) }}" 
                class="tab-item {{ $page === 'progress' ? 'active' : '' }}">
                 取引中の商品
+                @if (!empty($progressUnreadTotal))
+                    <span class="tab-badge">{{ $progressUnreadTotal }}</span>
+                @endif
             </a>
         </div>
         <div class="tab-underline"></div>
@@ -41,38 +44,76 @@
     
     <!-- 商品一覧 -->
     <div class="products-grid">
-        @forelse ($products as $product)
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    @if ($product && $product->image_path)
-                        @php
-                            $imagePath = $product->image_path;
-                            if (preg_match('/^https?:\/\//', $imagePath)) {
-                                $imageUrl = $imagePath;
-                            } elseif (str_starts_with($imagePath, '/storage/')) {
-                                $imageUrl = asset(ltrim($imagePath, '/'));
-                            } elseif (str_starts_with($imagePath, 'storage/')) {
-                                $imageUrl = asset($imagePath);
-                            } else {
-                                $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
-                            }
-                        @endphp
-                        <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
-                    @endif
-                </div>
-                @if ($product)
+        @if ($page === 'progress')
+            @forelse ($transactions as $transaction)
+                @php
+                    $product   = $transaction->order->product;
+                    $imageUrl  = null;
+                    if ($product->image_path) {
+                        $imagePath = $product->image_path;
+                        if (preg_match('/^https?:\\/\\//', $imagePath)) {
+                            $imageUrl = $imagePath;
+                        } elseif (str_starts_with($imagePath, '/storage/')) {
+                            $imageUrl = asset(ltrim($imagePath, '/'));
+                        } elseif (str_starts_with($imagePath, 'storage/')) {
+                            $imageUrl = asset($imagePath);
+                        } else {
+                            $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
+                        }
+                    }
+                @endphp
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        @if (!empty($transaction->unread_count))
+                            <span class="product-badge">{{ $transaction->unread_count }}</span>
+                        @endif
+                        @if ($imageUrl)
+                            <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
+                        @endif
+                    </div>
                     <p class="product-name">
-                        <a href="{{ route('products.show', ['itemId' => $product->id]) }}">
+                        <a href="{{ route('transactions.chat.show', $transaction) }}">
                             {{ $product->name }}
                         </a>
                     </p>
-                @else
-                    <p class="product-name">商品名</p>
-                @endif
-            </div>
-        @empty
-            <p class="empty-message">商品はありません</p>
-        @endforelse
+                </div>
+            @empty
+                <p class="empty-message">商品はありません</p>
+            @endforelse
+        @else
+            @forelse ($products as $product)
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        @if ($product && $product->image_path)
+                            @php
+                                $imagePath = $product->image_path;
+                                if (preg_match('/^https?:\\/\\//', $imagePath)) {
+                                    $imageUrl = $imagePath;
+                                } elseif (str_starts_with($imagePath, '/storage/')) {
+                                    $imageUrl = asset(ltrim($imagePath, '/'));
+                                } elseif (str_starts_with($imagePath, 'storage/')) {
+                                    $imageUrl = asset($imagePath);
+                                } else {
+                                    $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
+                                }
+                            @endphp
+                            <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
+                        @endif
+                    </div>
+                    @if ($product)
+                        <p class="product-name">
+                            <a href="{{ route('products.show', ['itemId' => $product->id]) }}">
+                                {{ $product->name }}
+                            </a>
+                        </p>
+                    @else
+                        <p class="product-name">商品名</p>
+                    @endif
+                </div>
+            @empty
+                <p class="empty-message">商品はありません</p>
+            @endforelse
+        @endif
     </div>
 </div>
 @endsection
