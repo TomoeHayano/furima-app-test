@@ -9,6 +9,9 @@ use App\Http\Controllers\SellController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Transaction\TransactionController;
+use App\Http\Controllers\Transaction\TransactionMessageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -94,4 +97,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   // 商品出品処理
   Route::post('/sell', [SellController::class, 'store'])->name('sell.store');
+});
+
+// 取引チャット・メッセージ関連ルート
+Route::middleware(['auth'])->group(function (): void {
+    // チャット画面（GET）
+    Route::get('/transactions/{transaction}/chat', [TransactionController::class, 'show'])
+        ->name('transactions.chat.show');
+
+    // 取引完了 + 評価（POST）
+    Route::post('/transactions/{transaction}/complete/buyer', [TransactionController::class, 'completeByBuyer'])
+        ->name('transactions.complete.buyer');
+
+    Route::post('/transactions/{transaction}/complete/seller', [TransactionController::class, 'completeBySeller'])
+        ->name('transactions.complete.seller');
+
+    // メッセージ投稿/編集/削除
+    Route::post('/transactions/{transaction}/messages', [TransactionMessageController::class, 'store'])
+        ->name('transactions.messages.store');
+
+    Route::patch('/transactions/{transaction}/messages/{message}', [TransactionMessageController::class, 'update'])
+        ->name('transactions.messages.update');
+
+    Route::delete('/transactions/{transaction}/messages/{message}', [TransactionMessageController::class, 'destroy'])
+        ->name('transactions.messages.destroy');
 });

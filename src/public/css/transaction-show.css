@@ -1,0 +1,609 @@
+/* =========================
+   取引チャット画面（購入者）
+   ========================= */
+
+.transaction-chat {
+  position: relative;
+  width: 1512px;
+  height: 982px;
+  background: #ffffff;
+  font-family: "Inter", sans-serif;
+  color: #000;
+}
+
+/* 全体レイアウト：上80px（ヘッダー）+ 下（サイドバー/メイン） */
+.transaction-chat__layout {
+  position: relative;
+  width: 1512px;
+  height: 982px;
+  display: grid;
+  grid-template-columns: 259px 1fr;
+  grid-template-rows: 80px 1fr;
+}
+
+/* 既存の layouts.app のヘッダーがある場合は、画面側で再現できるように簡易ヘッダー枠 */
+.transaction-chat__layout::before {
+  content: "";
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+  background: #000000;
+}
+
+/* =========================
+   エラー表示（FN008）
+   ========================= */
+.transaction-chat__errors {
+  position: absolute;
+  top: 90px;
+  left: 286px;
+  width: 937px;
+  padding: 12px 16px;
+  border: 1px solid #5f5f5f;
+  border-radius: 6px;
+  background: #fff;
+  z-index: 20;
+}
+
+.transaction-chat__error {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* =========================
+   サイドバー（その他の取引）
+   ========================= */
+.transaction-chat__sidebar {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  background: #868686;
+  height: 902px; /* 982 - 80 */
+  padding: 13px 0 0;
+  position: relative;
+}
+
+.transaction-chat__sidebar-title {
+  margin: 0 0 14px;
+  padding: 0 0 0 30px;
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+}
+
+.transaction-chat__sidebar-list {
+  margin: 0;
+  padding: 0 12px;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.transaction-chat__sidebar-item {
+  background: transparent;
+}
+
+.transaction-chat__sidebar-link {
+  display: grid;
+  grid-template-columns: 79px 1fr;
+  gap: 12px;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.transaction-chat__sidebar-item.is-active .transaction-chat__sidebar-link {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.transaction-chat__sidebar-thumb-wrap {
+  position: relative;
+  width: 79px;
+  height: 79px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #d9d9d9;
+}
+
+.transaction-chat__sidebar-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.transaction-chat__badge {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #ff5555;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 商品名/価格（サイドバー内） */
+.transaction-chat__sidebar-meta {
+  display: grid;
+  gap: 6px;
+}
+
+.transaction-chat__sidebar-name {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+.transaction-chat__sidebar-price {
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+  opacity: 0.95;
+}
+
+/* =========================
+   メイン領域
+   ========================= */
+.transaction-chat__main {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  position: relative;
+  background: #ffffff;
+  height: 902px;
+}
+
+/* タイトル + 完了ボタン + 上ライン */
+.transaction-chat__header {
+  position: relative;
+  padding: 22px 27px 14px; /* だいたい Figma top 111 周りに寄せ */
+  height: 105px; /* タイトル帯 */
+  box-sizing: border-box;
+}
+
+.transaction-chat__title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 44px;
+  color: #000000;
+  padding-left: 102px; /* 左の丸アイコン分 */
+}
+
+/* 左の丸アイコン（Ellipse 1 相当） */
+.transaction-chat__header::before {
+  content: "";
+  position: absolute;
+  left: 27px;
+  top: 13px;
+  width: 79px;
+  height: 79px;
+  border-radius: 999px;
+  background: #d9d9d9;
+}
+
+/* Line 1 */
+.transaction-chat__header::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  bottom: 0;
+  width: 1516px;
+  border-bottom: 2px solid #5f5f5f;
+  transform: rotate(-0.08deg);
+}
+
+/* 取引完了ボタン */
+.transaction-chat__complete-btn {
+  position: absolute;
+  right: 27px;
+  top: 26px;
+  width: 165px;
+  height: 54px;
+  border: none;
+  border-radius: 30px;
+  background: #ff8282;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+/* 商品情報ブロック（Line 12 まで） */
+.transaction-chat__product {
+  position: relative;
+  height: 235px; /* タイトル下のカード領域 */
+  padding: 26px 27px;
+  box-sizing: border-box;
+}
+
+.transaction-chat__product::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  bottom: 0;
+  width: 1522px;
+  border-bottom: 2px solid #5f5f5f;
+  transform: rotate(-0.08deg);
+}
+
+.transaction-chat__product-image {
+  width: 203px;
+  height: 206px;
+  background: #d9d9d9;
+  object-fit: cover;
+  display: block;
+}
+
+.transaction-chat__product-info {
+  position: absolute;
+  left: 270px; /* 299 + 203 くらいのイメージ */
+  top: 38px;
+  display: grid;
+  gap: 18px;
+}
+
+.transaction-chat__product-name {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 58px;
+  color: #000000;
+}
+
+.transaction-chat__product-price {
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 44px;
+  color: #000000;
+}
+
+/* =========================
+   メッセージ一覧領域
+   ========================= */
+.transaction-chat__messages {
+  position: relative;
+  height: 520px;
+  padding: 18px 27px 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+/* 1メッセージ */
+.transaction-chat__message {
+  position: relative;
+  margin-bottom: 26px;
+  min-height: 92px;
+}
+
+.transaction-chat__message.is-other {
+  padding-left: 90px;
+}
+
+.transaction-chat__message.is-mine {
+  padding-right: 90px;
+}
+
+/* 丸アイコン（Ellipse 3 / 4 相当） */
+.transaction-chat__message.is-other::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
+  background: #d9d9d9;
+}
+
+.transaction-chat__message.is-mine::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
+  background: #d9d9d9;
+}
+
+.transaction-chat__message-meta {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.transaction-chat__message-sender {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #000000;
+}
+
+.transaction-chat__message-time {
+  font-size: 12px;
+  line-height: 16px;
+  color: #5f5f5f;
+}
+
+/* 吹き出し（Rectangle 28/29 相当） */
+.transaction-chat__message-body {
+  width: 461px;
+  min-height: 60px;
+  background: #d9d9d9;
+  border-radius: 4px;
+  padding: 16px;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
+}
+
+.transaction-chat__message.is-other .transaction-chat__message-body {
+  margin-left: 0;
+}
+
+.transaction-chat__message.is-mine .transaction-chat__message-body {
+  margin-left: auto;
+}
+
+/* 添付画像 */
+.transaction-chat__message-image {
+  margin-top: 10px;
+  width: 461px;
+}
+
+.transaction-chat__message.is-mine .transaction-chat__message-image {
+  margin-left: auto;
+}
+
+.transaction-chat__message-image img {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+}
+
+/* 編集/削除（右側に寄せて薄い文字） */
+.transaction-chat__message-actions {
+  margin-top: 6px;
+  width: 461px;
+}
+
+.transaction-chat__message.is-mine .transaction-chat__message-actions {
+  margin-left: auto;
+}
+
+.transaction-chat__message-actions summary {
+  cursor: pointer;
+  color: #5f5f5f;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.transaction-chat__message-actions form {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.transaction-chat__message-actions input {
+  height: 36px;
+  border: 1px solid #5f5f5f;
+  border-radius: 6px;
+  padding: 0 10px;
+}
+
+.transaction-chat__message-actions button {
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background: #ff8282;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* =========================
+   入力エリア（下部）
+   ========================= */
+.transaction-chat__composer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 115px;
+  padding: 0 27px 18px;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.transaction-chat__composer form {
+  position: relative;
+  height: 100%;
+}
+
+/* 入力枠（Rectangle 27） */
+.transaction-chat__textarea {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 937px;
+  height: 44px;
+  border: 1px solid #5f5f5f;
+  border-radius: 4px;
+  resize: none;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000;
+}
+
+/* 右側アクション */
+.transaction-chat__composer-actions {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 61px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+}
+
+/* 画像を追加（Rectangle 17 + text） */
+.transaction-chat__image-btn {
+  width: 143px;
+  height: 44px;
+  border: 2px solid #ff5555;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff5555;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* 送信ボタン（inputbutton風：紙飛行機っぽい見た目） */
+.transaction-chat__send-btn {
+  width: 80px;
+  height: 61px;
+  border: none;
+  border-radius: 10px;
+  background: #d9d9d9;
+  cursor: pointer;
+  position: relative;
+  color: transparent; /* テキストは隠す */
+}
+
+/* 紙飛行機アイコン風 */
+.transaction-chat__send-btn::before {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 18px;
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 22px solid #5f5f5f;
+  transform: rotate(10deg);
+}
+
+/* =========================
+   モーダル（評価）
+   ========================= */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 50;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal__content {
+  width: 598px;
+  height: 367px;
+  background: #fdfce6;
+  border: 1px solid #000000;
+  border-radius: 15px;
+  box-sizing: border-box;
+  padding: 20px 22px;
+  position: relative;
+}
+
+.modal__content h2 {
+  margin: 0;
+  font-size: 35px;
+  font-weight: 400;
+  line-height: 42px;
+  color: #000000;
+}
+
+.modal__content form {
+  margin-top: 10px;
+  display: grid;
+  gap: 14px;
+}
+
+/* 区切り線っぽく */
+.modal__content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 88px;
+  width: 100%;
+  border-top: 1px solid #000;
+}
+
+.modal__content::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 286px;
+  width: 100%;
+  border-top: 1px solid #000;
+}
+
+.modal__content label {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #868686;
+  margin-top: 8px;
+}
+
+.modal__content select {
+  width: 220px;
+  height: 40px;
+  border: 1px solid #5f5f5f;
+  border-radius: 6px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.modal__content button[type="submit"] {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 127px;
+  height: 49px;
+  border: none;
+  border-radius: 5px;
+  background: #ff8282;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 29px;
+  cursor: pointer;
+}
+
+.modal__content button[data-close-modal] {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  height: 49px;
+  padding: 0 16px;
+  border: 1px solid #5f5f5f;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+}
