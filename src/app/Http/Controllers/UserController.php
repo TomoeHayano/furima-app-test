@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,35 @@ class UserController extends Controller
         // 出品 / 購入 タブ切替
         $page     = $request->query('page', 'sell');
         $transactions = collect();
+        $ratingAverage = null;
+
+        // 取引評価（受け取った評価の平均: sellerとしてのbuyer_rating + buyerとしてのseller_rating）
+        $sellerCount = (int) Transaction::query()
+            ->where('seller_id', $user->id)
+            ->whereNotNull('buyer_rating')
+            ->count();
+
+        $sellerSum = (int) Transaction::query()
+            ->where('seller_id', $user->id)
+            ->whereNotNull('buyer_rating')
+            ->sum('buyer_rating');
+
+        $buyerCount = (int) Transaction::query()
+            ->where('buyer_id', $user->id)
+            ->whereNotNull('seller_rating')
+            ->count();
+
+        $buyerSum = (int) Transaction::query()
+            ->where('buyer_id', $user->id)
+            ->whereNotNull('seller_rating')
+            ->sum('seller_rating');
+
+        $totalCount = $sellerCount + $buyerCount;
+        $totalSum   = $sellerSum + $buyerSum;
+
+        if ($totalCount > 0) {
+            $ratingAverage = (int) round($totalSum / $totalCount); // 四捨五入（整数）
+        }
 
         $baseProgressQuery = Transaction::query()
             ->whereNull('completed_at')
@@ -119,7 +149,8 @@ class UserController extends Controller
             'items',
             'page',
             'transactions',
-            'progressUnreadTotal'
+            'progressUnreadTotal',
+            'ratingAverage'
         ));
     }
 

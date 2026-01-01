@@ -33,7 +33,7 @@
     object-fit: cover;
 }
 
-.user-details {
+ .user-details {
     margin-left: 57px;
     display: flex;
     align-items: center;
@@ -48,6 +48,35 @@
     font-size: 36px;
     line-height: 44px;
     color: #000000;
+}
+
+.user-meta {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.user-rating {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    flex: 0 0 auto;
+    width: auto;
+    position: relative;
+    left: -30px; /* 星だけをアイコン側へ寄せる */
+}
+
+.user-rating__star {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 40px;
+    font-size: 32px;
+    line-height: 40px;
+    font-family: 'Inter', sans-serif;
 }
 
 .profile-edit-button {
@@ -111,15 +140,15 @@
     align-items: center;
     justify-content: center;
     min-width: 26px;
-    height: 24px;
+    height: 26px;
     margin-left: 8px;
-    padding: 0 7px;
-    border-radius: 12px;
+    padding: 0;
+    border-radius: 999px;
     background: #FF0000;
     color: #FFFFFF;
     font-weight: 700;
-    font-size: 14px;
-    line-height: 1;
+    font-size: 16px;
+    line-height: 26px;
 }
 
 .tab-underline {
@@ -171,19 +200,18 @@
 
 .product-badge {
     position: absolute;
-    top: -6px;
-    left: -6px;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 6px;
+    top: 6px;
+    left: 6px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
     background: #FF0000;
     color: #FFFFFF;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 12px;
-    line-height: 22px;
+    font-size: 10px;
+    line-height: 20px;
     text-align: center;
-    box-shadow: 0 0 0 2px #FFFFFF;
 }
 
 .product-name {

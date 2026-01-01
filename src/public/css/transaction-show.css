@@ -795,3 +795,107 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* PC画面 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+  .transaction-chat__textarea {
+    width: calc(100% - 230px);
+  }
+
+  .transaction-chat__composer-actions {
+    gap: 12px;
+  }
+
+  .transaction-chat__product-name {
+    font-size: 42px;
+    line-height: 50px;
+  }
+
+  .transaction-chat__product-price {
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
+
+/* タブレット画面（768-850px） */
+@media (min-width: 768px) and (max-width: 850px) {
+  .transaction-chat__layout {
+    grid-template-columns: 200px 1fr;
+  }
+
+  .transaction-chat__header {
+    padding: 18px 18px 12px;
+  }
+
+  .transaction-chat__title {
+    font-size: 28px;
+    line-height: 34px;
+    padding-left: 90px;
+  }
+
+  .transaction-chat__complete-btn,
+  .transaction-chat__complete-label {
+    right: 18px;
+    top: 20px;
+  }
+
+  .transaction-chat__product {
+    padding: 12px 18px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .transaction-chat__product-image {
+    width: 180px;
+    height: 180px;
+    flex-shrink: 0;
+  }
+
+  .transaction-chat__product-info {
+    position: static;
+    margin: 0;
+    display: grid;
+    gap: 20px;
+  }
+
+  .transaction-chat__product-name {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .transaction-chat__product-price {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .transaction-chat__message.is-mine .transaction-chat__message-meta,
+  .transaction-chat__message.is-other .transaction-chat__message-meta,
+  .transaction-chat__message-body,
+  .transaction-chat__message-image,
+  .transaction-chat__message-actions {
+    width: min(380px, 100%);
+  }
+
+  .transaction-chat__textarea {
+    width: calc(100% - 180px);
+    max-width: none;
+  }
+
+  .transaction-chat__composer-actions {
+    height: 54px;
+    gap: 12px;
+  }
+
+  .transaction-chat__image-btn {
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .transaction-chat__send-btn {
+    width: 70px;
+    height: 52px;
+  }
+}
