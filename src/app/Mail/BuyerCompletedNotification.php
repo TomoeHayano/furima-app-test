@@ -30,7 +30,7 @@ class BuyerCompletedNotification extends Mailable
         $buyerName   = optional($this->transaction->buyer)->name ?? '購入者';
         $rating      = $this->transaction->buyer_rating;
 
-        return $this->subject('フリマアプリで取引が完了しました')
+        return $this->subject('coachtechフリマで取引が完了しました')
             ->view('emails.transactions.buyer-completed')
             ->with([
                 'productName' => $productName,

@@ -1,4 +1,11 @@
 @extends('layouts.app')
+
+@section('title', 'その他の取引')
+
+@push('css')
+<link rel="stylesheet" href="{{ asset('css/transaction-show.css') }}">
+@endpush
+
 @php
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
@@ -18,32 +25,25 @@
     };
 @endphp
 
-@section('title', 'その他の取引')
-
-@push('css')
-<link rel="stylesheet" href="{{ asset('css/transaction-show.css') }}">
-@endpush
-
 @section('content')
 <div class="transaction-chat">
     <div class="transaction-chat__layout">
-        {{-- サイドバー（FN003/FN004/FN005） --}}
         <aside class="transaction-chat__sidebar">
             <h2 class="transaction-chat__sidebar-title">その他の取引</h2>
 
             <ul class="transaction-chat__sidebar-list">
-                @foreach ($sidebarTransactions as $t)
+                @foreach ($sidebarTransactions as $sidebarTransaction)
                     @php
-                        $product = $t->order->product;
-                        $isActive = (int) $t->id === (int) $transaction->id;
+                        $product = $sidebarTransaction->order->product;
+                        $isActive = (int) $sidebarTransaction->id === (int) $transaction->id;
                     @endphp
 
                     <li class="transaction-chat__sidebar-item {{ $isActive ? 'is-active' : '' }}">
-                        <a class="transaction-chat__sidebar-link" href="{{ route('transactions.chat.show', $t) }}">
+                        <a class="transaction-chat__sidebar-link" href="{{ route('transactions.chat.show', $sidebarTransaction) }}">
                             <div class="transaction-chat__sidebar-thumb-wrap">
                                 <img class="transaction-chat__sidebar-thumb" src="{{ $imageUrl(optional($product)->image_path) }}" alt="{{ $product->name }}">
-                                @if ((int) $t->unread_count > 0)
-                                    <span class="transaction-chat__badge">{{ $t->unread_count }}</span>
+                                @if ((int) $sidebarTransaction->unread_count > 0)
+                                    <span class="transaction-chat__badge">{{ $sidebarTransaction->unread_count }}</span>
                                 @endif
                             </div>
                             <div class="transaction-chat__sidebar-meta">
@@ -69,7 +69,6 @@
                 <img class="transaction-chat__header-avatar" src="{{ $partnerAvatar }}" alt="{{ $partnerName }}">
                 <h1 class="transaction-chat__title">{{ $partnerName }}さんとの取引画面</h1>
 
-                {{-- 購入者：取引完了ボタン（FN012） / 完了済み表示 --}}
                 @if ($isFullyCompleted)
                     <span class="transaction-chat__complete-label">取引が完了しました</span>
                 @elseif ($shouldShowBuyerComplete)
@@ -79,7 +78,6 @@
                 @endif
             </header>
 
-            {{-- 商品情報 --}}
             <section class="transaction-chat__product">
                 <img class="transaction-chat__product-image" src="{{ $imageUrl(optional($product)->image_path) }}" alt="{{ $product->name }}">
                 <div class="transaction-chat__product-info">
@@ -88,47 +86,45 @@
                 </div>
             </section>
 
-            {{-- メッセージ一覧 --}}
             <section class="transaction-chat__messages">
-                @foreach ($messages as $m)
+                @foreach ($messages as $message)
                     @php
-                        $isMine = (int) $m->sender_id === (int) auth()->id();
-                        $senderAvatar = $imageUrl(optional($m->sender->profile)->image_path);
+                        $isMine = (int) $message->sender_id === (int) auth()->id();
+                        $senderAvatar = $imageUrl(optional($message->sender->profile)->image_path);
                     @endphp
 
                     <div class="transaction-chat__message {{ $isMine ? 'is-mine' : 'is-other' }}">
-                        <img class="transaction-chat__message-avatar" src="{{ $senderAvatar }}" alt="{{ $m->sender->name }}">
+                        <img class="transaction-chat__message-avatar" src="{{ $senderAvatar }}" alt="{{ $message->sender->name }}">
                         <div class="transaction-chat__message-meta">
-                            <span class="transaction-chat__message-sender">{{ $m->sender->name }}</span>
+                            <span class="transaction-chat__message-sender">{{ $message->sender->name }}</span>
                         </div>
 
                         <div class="transaction-chat__message-body">
-                            {{ $m->body }}
+                            {{ $message->body }}
                         </div>
 
-                        @if ($m->image_path)
+                        @if ($message->image_path)
                             <div class="transaction-chat__message-image">
-                                <img src="{{ $imageUrl($m->image_path) }}" alt="添付画像">
+                                <img src="{{ $imageUrl($message->image_path) }}" alt="添付画像">
                             </div>
                         @endif
 
-                        {{-- 編集/削除（FN010/FN011） --}}
                         @if ($isMine && ! $isFullyCompleted)
                             <div class="transaction-chat__message-actions is-mine">
                                 <div class="transaction-chat__action-triggers">
-                                  <button type="button" class="transaction-chat__action-trigger" data-action="edit-{{ $m->id }}">編集</button>
-                                  <button type="button" class="transaction-chat__action-trigger" data-action="delete-{{ $m->id }}">削除</button>
+                                  <button type="button" class="transaction-chat__action-trigger" data-action="edit-{{ $message->id }}">編集</button>
+                                  <button type="button" class="transaction-chat__action-trigger" data-action="delete-{{ $message->id }}">削除</button>
                                 </div>
 
                                 <form
                                   method="post"
-                                  action="{{ route('transactions.messages.update', [$transaction, $m]) }}"
+                                  action="{{ route('transactions.messages.update', [$transaction, $message]) }}"
                                   class="transaction-chat__action-panel"
-                                  data-panel="edit-{{ $m->id }}"
+                                  data-panel="edit-{{ $message->id }}"
                                 >
                                     @csrf
                                     @method('patch')
-                                    <input type="text" name="body" value="{{ old('body', $m->body) }}" maxlength="400">
+                                    <input type="text" name="body" value="{{ old('body', $message->body) }}" maxlength="400">
                                     <div class="transaction-chat__action-panel-buttons">
                                       <button type="submit">更新</button>
                                       <button type="button" class="transaction-chat__action-close">キャンセル</button>
@@ -137,9 +133,9 @@
 
                                 <form
                                   method="post"
-                                  action="{{ route('transactions.messages.destroy', [$transaction, $m]) }}"
+                                  action="{{ route('transactions.messages.destroy', [$transaction, $message]) }}"
                                   class="transaction-chat__action-panel"
-                                  data-panel="delete-{{ $m->id }}"
+                                  data-panel="delete-{{ $message->id }}"
                                 >
                                     @csrf
                                     @method('delete')
@@ -154,7 +150,6 @@
                 @endforeach
             </section>
 
-            {{-- 投稿フォーム（FN006/FN007/FN009） --}}
             <section class="transaction-chat__composer {{ $errors->any() ? 'has-errors' : '' }}">
                 @if ($errors->any())
                     <ul class="transaction-chat__form-errors">
@@ -197,7 +192,7 @@
     </div>
 </div>
 
-{{-- 購入者：取引完了ボタン --}}
+{{-- 購入者：出品者評価ダイアログ --}}
 @if ($shouldShowBuyerComplete)
   <dialog class="rating-dialog" id="buyerRatingDialog">
     <div class="rating-dialog__inner">
@@ -226,7 +221,7 @@
   </dialog>
 @endif
 
-{{-- 出品者：購入者評価ダイアログ（購入者が完了した後に表示） --}}
+{{-- 出品者：購入者評価ダイアログ --}}
 @if ($shouldShowSellerRating)
   <dialog class="rating-dialog" id="sellerRatingDialog">
     <div class="rating-dialog__inner">
@@ -257,196 +252,179 @@
 
 <script>
 (function () {
-  'use strict';
+    'use strict';
 
-  /**
-   * FN009：本文のみ入力保持（transactionごとに保存）
-   */
-  const transactionId = @json((string) $transaction->id);
-  const storageKey = 'tx_chat_body_' + transactionId;
-  const chatTextarea = document.getElementById('chatBody');
+    const transactionId = @json((string) $transaction->id);
+    const storageKey = 'tx_chat_body_' + transactionId;
+    const chatTextarea = document.getElementById('chatBody');
 
-  if (chatTextarea) {
-    const isPosted = @json(session('message_posted') ? true : false);
-    if (isPosted) {
-      localStorage.removeItem(storageKey);
-    }
-
-    const savedText = localStorage.getItem(storageKey);
-    if (!chatTextarea.value && savedText) {
-      chatTextarea.value = savedText;
-    }
-
-    chatTextarea.addEventListener('input', function () {
-      localStorage.setItem(storageKey, chatTextarea.value);
-    });
-  }
-
-  /**
-   * dialog共通：誤送信対策
-   */
-  function applySafeDialogBehavior(dialogElement) {
-    if (!dialogElement) return;
-
-    // ESCで閉じない
-    dialogElement.addEventListener('cancel', function (event) {
-      event.preventDefault();
-    });
-
-    // 背景クリックで閉じない（dialog要素そのものをクリックした時だけ）
-    dialogElement.addEventListener('click', function (event) {
-      if (event.target === dialogElement) {
-        event.preventDefault();
-      }
-    });
-
-    // タブ切替/別タブクリックで閉じる
-    function closeIfOpen() {
-      if (dialogElement.open) {
-        dialogElement.close();
-      }
-    }
-
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) closeIfOpen();
-    });
-
-    window.addEventListener('blur', closeIfOpen);
-  }
-
-  /**
-   * 購入者：ボタン押下で評価ダイアログ表示
-   */
-  function focusFirstStar(dialogElement) {
-    if (!dialogElement) return;
-    const firstStar = dialogElement.querySelector('.rating-dialog__star');
-    if (firstStar) {
-      // showModal直後はフォーカス移動を遅延させた方が安定する
-      setTimeout(function () {
-        firstStar.focus();
-      }, 0);
-    }
-  }
-
-  function setupRatingDialog(dialogElement, hiddenInputElement) {
-    if (!dialogElement || !hiddenInputElement) return;
-
-    const starsRoot =
-      dialogElement.querySelector('[data-rating-root]') ||
-      dialogElement.querySelector('.rating-dialog__stars');
-
-    const submitButton = dialogElement.querySelector('.rating-dialog__submit');
-    const starButtons = dialogElement.querySelectorAll('.rating-dialog__star');
-
-    // 必須要素が無ければ終了
-    if (!starsRoot || !submitButton || starButtons.length === 0) {
-      return;
-    }
-
-    function setRating(selectedRating, enableSubmit = true) {
-      hiddenInputElement.value = String(selectedRating);
-
-      starButtons.forEach(function (button) {
-        const ratingValue = Number(button.getAttribute('data-rating'));
-        const shouldActive = ratingValue <= selectedRating;
-        button.classList.toggle('is-active', shouldActive);
-      });
-
-      if (enableSubmit) {
-        submitButton.disabled = false;
-      }
-    }
-
-    // clickが拾えないケース（クリック先が別要素）対策で、rootで拾う
-    starsRoot.addEventListener('click', function (event) {
-      const clickedButton = event.target.closest('.rating-dialog__star');
-      if (!clickedButton) return;
-
-      const selectedRating = Number(clickedButton.getAttribute('data-rating'));
-      if (!Number.isFinite(selectedRating)) return;
-
-      setRating(selectedRating);
-    });
-
-    // 既に値が入っていれば描画状態を反映（ブラウザ戻る対策）
-    const initialValue = Number(hiddenInputElement.value);
-    if (Number.isFinite(initialValue) && initialValue > 0) {
-      setRating(initialValue, false);
-    }
-  }
-
-  const buyerOpenButton = document.querySelector('[data-open-buyer-rating]');
-  const buyerDialog = document.getElementById('buyerRatingDialog');
-  const buyerHiddenInput = document.getElementById('buyerRatingValue');
-
-  if (buyerDialog) {
-    applySafeDialogBehavior(buyerDialog);
-    setupRatingDialog(buyerDialog, buyerHiddenInput);
-
-    if (buyerOpenButton) {
-      buyerOpenButton.addEventListener('click', function () {
-        if (!buyerDialog.open) {
-          buyerDialog.showModal();
-          focusFirstStar(buyerDialog);
+    if (chatTextarea) {
+        const isPosted = @json(session('message_posted') ? true : false);
+        if (isPosted) {
+            localStorage.removeItem(storageKey);
         }
-      });
+
+        const savedText = localStorage.getItem(storageKey);
+        if (!chatTextarea.value && savedText) {
+            chatTextarea.value = savedText;
+        }
+
+        chatTextarea.addEventListener('input', function () {
+            localStorage.setItem(storageKey, chatTextarea.value);
+        });
     }
-  }
 
-  /**
-   * 出品者：自動表示
-   */
-  const sellerDialog = document.getElementById('sellerRatingDialog');
-  const sellerHiddenInput = document.getElementById('sellerRatingValue');
+    function applySafeDialogBehavior(dialogElement) {
+        if (!dialogElement) return;
 
-  if (sellerDialog) {
-    applySafeDialogBehavior(sellerDialog);
-    setupRatingDialog(sellerDialog, sellerHiddenInput);
+        // ESCで閉じない
+        dialogElement.addEventListener('cancel', function (event) {
+            event.preventDefault();
+        });
 
-    if (!sellerDialog.open) {
-      sellerDialog.showModal();
-      focusFirstStar(sellerDialog);
+        // 背景クリックで閉じない
+        dialogElement.addEventListener('click', function (event) {
+            if (event.target === dialogElement) {
+                event.preventDefault();
+            }
+        });
+
+        // タブ切替/別タブクリックで閉じる
+        function closeIfOpen() {
+            if (dialogElement.open) {
+                dialogElement.close();
+            }
+        }
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) closeIfOpen();
+        });
+
+        window.addEventListener('blur', closeIfOpen);
     }
-  }
 
-  /**
-   * メッセージの編集/削除トグル
-   */
-  const actionTriggers = document.querySelectorAll('.transaction-chat__action-trigger');
-  const actionPanels = document.querySelectorAll('.transaction-chat__action-panel');
-  const actionContainers = document.querySelectorAll('.transaction-chat__message-actions');
+    function focusFirstStar(dialogElement) {
+        if (!dialogElement) return;
+        const firstStar = dialogElement.querySelector('.rating-dialog__star');
+        if (firstStar) {
+            setTimeout(function () {
+                firstStar.focus();
+            }, 0);
+        }
+    }
 
-  function closeAllPanels() {
-    actionPanels.forEach(function (panel) {
-      panel.classList.remove('is-open');
+    function setupRatingDialog(dialogElement, hiddenInputElement) {
+        if (!dialogElement || !hiddenInputElement) return;
+
+        const starsRoot =
+            dialogElement.querySelector('[data-rating-root]') ||
+            dialogElement.querySelector('.rating-dialog__stars');
+
+        const submitButton = dialogElement.querySelector('.rating-dialog__submit');
+        const starButtons = dialogElement.querySelectorAll('.rating-dialog__star');
+
+        if (!starsRoot || !submitButton || starButtons.length === 0) {
+            return;
+        }
+
+        function setRating(selectedRating, enableSubmit = true) {
+            hiddenInputElement.value = String(selectedRating);
+
+            starButtons.forEach(function (button) {
+                const ratingValue = Number(button.getAttribute('data-rating'));
+                const shouldActive = ratingValue <= selectedRating;
+                button.classList.toggle('is-active', shouldActive);
+            });
+
+            if (enableSubmit) {
+                submitButton.disabled = false;
+            }
+        }
+
+        starsRoot.addEventListener('click', function (event) {
+            const clickedButton = event.target.closest('.rating-dialog__star');
+            if (!clickedButton) return;
+
+            const selectedRating = Number(clickedButton.getAttribute('data-rating'));
+            if (!Number.isFinite(selectedRating)) return;
+
+            setRating(selectedRating);
+        });
+
+        const initialValue = Number(hiddenInputElement.value);
+        if (Number.isFinite(initialValue) && initialValue > 0) {
+            setRating(initialValue, false);
+        }
+    }
+
+    const buyerOpenButton = document.querySelector('[data-open-buyer-rating]');
+    const buyerDialog = document.getElementById('buyerRatingDialog');
+    const buyerHiddenInput = document.getElementById('buyerRatingValue');
+
+    if (buyerDialog) {
+        applySafeDialogBehavior(buyerDialog);
+        setupRatingDialog(buyerDialog, buyerHiddenInput);
+
+        if (buyerOpenButton) {
+            buyerOpenButton.addEventListener('click', function () {
+                if (!buyerDialog.open) {
+                    buyerDialog.showModal();
+                    focusFirstStar(buyerDialog);
+                }
+            });
+        }
+    }
+
+    //出品者：自動表示
+    const sellerDialog = document.getElementById('sellerRatingDialog');
+    const sellerHiddenInput = document.getElementById('sellerRatingValue');
+
+    if (sellerDialog) {
+        applySafeDialogBehavior(sellerDialog);
+        setupRatingDialog(sellerDialog, sellerHiddenInput);
+
+        if (!sellerDialog.open) {
+            sellerDialog.showModal();
+            focusFirstStar(sellerDialog);
+        }
+    }
+
+    // メッセージ編集・削除パネル制御
+    const actionTriggers = document.querySelectorAll('.transaction-chat__action-trigger');
+    const actionPanels = document.querySelectorAll('.transaction-chat__action-panel');
+    const actionContainers = document.querySelectorAll('.transaction-chat__message-actions');
+
+    function closeAllPanels() {
+        actionPanels.forEach(function (panel) {
+            panel.classList.remove('is-open');
+        });
+        actionContainers.forEach(function (container) {
+            container.classList.remove('has-open-panel');
+        });
+    }
+
+    actionTriggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+            const target = trigger.getAttribute('data-action');
+            if (!target) return;
+            const panel = document.querySelector('.transaction-chat__action-panel[data-panel="' + target + '"]');
+            if (!panel) return;
+            const container = trigger.closest('.transaction-chat__message-actions');
+
+            const isOpen = panel.classList.contains('is-open');
+            closeAllPanels();
+            if (!isOpen) {
+                panel.classList.add('is-open');
+                if (container) container.classList.add('has-open-panel');
+            }
+        });
     });
-    actionContainers.forEach(function (container) {
-      container.classList.remove('has-open-panel');
-    });
-  }
 
-  actionTriggers.forEach(function (trigger) {
-    trigger.addEventListener('click', function () {
-      const target = trigger.getAttribute('data-action');
-      if (!target) return;
-      const panel = document.querySelector('.transaction-chat__action-panel[data-panel="' + target + '"]');
-      if (!panel) return;
-      const container = trigger.closest('.transaction-chat__message-actions');
-
-      const isOpen = panel.classList.contains('is-open');
-      closeAllPanels();
-      if (!isOpen) {
-        panel.classList.add('is-open');
-        if (container) container.classList.add('has-open-panel');
-      }
+    document.querySelectorAll('.transaction-chat__action-close').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            closeAllPanels();
+        });
     });
-  });
-
-  document.querySelectorAll('.transaction-chat__action-close').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      closeAllPanels();
-    });
-  });
 })();
 </script>
 @endsection

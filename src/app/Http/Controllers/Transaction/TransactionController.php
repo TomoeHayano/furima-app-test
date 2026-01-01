@@ -14,27 +14,18 @@ use Illuminate\Support\Facades\Mail;
 
 class TransactionController extends Controller
 {
-    /**
-     * 取引チャット画面
-     */
+
     public function show(Transaction $transaction): View
     {
         $userId = (int) Auth::id();
         abort_unless($this->isParticipant($transaction, $userId), 403);
 
-        // 画像を使う関連を先読み
         $transaction->loadMissing([
             'order.product',
             'buyer.profile',
             'seller.profile',
         ]);
 
-        /**
-         * サイドバー（取引中一覧）
-         * ・未完了 + 完了後7日以内
-         * ・自分が購入者 or 出品者
-         * ・最新メッセージ順
-         */
         $sidebarTransactions = Transaction::query()
             ->whereNull('completed_at')
             ->where(static function (Builder $query) use ($userId): void {
@@ -53,17 +44,11 @@ class TransactionController extends Controller
             ->orderByDesc('updated_at')
             ->get();
 
-        /**
-         * メッセージ一覧
-         */
         $messages = $transaction->messages()
             ->with(['sender:id,name', 'sender.profile:id,user_id,image_path'])
             ->orderBy('created_at')
             ->get();
 
-        /**
-         * 未読を既読化
-         */
         $transaction->messages()
             ->whereNull('read_at')
             ->where('sender_id', '!=', $userId)
@@ -72,17 +57,11 @@ class TransactionController extends Controller
         $isBuyer  = ((int) $transaction->buyer_id === $userId);
         $isSeller = ((int) $transaction->seller_id === $userId);
 
-        /**
-         * 購入者：まだ完了していない場合のみ「取引完了（評価）」ボタンを表示
-         */
         $shouldShowBuyerComplete =
             $isBuyer
             && $transaction->buyer_completed_at === null
             && $transaction->completed_at === null;
 
-        /**
-         * 出品者：購入者完了後、まだ自分が完了していない場合のみ評価ダイアログ表示
-         */
         $shouldShowSellerRating =
             $isSeller
             && $transaction->buyer_completed_at !== null
@@ -105,10 +84,6 @@ class TransactionController extends Controller
         ));
     }
 
-    /**
-     * 購入者：評価送信
-     * → 送信後は必ずマイページへ遷移
-     */
     public function completeByBuyer(Request $request, Transaction $transaction): RedirectResponse
     {
         $userId = (int) Auth::id();
@@ -124,9 +99,6 @@ class TransactionController extends Controller
         $transaction->buyer_completed_at  = now();
         $transaction->save();
 
-        /**
-         * 出品者へメール通知
-         */
         $transaction->loadMissing([
             'seller:id,email,name',
             'buyer:id,name',
@@ -138,20 +110,11 @@ class TransactionController extends Controller
                 ->send(new BuyerCompletedNotification($transaction));
         }
 
-        /**
-         * 双方完了していれば completed_at を立てる
-         * ※ 画面遷移とは無関係（DB状態管理用）
-         */
         $this->completeIfPossible($transaction);
 
-        // ✅ 評価送信後は必ずマイページへ
         return redirect()->to('/mypage?page=progress');
     }
 
-    /**
-     * 出品者：評価送信
-     * → 送信後は必ずマイページへ遷移
-     */
     public function completeBySeller(Request $request, Transaction $transaction): RedirectResponse
     {
         $userId = (int) Auth::id();
@@ -170,13 +133,9 @@ class TransactionController extends Controller
 
         $this->completeIfPossible($transaction);
 
-        // ✅ 評価送信後は必ずマイページへ
         return redirect()->to('/mypage?page=progress');
     }
 
-    /**
-     * 双方が評価・完了していれば取引完了とする
-     */
     private function completeIfPossible(Transaction $transaction): void
     {
         if (
@@ -191,9 +150,6 @@ class TransactionController extends Controller
         }
     }
 
-    /**
-     * 自分が取引当事者かどうか
-     */
     private function isParticipant(Transaction $transaction, int $userId): bool
     {
         return (int) $transaction->buyer_id === $userId

@@ -1,6 +1,4 @@
-/* =========================
-   取引チャット画面（購入者）
-   ========================= */
+/* 取引チャット画面 */
 
 .transaction-chat {
   position: relative;
@@ -12,12 +10,10 @@
   box-sizing: border-box;
 }
 
-/* ヘッダー高さぶんの余白を適正化（app.cssの90pxより少し小さくして段差を解消） */
 .main-content {
   padding-top: 80px;
 }
 
-/* 全体レイアウト：上80px（ヘッダー）+ 下（サイドバー/メイン） */
 .transaction-chat__layout {
   position: relative;
   width: 100%;
@@ -28,37 +24,7 @@
   grid-template-rows: 1fr;
 }
 
-/* 既存の layouts.app のヘッダーがある場合は、画面側で再現できるように簡易ヘッダー枠
-.transaction-chat__layout::before {
-  content: "";
-  grid-column: 1 / -1;
-  grid-row: 1 / 2;
-  background: #000000;
-} */
-
-/* =========================
-   エラー表示（FN008）
-   ========================= */
-.transaction-chat__errors {
-  position: absolute;
-  top: 90px;
-  left: 286px;
-  width: 937px;
-  padding: 12px 16px;
-  border: 1px solid #5f5f5f;
-  border-radius: 6px;
-  background: #fff;
-  z-index: 20;
-}
-
-.transaction-chat__error {
-  font-size: 14px;
-  line-height: 20px;
-}
-
-/* =========================
-   サイドバー（その他の取引）
-   ========================= */
+/* サイドバー（その他の取引）*/
 .transaction-chat__sidebar {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
@@ -137,7 +103,6 @@
   box-sizing: border-box;
 }
 
-/* 商品名/価格（サイドバー内） */
 .transaction-chat__sidebar-meta {
   display: grid;
   gap: 6px;
@@ -157,23 +122,18 @@
   opacity: 0.95;
 }
 
-/* =========================
-   メイン領域
-   ========================= */
+/* メイン */
 .transaction-chat__main {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   position: relative;
   background: #ffffff;
   min-height: 100vh;
-
-  /* ✅ ここが見切れの根本対策：縦レイアウトにする */
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* タイトル + 完了ボタン + 上ライン */
 .transaction-chat__header {
   position: relative;
   padding: 31px 27px 14px;
@@ -188,10 +148,9 @@
   font-weight: 700;
   line-height: 44px;
   color: #000000;
-  padding-left: 119px; /* 左の丸アイコン(79px) + ギャップ13px + 左余白27px */
+  padding-left: 119px;
 }
 
-/* 左の丸アイコン（Ellipse 1 相当） */
 .transaction-chat__header::before {
   content: none;
 }
@@ -207,7 +166,6 @@
   background: #d9d9d9;
 }
 
-/* Line 1 */
 .transaction-chat__header::after {
   content: "";
   position: absolute;
@@ -217,7 +175,6 @@
   border-bottom: 2px solid #5f5f5f;
 }
 
-/* 取引完了ボタン */
 .transaction-chat__complete-btn {
   position: absolute;
   right: 27px;
@@ -244,7 +201,6 @@
   color: #5f5f5f;
 }
 
-/* 商品情報ブロック（Line 12 まで） */
 .transaction-chat__product {
   position: relative;
   height: 235px;
@@ -292,37 +248,29 @@
   color: #000000;
 }
 
-/* =========================
-   メッセージ一覧領域
-   ========================= */
-/* ✅ 高さ固定をやめて「残り高さ」で伸びるようにする */
+/* メッセージ */
 .transaction-chat__messages {
   flex: 1 1 auto;
   padding: 18px 27px 0;
   box-sizing: border-box;
   overflow-y: auto;
-
-  /* ✅ 入力欄(115px)に隠れないように余白を確保 */
   padding-bottom: 170px;
 }
 
-/* 1メッセージ */
 .transaction-chat__message {
   position: relative;
   margin-bottom: 26px;
   min-height: 92px;
 }
 
-/* 左右のアイコン分スペース */
 .transaction-chat__message.is-other {
-  padding-left: 70px; /* 60pxアイコン + 10px間隔 */
+  padding-left: 70px;
 }
 
 .transaction-chat__message.is-mine {
-  padding-right: 70px; /* 60pxアイコン + 10px間隔 */
+  padding-right: 70px;
 }
 
-/* 丸アイコン（Ellipse 3 / 4 相当） */
 .transaction-chat__message.is-other::before,
 .transaction-chat__message.is-mine::before {
   content: none;
@@ -346,13 +294,12 @@
   right: 0;
 }
 
-/* ✅ 1段目：名前だけ（タイムスタンプは使わない） */
 .transaction-chat__message-meta {
   display: flex;
   gap: 10px;
   align-items: center;
   margin-bottom: 10px;
-  min-height: 60px; /* ✅ アイコン高さに揃える */
+  min-height: 60px;
 }
 
 .transaction-chat__message-sender {
@@ -362,16 +309,14 @@
   color: #000000;
 }
 
-/* 送信（自分）: 1段目（アイコン+名前）を本文と同じ位置に右寄せ */
 .transaction-chat__message.is-mine .transaction-chat__message-meta {
-  width: calc(100% - 70px); /* 本文と揃える */
+  width: calc(100% - 70px);
   max-width: 461px;
-  margin-left: auto;      /* 右側へ寄せる */
+  margin-left: auto;
   margin-right: 0;
-  justify-content: flex-end; /* 中身（名前）も右寄せ */
+  justify-content: flex-end;
 }
 
-/* 受信: 左側に固定（念のため） */
 .transaction-chat__message.is-other .transaction-chat__message-meta {
   width: calc(100% - 70px);
   max-width: 461px;
@@ -380,7 +325,6 @@
   justify-content: flex-start;
 }
 
-/* ✅ 2段目：本文 */
 .transaction-chat__message-body {
   width: calc(100% - 70px);
   max-width: 461px;
@@ -407,7 +351,6 @@
   text-align: left;
 }
 
-/* 添付画像 */
 .transaction-chat__message-image {
   margin-top: 10px;
   width: calc(100% - 70px);
@@ -430,7 +373,7 @@
   border-radius: 6px;
 }
 
-/* 編集/削除（右側に寄せて薄い文字） */
+/* 編集/削除 */
 .transaction-chat__message-actions {
   margin-top: 6px;
   width: min(461px, 100%);
@@ -521,10 +464,6 @@
   display: none;
 }
 
-/* =========================
-   入力エリア（下部）
-   ========================= */
-/* ✅ mainの中で固定したいので sticky に変更（重なり事故が減る） */
 .transaction-chat__composer {
   position: sticky;
   bottom: 0;
@@ -567,7 +506,7 @@
   gap: 19px;
 }
 
-/* 入力枠（Rectangle 27） */
+/* 入力枠 */
 .transaction-chat__textarea {
   position: relative;
   flex: 1 1 auto;
@@ -642,9 +581,7 @@
   display: block;
 }
 
-/* =========================
-   モーダル（評価）
-   ========================= */
+/* モーダル（評価） */
 .rating-dialog {
   padding: 0;
   border: 0;
@@ -669,7 +606,6 @@
   box-sizing: border-box;
 }
 
-/* 上の区切り線 */
 .rating-dialog__inner::before {
   content: "";
   position: absolute;
@@ -679,7 +615,6 @@
   border-top: 1px solid #000000;
 }
 
-/* 下の区切り線（少しはみ出し） */
 .rating-dialog__inner::after {
   content: "";
   position: absolute;
@@ -689,7 +624,6 @@
   border-top: 1px solid #000000;
 }
 
-/* タイトル */
 .rating-dialog__title {
   position: absolute;
   left: 23px;
@@ -701,7 +635,6 @@
   color: #000000;
 }
 
-/* サブタイトル */
 .rating-dialog__subtitle {
   position: absolute;
   left: 23px;
@@ -712,7 +645,6 @@
   color: #868686;
 }
 
-/* 星コンテナ */
 .rating-dialog__stars {
   position: relative;
   display: flex;
@@ -723,7 +655,6 @@
   margin-top: 12px;
 }
 
-/* 星（四角ではなく星形） */
 .rating-dialog__star {
   position: relative;
   width: 100px;
@@ -761,7 +692,6 @@
   );
 }
 
-/* 選択状態 */
 .rating-dialog__star.is-active {
   background: #fff048;
 }
@@ -775,7 +705,6 @@
   outline-offset: 4px;
 }
 
-/* 送信ボタン */
 .rating-dialog__submit {
   position: absolute;
   left: 457px;
@@ -794,6 +723,24 @@
 .rating-dialog__submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* エラー表示　*/
+.transaction-chat__errors {
+  position: absolute;
+  top: 90px;
+  left: 286px;
+  width: 937px;
+  padding: 12px 16px;
+  border: 1px solid #5f5f5f;
+  border-radius: 6px;
+  background: #fff;
+  z-index: 20;
+}
+
+.transaction-chat__error {
+  font-size: 14px;
+  line-height: 20px;
 }
 
 /* PC画面 (1400-1540px) */

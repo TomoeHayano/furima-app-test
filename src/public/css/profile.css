@@ -33,7 +33,7 @@
     object-fit: cover;
 }
 
- .user-details {
+.user-details {
     margin-left: 57px;
     display: flex;
     align-items: center;
@@ -64,7 +64,7 @@
     flex: 0 0 auto;
     width: auto;
     position: relative;
-    left: -30px; /* 星だけをアイコン側へ寄せる */
+    left: -30px;
 }
 
 .user-rating__star {
@@ -77,6 +77,11 @@
     font-size: 32px;
     line-height: 40px;
     font-family: 'Inter', sans-serif;
+    color: #d9d9d9;
+}
+
+.user-rating__star.is-active {
+    color: #fff048;
 }
 
 .profile-edit-button {
@@ -115,7 +120,7 @@
 .tab-list {
     display: flex;
     gap: clamp(32px, 6vw, 60px);
-    padding-left: 0; /* 写真（商品グリッド）の左位置に揃える */
+    padding-left: 0;
     padding-right: 0;
 }
 
@@ -155,10 +160,10 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 100vw;            /* ビューポート幅いっぱいに伸ばす */
+    width: 100vw;
     max-width: none;
     min-width: 0;
-    transform: translateX(-50%); /* 画面中央基準で左右均等に広げる */
+    transform: translateX(-50%);
     height: 2px;
     background: #5F5F5F;
     pointer-events: none;
@@ -170,7 +175,7 @@
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 64px 36px;
     margin-bottom: 80px;
-    justify-items: start; /* 左寄せでそろえる */
+    justify-items: start;
 }
 
 .product-card {
@@ -178,7 +183,7 @@
     flex-direction: column;
     width: 100%;
     max-width: 290px;
-    margin: 0; /* 左にそろえる */
+    margin: 0;
     position: relative;
 }
 

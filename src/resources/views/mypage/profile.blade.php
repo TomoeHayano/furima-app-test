@@ -22,12 +22,20 @@
                         @for ($i = 1; $i <= 5; $i++)
                             @php
                                 $isActive = $i <= $ratingAverage;
-                                $color = $isActive ? '#fff048' : '#d9d9d9';
+                                $starColor = $isActive ? '#fff048' : '#d9d9d9';
                             @endphp
                             <span
                                 class="user-rating__star"
                                 aria-hidden="true"
-                                style="color: {{ $color }}; width: 40px; height: 40px; font-size: 32px; line-height: 40px; display: inline-block; text-align: center;"
+                                style="
+                                    color: {{ $starColor }};
+                                    width: 40px;
+                                    height: 40px;
+                                    font-size: 32px;
+                                    line-height: 40px;
+                                    display: inline-block;
+                                    text-align: center;
+                                "
                             >★</span>
                         @endfor
                     </div>
@@ -40,15 +48,15 @@
     <!-- タブセクション -->
     <div class="tab-section">
         <div class="tab-list">
-            <a href="{{ route('user.mypage', ['page' => 'sell']) }}" 
+            <a href="{{ route('user.mypage', ['page' => 'sell']) }}"
                class="tab-item {{ $page === 'sell' ? 'active' : '' }}">
                 出品した商品
             </a>
-            <a href="{{ route('user.mypage', ['page' => 'buy']) }}" 
+            <a href="{{ route('user.mypage', ['page' => 'buy']) }}"
                class="tab-item {{ $page === 'buy' ? 'active' : '' }}">
                 購入した商品
             </a>
-            <a href="{{ route('user.mypage', ['page' => 'progress']) }}" 
+            <a href="{{ route('user.mypage', ['page' => 'progress']) }}"
                class="tab-item {{ $page === 'progress' ? 'active' : '' }}">
                 取引中の商品
                 @if (!empty($progressUnreadTotal))
@@ -64,8 +72,8 @@
         @if ($page === 'progress')
             @forelse ($transactions as $transaction)
                 @php
-                    $product   = $transaction->order->product;
-                    $imageUrl  = null;
+                    $product = $transaction->order->product;
+                    $imageUrl = null;
                     if ($product->image_path) {
                         $imagePath = $product->image_path;
                         if (preg_match('/^https?:\\/\\//', $imagePath)) {
