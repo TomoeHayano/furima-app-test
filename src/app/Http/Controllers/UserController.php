@@ -17,6 +17,7 @@ class UserController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
+        $items = collect();
         // プロフィール未登録 → 編集画面を表示
         if (! $user->profile || ! $user->profile->address) {
             return redirect()->route('user.profile.edit');
@@ -55,11 +56,16 @@ class UserController extends Controller
                 })
                 ->values();
 
-            $products = $completedBuyerTransactions
-                ->map(static fn (Transaction $transaction) => optional($transaction->order)->product)
-                ->filter();
+            $items = $completedBuyerTransactions
+                ->map(static function (Transaction $transaction) {
+                    return [
+                        'product'     => optional($transaction->order)->product,
+                        'transaction' => $transaction,
+                    ];
+                })
+                ->filter(static fn ($item) => $item['product'] !== null);
         } elseif ($page === 'progress') {
-            // 取引中（購入者・出品者両方）を表示
+            // 取引中（購入者・出品者両方）を表示（完了分は除外）
             $transactions = (clone $baseProgressQuery)
                 ->with(['order.product'])
                 ->withCount(['messages as unread_count' => static function (Builder $query) use ($user): void {
@@ -79,12 +85,38 @@ class UserController extends Controller
                 ->map(static fn (Transaction $transaction) => optional($transaction->order)->product)
                 ->filter();
         } else {
-            $products = $user->products;
+            // 出品した商品をすべて表示（販売中/売切れ問わず）
+            $sellProducts = $user->products()
+                ->with('order')
+                ->orderByDesc('created_at')
+                ->get();
+
+            // 該当注文のトランザクションをまとめて取得して紐付け
+            $orderIds = $sellProducts
+                ->pluck('order.id')
+                ->filter()
+                ->unique()
+                ->values();
+
+            $transactionsByOrderId = Transaction::query()
+                ->whereIn('order_id', $orderIds)
+                ->get()
+                ->keyBy('order_id');
+
+            $items = $sellProducts->map(function ($product) use ($transactionsByOrderId) {
+                $orderId     = optional($product->order)->id;
+                $transaction = $orderId ? $transactionsByOrderId->get($orderId) : null;
+
+                return [
+                    'product'     => $product,
+                    'transaction' => $transaction,
+                ];
+            });
         }
 
         return view('mypage.profile', compact(
             'user',
-            'products',
+            'items',
             'page',
             'transactions',
             'progressUnreadTotal'

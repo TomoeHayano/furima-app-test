@@ -1,4 +1,22 @@
 @extends('layouts.app')
+@php
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
+
+    $imageUrl = function (?string $path): string {
+        if (!$path) {
+            return asset('images/no-image.png');
+        }
+        if (Str::startsWith($path, ['http://', 'https://'])) {
+            return $path;
+        }
+        $normalized = ltrim($path, '/');
+        if (Str::startsWith($normalized, 'public/')) {
+            $normalized = Str::after($normalized, 'public/');
+        }
+        return Storage::url($normalized);
+    };
+@endphp
 
 @section('title', 'その他の取引')
 
@@ -8,17 +26,6 @@
 
 @section('content')
 <div class="transaction-chat">
-    {{-- エラー（FN008） --}}
-    @if ($errors->any())
-        <div class="transaction-chat__errors">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li class="transaction-chat__error">{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="transaction-chat__layout">
         {{-- サイドバー（FN003/FN004/FN005） --}}
         <aside class="transaction-chat__sidebar">
@@ -34,7 +41,7 @@
                     <li class="transaction-chat__sidebar-item {{ $isActive ? 'is-active' : '' }}">
                         <a class="transaction-chat__sidebar-link" href="{{ route('transactions.chat.show', $t) }}">
                             <div class="transaction-chat__sidebar-thumb-wrap">
-                                <img class="transaction-chat__sidebar-thumb" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
+                                <img class="transaction-chat__sidebar-thumb" src="{{ $imageUrl(optional($product)->image_path) }}" alt="{{ $product->name }}">
                                 @if ((int) $t->unread_count > 0)
                                     <span class="transaction-chat__badge">{{ $t->unread_count }}</span>
                                 @endif
@@ -54,13 +61,18 @@
             @php
                 $product = $transaction->order->product;
                 $partnerName = $isBuyer ? $transaction->seller->name : $transaction->buyer->name;
+                $partnerProfile = $isBuyer ? optional($transaction->seller)->profile : optional($transaction->buyer)->profile;
+                $partnerAvatar = $imageUrl(optional($partnerProfile)->image_path);
             @endphp
 
             <header class="transaction-chat__header">
+                <img class="transaction-chat__header-avatar" src="{{ $partnerAvatar }}" alt="{{ $partnerName }}">
                 <h1 class="transaction-chat__title">{{ $partnerName }}さんとの取引画面</h1>
 
-                {{-- 購入者：取引完了ボタン（FN012） --}}
-                @if ($shouldShowBuyerComplete)
+                {{-- 購入者：取引完了ボタン（FN012） / 完了済み表示 --}}
+                @if ($isFullyCompleted)
+                    <span class="transaction-chat__complete-label">取引が完了しました</span>
+                @elseif ($shouldShowBuyerComplete)
                     <button type="button" class="transaction-chat__complete-btn" data-open-buyer-rating>
                         取引を完了する
                     </button>
@@ -69,7 +81,7 @@
 
             {{-- 商品情報 --}}
             <section class="transaction-chat__product">
-                <img class="transaction-chat__product-image" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
+                <img class="transaction-chat__product-image" src="{{ $imageUrl(optional($product)->image_path) }}" alt="{{ $product->name }}">
                 <div class="transaction-chat__product-info">
                     <div class="transaction-chat__product-name">{{ $product->name }}</div>
                     <div class="transaction-chat__product-price">¥{{ number_format($product->price) }}</div>
@@ -81,9 +93,11 @@
                 @foreach ($messages as $m)
                     @php
                         $isMine = (int) $m->sender_id === (int) auth()->id();
+                        $senderAvatar = $imageUrl(optional($m->sender->profile)->image_path);
                     @endphp
 
                     <div class="transaction-chat__message {{ $isMine ? 'is-mine' : 'is-other' }}">
+                        <img class="transaction-chat__message-avatar" src="{{ $senderAvatar }}" alt="{{ $m->sender->name }}">
                         <div class="transaction-chat__message-meta">
                             <span class="transaction-chat__message-sender">{{ $m->sender->name }}</span>
                         </div>
@@ -94,57 +108,90 @@
 
                         @if ($m->image_path)
                             <div class="transaction-chat__message-image">
-                                <img src="{{ asset('storage/' . $m->image_path) }}" alt="添付画像">
+                                <img src="{{ $imageUrl($m->image_path) }}" alt="添付画像">
                             </div>
                         @endif
 
                         {{-- 編集/削除（FN010/FN011） --}}
-                        @if ($isMine)
-                            <details class="transaction-chat__message-actions">
-                                <summary>編集 / 削除</summary>
+                        @if ($isMine && ! $isFullyCompleted)
+                            <div class="transaction-chat__message-actions is-mine">
+                                <div class="transaction-chat__action-triggers">
+                                  <button type="button" class="transaction-chat__action-trigger" data-action="edit-{{ $m->id }}">編集</button>
+                                  <button type="button" class="transaction-chat__action-trigger" data-action="delete-{{ $m->id }}">削除</button>
+                                </div>
 
-                                <form method="post" action="{{ route('transactions.messages.update', [$transaction, $m]) }}">
+                                <form
+                                  method="post"
+                                  action="{{ route('transactions.messages.update', [$transaction, $m]) }}"
+                                  class="transaction-chat__action-panel"
+                                  data-panel="edit-{{ $m->id }}"
+                                >
                                     @csrf
                                     @method('patch')
                                     <input type="text" name="body" value="{{ old('body', $m->body) }}" maxlength="400">
-                                    <button type="submit">更新</button>
+                                    <div class="transaction-chat__action-panel-buttons">
+                                      <button type="submit">更新</button>
+                                      <button type="button" class="transaction-chat__action-close">キャンセル</button>
+                                    </div>
                                 </form>
 
-                                <form method="post" action="{{ route('transactions.messages.destroy', [$transaction, $m]) }}">
+                                <form
+                                  method="post"
+                                  action="{{ route('transactions.messages.destroy', [$transaction, $m]) }}"
+                                  class="transaction-chat__action-panel"
+                                  data-panel="delete-{{ $m->id }}"
+                                >
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" onclick="return confirm('削除しますか？')">削除</button>
+                                    <div class="transaction-chat__action-panel-buttons">
+                                      <button type="submit">削除</button>
+                                      <button type="button" class="transaction-chat__action-close">キャンセル</button>
+                                    </div>
                                 </form>
-                            </details>
+                            </div>
                         @endif
                     </div>
                 @endforeach
             </section>
 
             {{-- 投稿フォーム（FN006/FN007/FN009） --}}
-            <section class="transaction-chat__composer">
+            <section class="transaction-chat__composer {{ $errors->any() ? 'has-errors' : '' }}">
+                @if ($errors->any())
+                    <ul class="transaction-chat__form-errors">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
                 <form method="post" action="{{ route('transactions.messages.store', $transaction) }}" enctype="multipart/form-data">
                     @csrf
 
-                    <textarea
-                        id="chatBody"
-                        name="body"
-                        class="transaction-chat__textarea"
-                        maxlength="500"
-                        placeholder="取引メッセージを記入してください"
-                    >{{ old('body') }}</textarea>
+                    <div class="transaction-chat__composer-row">
+                        <textarea
+                            id="chatBody"
+                            name="body"
+                            class="transaction-chat__textarea"
+                            maxlength="500"
+                            placeholder="取引メッセージを記入してください"
+                            @if ($isFullyCompleted) disabled @endif
+                        >{{ old('body') }}</textarea>
 
-                    <div class="transaction-chat__composer-actions">
-                        <label class="transaction-chat__image-btn">
-                            画像を追加
-                            <input type="file" name="image" accept="image/jpeg,image/png" hidden>
-                        </label>
+                        <div class="transaction-chat__composer-actions">
+                            <label class="transaction-chat__image-btn" @if ($isFullyCompleted) aria-disabled="true" style="pointer-events:none; opacity:0.6;" @endif>
+                                画像を追加
+                                <input type="file" name="image" hidden @if ($isFullyCompleted) disabled @endif>
+                            </label>
 
-                        <button type="submit" class="transaction-chat__send-btn" aria-label="送信">
-                            <img class="transaction-chat__send-icon" src="{{ asset('images/send-button.jpg') }}" alt="">
-                        </button>
+                            <button type="submit" class="transaction-chat__send-btn" aria-label="送信" @if ($isFullyCompleted) disabled style="opacity:0.5; cursor:not-allowed;" @endif>
+                                <img class="transaction-chat__send-icon" src="{{ asset('images/send-button.jpg') }}" alt="">
+                            </button>
+                        </div>
                     </div>
                 </form>
+                @if ($isFullyCompleted)
+                    <p class="transaction-chat__completed-note">取引は完了しています。メッセージの送信・編集はできません。</p>
+                @endif
             </section>
         </main>
     </div>
@@ -361,6 +408,45 @@
       focusFirstStar(sellerDialog);
     }
   }
+
+  /**
+   * メッセージの編集/削除トグル
+   */
+  const actionTriggers = document.querySelectorAll('.transaction-chat__action-trigger');
+  const actionPanels = document.querySelectorAll('.transaction-chat__action-panel');
+  const actionContainers = document.querySelectorAll('.transaction-chat__message-actions');
+
+  function closeAllPanels() {
+    actionPanels.forEach(function (panel) {
+      panel.classList.remove('is-open');
+    });
+    actionContainers.forEach(function (container) {
+      container.classList.remove('has-open-panel');
+    });
+  }
+
+  actionTriggers.forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      const target = trigger.getAttribute('data-action');
+      if (!target) return;
+      const panel = document.querySelector('.transaction-chat__action-panel[data-panel="' + target + '"]');
+      if (!panel) return;
+      const container = trigger.closest('.transaction-chat__message-actions');
+
+      const isOpen = panel.classList.contains('is-open');
+      closeAllPanels();
+      if (!isOpen) {
+        panel.classList.add('is-open');
+        if (container) container.classList.add('has-open-panel');
+      }
+    });
+  });
+
+  document.querySelectorAll('.transaction-chat__action-close').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      closeAllPanels();
+    });
+  });
 })();
 </script>
 @endsection

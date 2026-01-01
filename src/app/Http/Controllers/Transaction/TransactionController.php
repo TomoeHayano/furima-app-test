@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\Controller;
-// use App\Mail\TransactionBuyerCompletedMail;
+use App\Mail\BuyerCompletedNotification;
 use App\Models\Transaction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,9 +22,16 @@ class TransactionController extends Controller
         $userId = (int) Auth::id();
         abort_unless($this->isParticipant($transaction, $userId), 403);
 
+        // 画像を使う関連を先読み
+        $transaction->loadMissing([
+            'order.product',
+            'buyer.profile',
+            'seller.profile',
+        ]);
+
         /**
          * サイドバー（取引中一覧）
-         * ・未完了
+         * ・未完了 + 完了後7日以内
          * ・自分が購入者 or 出品者
          * ・最新メッセージ順
          */
@@ -50,7 +57,7 @@ class TransactionController extends Controller
          * メッセージ一覧
          */
         $messages = $transaction->messages()
-            ->with('sender:id,name')
+            ->with(['sender:id,name', 'sender.profile:id,user_id,image_path'])
             ->orderBy('created_at')
             ->get();
 
@@ -82,6 +89,10 @@ class TransactionController extends Controller
             && $transaction->seller_completed_at === null
             && $transaction->completed_at === null;
 
+        $isFullyCompleted =
+            $transaction->completed_at !== null
+            || ($transaction->buyer_rating !== null && $transaction->seller_rating !== null);
+
         return view('transactions.show', compact(
             'transaction',
             'sidebarTransactions',
@@ -90,6 +101,7 @@ class TransactionController extends Controller
             'isSeller',
             'shouldShowBuyerComplete',
             'shouldShowSellerRating',
+            'isFullyCompleted',
         ));
     }
 
@@ -115,9 +127,16 @@ class TransactionController extends Controller
         /**
          * 出品者へメール通知
          */
-        // $transaction->loadMissing('seller:id,email');
-        // Mail::to((string) $transaction->seller->email)
-        //     ->send(new TransactionBuyerCompletedMail($transaction));
+        $transaction->loadMissing([
+            'seller:id,email,name',
+            'buyer:id,name',
+            'order.product:id,name',
+        ]);
+
+        if ($transaction->seller && $transaction->seller->email) {
+            Mail::to((string) $transaction->seller->email)
+                ->send(new BuyerCompletedNotification($transaction));
+        }
 
         /**
          * 双方完了していれば completed_at を立てる

@@ -81,34 +81,43 @@
                 <p class="empty-message">商品はありません</p>
             @endforelse
         @else
-            @forelse ($products as $product)
+            @forelse ($items as $item)
+                @php
+                    $product = $item['product'] ?? null;
+                    $transaction = $item['transaction'] ?? null;
+                    $imageUrl = null;
+                    if ($product && $product->image_path) {
+                        $imagePath = $product->image_path;
+                        if (preg_match('/^https?:\\/\\//', $imagePath)) {
+                            $imageUrl = $imagePath;
+                        } elseif (str_starts_with($imagePath, '/storage/')) {
+                            $imageUrl = asset(ltrim($imagePath, '/'));
+                        } elseif (str_starts_with($imagePath, 'storage/')) {
+                            $imageUrl = asset($imagePath);
+                        } else {
+                            $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
+                        }
+                    }
+                @endphp
                 <div class="product-card">
                     <div class="product-image-wrapper">
-                        @if ($product && $product->image_path)
-                            @php
-                                $imagePath = $product->image_path;
-                                if (preg_match('/^https?:\\/\\//', $imagePath)) {
-                                    $imageUrl = $imagePath;
-                                } elseif (str_starts_with($imagePath, '/storage/')) {
-                                    $imageUrl = asset(ltrim($imagePath, '/'));
-                                } elseif (str_starts_with($imagePath, 'storage/')) {
-                                    $imageUrl = asset($imagePath);
-                                } else {
-                                    $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
-                                }
-                            @endphp
+                        @if ($imageUrl)
                             <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
                         @endif
                     </div>
-                    @if ($product)
-                        <p class="product-name">
+                    <p class="product-name">
+                        @if ($product && $transaction)
+                            <a href="{{ route('transactions.chat.show', $transaction) }}">
+                                {{ $product->name }}
+                            </a>
+                        @elseif ($product)
                             <a href="{{ route('products.show', ['itemId' => $product->id]) }}">
                                 {{ $product->name }}
                             </a>
-                        </p>
-                    @else
-                        <p class="product-name">商品名</p>
-                    @endif
+                        @else
+                            商品名
+                        @endif
+                    </p>
                 </div>
             @empty
                 <p class="empty-message">商品はありません</p>
