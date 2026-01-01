@@ -4,30 +4,37 @@
 
 .transaction-chat {
   position: relative;
-  width: 1512px;
-  height: 982px;
+  width: 100%;
+  min-height: 100vh;
   background: #ffffff;
   font-family: "Inter", sans-serif;
   color: #000;
+  box-sizing: border-box;
+}
+
+/* ヘッダー高さぶんの余白を適正化（app.cssの90pxより少し小さくして段差を解消） */
+.main-content {
+  padding-top: 80px;
 }
 
 /* 全体レイアウト：上80px（ヘッダー）+ 下（サイドバー/メイン） */
 .transaction-chat__layout {
   position: relative;
-  width: 1512px;
-  height: 982px;
+  width: 100%;
+  min-height: 100vh;
   display: grid;
+  background: #ffffff;
   grid-template-columns: 259px 1fr;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 1fr;
 }
 
-/* 既存の layouts.app のヘッダーがある場合は、画面側で再現できるように簡易ヘッダー枠 */
+/* 既存の layouts.app のヘッダーがある場合は、画面側で再現できるように簡易ヘッダー枠
 .transaction-chat__layout::before {
   content: "";
   grid-column: 1 / -1;
   grid-row: 1 / 2;
   background: #000000;
-}
+} */
 
 /* =========================
    エラー表示（FN008）
@@ -54,9 +61,9 @@
    ========================= */
 .transaction-chat__sidebar {
   grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  grid-row: 1 / 2;
   background: #868686;
-  height: 902px; /* 982 - 80 */
+  min-height: 100vh;
   padding: 13px 0 0;
   position: relative;
 }
@@ -155,18 +162,24 @@
    ========================= */
 .transaction-chat__main {
   grid-column: 2 / 3;
-  grid-row: 2 / 3;
+  grid-row: 1 / 2;
   position: relative;
   background: #ffffff;
-  height: 902px;
+  min-height: 100vh;
+
+  /* ✅ ここが見切れの根本対策：縦レイアウトにする */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* タイトル + 完了ボタン + 上ライン */
 .transaction-chat__header {
   position: relative;
-  padding: 22px 27px 14px; /* だいたい Figma top 111 周りに寄せ */
-  height: 105px; /* タイトル帯 */
+  padding: 22px 27px 14px;
+  height: 105px;
   box-sizing: border-box;
+  flex: 0 0 auto;
 }
 
 .transaction-chat__title {
@@ -194,11 +207,10 @@
 .transaction-chat__header::after {
   content: "";
   position: absolute;
-  left: -4px;
+  left: 0;
   bottom: 0;
-  width: 1516px;
+  width: 100%;
   border-bottom: 2px solid #5f5f5f;
-  transform: rotate(-0.08deg);
 }
 
 /* 取引完了ボタン */
@@ -221,19 +233,19 @@
 /* 商品情報ブロック（Line 12 まで） */
 .transaction-chat__product {
   position: relative;
-  height: 235px; /* タイトル下のカード領域 */
+  height: 235px;
   padding: 26px 27px;
   box-sizing: border-box;
+  flex: 0 0 auto;
 }
 
 .transaction-chat__product::after {
   content: "";
   position: absolute;
-  left: -10px;
+  left: 0;
   bottom: 0;
-  width: 1522px;
+  width: 100%;
   border-bottom: 2px solid #5f5f5f;
-  transform: rotate(-0.08deg);
 }
 
 .transaction-chat__product-image {
@@ -246,7 +258,7 @@
 
 .transaction-chat__product-info {
   position: absolute;
-  left: 270px; /* 299 + 203 くらいのイメージ */
+  left: 270px;
   top: 38px;
   display: grid;
   gap: 18px;
@@ -269,12 +281,15 @@
 /* =========================
    メッセージ一覧領域
    ========================= */
+/* ✅ 高さ固定をやめて「残り高さ」で伸びるようにする */
 .transaction-chat__messages {
-  position: relative;
-  height: 520px;
+  flex: 1 1 auto;
   padding: 18px 27px 0;
   box-sizing: border-box;
-  overflow: auto;
+  overflow-y: auto;
+
+  /* ✅ 入力欄(115px)に隠れないように余白を確保 */
+  padding-bottom: 135px;
 }
 
 /* 1メッセージ */
@@ -284,6 +299,7 @@
   min-height: 92px;
 }
 
+/* 左右のアイコン分スペース */
 .transaction-chat__message.is-other {
   padding-left: 90px;
 }
@@ -297,7 +313,7 @@
   content: "";
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 0; /* ✅ 1段目に合わせる */
   width: 60px;
   height: 60px;
   border-radius: 999px;
@@ -308,18 +324,20 @@
   content: "";
   position: absolute;
   right: 0;
-  top: 10px;
+  top: 0; /* ✅ 1段目に合わせる */
   width: 60px;
   height: 60px;
   border-radius: 999px;
   background: #d9d9d9;
 }
 
+/* ✅ 1段目：名前だけ（タイムスタンプは使わない） */
 .transaction-chat__message-meta {
   display: flex;
   gap: 10px;
-  align-items: baseline;
+  align-items: center;
   margin-bottom: 10px;
+  min-height: 60px; /* ✅ アイコン高さに揃える */
 }
 
 .transaction-chat__message-sender {
@@ -329,15 +347,25 @@
   color: #000000;
 }
 
-.transaction-chat__message-time {
-  font-size: 12px;
-  line-height: 16px;
-  color: #5f5f5f;
+/* 送信（自分）: 1段目（アイコン+名前）を本文と同じ位置に右寄せ */
+.transaction-chat__message.is-mine .transaction-chat__message-meta {
+  width: min(461px, 100%);           /* 本文（吹き出し）と同じ幅 */
+  margin-left: auto;      /* 右側へ寄せる */
+  margin-right: 0;
+  justify-content: flex-end; /* 中身（名前）も右寄せ */
 }
 
-/* 吹き出し（Rectangle 28/29 相当） */
+/* 受信: 左側に固定（念のため） */
+.transaction-chat__message.is-other .transaction-chat__message-meta {
+  width: min(461px, 100%);
+  margin-left: 0;
+  margin-right: auto;
+  justify-content: flex-start;
+}
+
+/* ✅ 2段目：本文 */
 .transaction-chat__message-body {
-  width: 461px;
+  width: min(461px, 100%);
   min-height: 60px;
   background: #d9d9d9;
   border-radius: 4px;
@@ -346,10 +374,7 @@
   font-size: 16px;
   line-height: 22px;
   color: #000000;
-}
-
-.transaction-chat__message.is-other .transaction-chat__message-body {
-  margin-left: 0;
+  word-break: break-word;
 }
 
 .transaction-chat__message.is-mine .transaction-chat__message-body {
@@ -359,7 +384,7 @@
 /* 添付画像 */
 .transaction-chat__message-image {
   margin-top: 10px;
-  width: 461px;
+  width: min(461px, 100%);
 }
 
 .transaction-chat__message.is-mine .transaction-chat__message-image {
@@ -375,7 +400,7 @@
 /* 編集/削除（右側に寄せて薄い文字） */
 .transaction-chat__message-actions {
   margin-top: 6px;
-  width: 461px;
+  width: min(461px, 100%);
 }
 
 .transaction-chat__message.is-mine .transaction-chat__message-actions {
@@ -414,15 +439,16 @@
 /* =========================
    入力エリア（下部）
    ========================= */
+/* ✅ mainの中で固定したいので sticky に変更（重なり事故が減る） */
 .transaction-chat__composer {
-  position: absolute;
-  left: 0;
+  position: sticky;
   bottom: 0;
   width: 100%;
   height: 115px;
   padding: 0 27px 18px;
   box-sizing: border-box;
   background: #ffffff;
+  flex: 0 0 auto;
 }
 
 .transaction-chat__composer form {
@@ -435,7 +461,8 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 937px;
+  width: calc(100% - 260px);
+  max-width: 937px;
   height: 44px;
   border: 1px solid #5f5f5f;
   border-radius: 4px;
@@ -445,6 +472,7 @@
   font-size: 16px;
   line-height: 22px;
   color: #000;
+  min-width: 220px;
 }
 
 /* 右側アクション */
@@ -476,114 +504,166 @@
   box-sizing: border-box;
 }
 
-/* 送信ボタン（inputbutton風：紙飛行機っぽい見た目） */
 .transaction-chat__send-btn {
   width: 80px;
   height: 61px;
   border: none;
   border-radius: 10px;
-  background: #d9d9d9;
   cursor: pointer;
-  position: relative;
-  color: transparent; /* テキストは隠す */
+  background-color: transparent;
+  background-image: url("/images/send-button.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 紙飛行機アイコン風 */
-.transaction-chat__send-btn::before {
-  content: "";
-  position: absolute;
-  left: 26px;
-  top: 18px;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  border-left: 22px solid #5f5f5f;
-  transform: rotate(10deg);
+.transaction-chat__send-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 /* =========================
    モーダル（評価）
    ========================= */
-.modal {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
+.rating-dialog {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.rating-dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
-  z-index: 50;
 }
 
-.modal[hidden] {
-  display: none;
-}
-
-.modal__content {
+.rating-dialog__inner {
+  position: relative;
   width: 598px;
   height: 367px;
   background: #fdfce6;
   border: 1px solid #000000;
   border-radius: 15px;
+  padding: 21px 23px 32px;
+  padding-top: 150px; /* タイトル/サブタイトルと上部ラインの余白を確保 */
   box-sizing: border-box;
-  padding: 20px 22px;
-  position: relative;
 }
 
-.modal__content h2 {
-  margin: 0;
-  font-size: 35px;
-  font-weight: 400;
-  line-height: 42px;
-  color: #000000;
-}
-
-.modal__content form {
-  margin-top: 10px;
-  display: grid;
-  gap: 14px;
-}
-
-/* 区切り線っぽく */
-.modal__content::before {
+/* 上の区切り線 */
+.rating-dialog__inner::before {
   content: "";
   position: absolute;
   left: 0;
   top: 88px;
-  width: 100%;
-  border-top: 1px solid #000;
+  width: 598px;
+  border-top: 1px solid #000000;
 }
 
-.modal__content::after {
+/* 下の区切り線（少しはみ出し） */
+.rating-dialog__inner::after {
   content: "";
   position: absolute;
-  left: 0;
+  left: -13px;
   top: 286px;
-  width: 100%;
-  border-top: 1px solid #000;
+  width: 611px;
+  border-top: 1px solid #000000;
 }
 
-.modal__content label {
-  font-size: 20px;
+/* タイトル */
+.rating-dialog__title {
+  position: absolute;
+  left: 23px;
+  top: 21px;
+  margin: 0;
+  font-size: 35px;
+  line-height: 42px;
   font-weight: 400;
+  color: #000000;
+}
+
+/* サブタイトル */
+.rating-dialog__subtitle {
+  position: absolute;
+  left: 23px;
+  top: 107px;
+  margin: 0;
+  font-size: 20px;
   line-height: 24px;
   color: #868686;
-  margin-top: 8px;
 }
 
-.modal__content select {
-  width: 220px;
-  height: 40px;
-  border: 1px solid #5f5f5f;
-  border-radius: 6px;
-  padding: 0 10px;
-  box-sizing: border-box;
-  background: #fff;
+/* 星コンテナ */
+.rating-dialog__stars {
+  position: relative;
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  padding-left: 23px;
+  height: 100px;
+  margin-top: 12px;
 }
 
-.modal__content button[type="submit"] {
+/* 星（四角ではなく星形） */
+.rating-dialog__star {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: #d9d9d9;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-block;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  -webkit-clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+}
+
+/* 選択状態 */
+.rating-dialog__star.is-active {
+  background: #fff048;
+}
+
+.rating-dialog__star:hover {
+  transform: translateY(-2px);
+}
+
+.rating-dialog__star:focus-visible {
+  outline: 2px solid #ff8282;
+  outline-offset: 4px;
+}
+
+/* 送信ボタン */
+.rating-dialog__submit {
   position: absolute;
-  right: 14px;
-  bottom: 14px;
+  left: 457px;
+  top: 300px;
   width: 127px;
   height: 49px;
   border: none;
@@ -591,19 +671,11 @@
   background: #ff8282;
   color: #ffffff;
   font-size: 24px;
-  font-weight: 400;
   line-height: 29px;
   cursor: pointer;
 }
 
-.modal__content button[data-close-modal] {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  height: 49px;
-  padding: 0 16px;
-  border: 1px solid #5f5f5f;
-  border-radius: 5px;
-  background: #fff;
-  cursor: pointer;
+.rating-dialog__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

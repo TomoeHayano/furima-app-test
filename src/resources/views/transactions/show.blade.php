@@ -61,7 +61,7 @@
 
                 {{-- 購入者：取引完了ボタン（FN012） --}}
                 @if ($shouldShowBuyerComplete)
-                    <button type="button" class="transaction-chat__complete-btn" data-open-modal="buyer-complete-modal">
+                    <button type="button" class="transaction-chat__complete-btn" data-open-buyer-rating>
                         取引を完了する
                     </button>
                 @endif
@@ -86,7 +86,6 @@
                     <div class="transaction-chat__message {{ $isMine ? 'is-mine' : 'is-other' }}">
                         <div class="transaction-chat__message-meta">
                             <span class="transaction-chat__message-sender">{{ $m->sender->name }}</span>
-                            <span class="transaction-chat__message-time">{{ $m->created_at->format('Y/m/d H:i') }}</span>
                         </div>
 
                         <div class="transaction-chat__message-body">
@@ -131,7 +130,7 @@
                         id="chatBody"
                         name="body"
                         class="transaction-chat__textarea"
-                        maxlength="400"
+                        maxlength="500"
                         placeholder="取引メッセージを記入してください"
                     >{{ old('body') }}</textarea>
 
@@ -141,7 +140,9 @@
                             <input type="file" name="image" accept="image/jpeg,image/png" hidden>
                         </label>
 
-                        <button type="submit" class="transaction-chat__send-btn">送信</button>
+                        <button type="submit" class="transaction-chat__send-btn" aria-label="送信">
+                            <img class="transaction-chat__send-icon" src="{{ asset('images/send-button.jpg') }}" alt="">
+                        </button>
                     </div>
                 </form>
             </section>
@@ -149,84 +150,217 @@
     </div>
 </div>
 
-{{-- 購入者：完了 + 出品者評価モーダル --}}
+{{-- 購入者：取引完了ボタン --}}
 @if ($shouldShowBuyerComplete)
-    <div class="modal" id="buyer-complete-modal" hidden>
-        <div class="modal__content">
-            <h2>取引完了（出品者を評価）</h2>
-            <form method="post" action="{{ route('transactions.complete.buyer', $transaction) }}">
-                @csrf
-                <label>評価（必須）</label>
-                <select name="rating" required>
-                    <option value="">選択してください</option>
-                    @for ($i = 5; $i >= 1; $i--)
-                        <option value="{{ $i }}">{{ $i }}</option>
-                    @endfor
-                </select>
+  <dialog class="rating-dialog" id="buyerRatingDialog">
+    <div class="rating-dialog__inner">
+      <p class="rating-dialog__title">取引が完了しました。</p>
+      <p class="rating-dialog__subtitle">今回の取引相手はどうでしたか？</p>
 
-                <button type="submit">評価して完了</button>
-                <button type="button" data-close-modal>閉じる</button>
-            </form>
+      <form method="POST" action="{{ route('transactions.complete.buyer', $transaction) }}">
+        @csrf
+
+        <input type="hidden" name="rating" id="buyerRatingValue" required>
+
+        <div class="rating-dialog__stars" data-rating-root="buyer">
+          @for ($rating = 1; $rating <= 5; $rating++)
+            <button
+              type="button"
+              class="rating-dialog__star"
+              data-rating="{{ $rating }}"
+              aria-label="評価 {{ $rating }}"
+            ></button>
+          @endfor
         </div>
+
+        <button type="submit" class="rating-dialog__submit" disabled>送信する</button>
+      </form>
     </div>
+  </dialog>
 @endif
 
-{{-- 出品者：購入者評価モーダル（購入者完了後に必須） --}}
+{{-- 出品者：購入者評価ダイアログ（購入者が完了した後に表示） --}}
 @if ($shouldShowSellerRating)
-    <div class="modal" id="seller-complete-modal">
-        <div class="modal__content">
-            <h2>取引完了（購入者を評価）</h2>
-            <form method="post" action="{{ route('transactions.complete.seller', $transaction) }}">
-                @csrf
-                <label>評価（必須）</label>
-                <select name="rating" required>
-                    <option value="">選択してください</option>
-                    @for ($i = 5; $i >= 1; $i--)
-                        <option value="{{ $i }}">{{ $i }}</option>
-                    @endfor
-                </select>
+  <dialog class="rating-dialog" id="sellerRatingDialog">
+    <div class="rating-dialog__inner">
+      <p class="rating-dialog__title">取引が完了しました。</p>
+      <p class="rating-dialog__subtitle">今回の取引相手はどうでしたか？</p>
 
-                <button type="submit">評価して完了</button>
-            </form>
+      <form method="POST" action="{{ route('transactions.complete.seller', $transaction) }}">
+        @csrf
+
+        <input type="hidden" name="rating" id="sellerRatingValue" required>
+
+        <div class="rating-dialog__stars" data-rating-root="seller">
+          @for ($rating = 1; $rating <= 5; $rating++)
+            <button
+              type="button"
+              class="rating-dialog__star"
+              data-rating="{{ $rating }}"
+              aria-label="評価 {{ $rating }}"
+            ></button>
+          @endfor
         </div>
+
+        <button type="submit" class="rating-dialog__submit" disabled>送信する</button>
+      </form>
     </div>
+  </dialog>
 @endif
 
 <script>
 (function () {
-    // FN009：本文のみ入力保持（transactionごとに保存）
-    const key = 'tx_chat_body_' + @json((string) $transaction->id);
-    const textarea = document.getElementById('chatBody');
-    if (textarea) {
-        // 投稿成功時は削除（controller -> with('message_posted')）
-        const posted = @json(session('message_posted') ? true : false);
-        if (posted) localStorage.removeItem(key);
+  'use strict';
 
-        const saved = localStorage.getItem(key);
-        if (!textarea.value && saved) textarea.value = saved;
+  /**
+   * FN009：本文のみ入力保持（transactionごとに保存）
+   */
+  const transactionId = @json((string) $transaction->id);
+  const storageKey = 'tx_chat_body_' + transactionId;
+  const chatTextarea = document.getElementById('chatBody');
 
-        textarea.addEventListener('input', function () {
-            localStorage.setItem(key, textarea.value);
-        });
+  if (chatTextarea) {
+    const isPosted = @json(session('message_posted') ? true : false);
+    if (isPosted) {
+      localStorage.removeItem(storageKey);
     }
 
-    // モーダル簡易制御
-    document.querySelectorAll('[data-open-modal]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            const id = btn.getAttribute('data-open-modal');
-            const modal = document.getElementById(id);
-            if (modal) modal.hidden = false;
-        });
+    const savedText = localStorage.getItem(storageKey);
+    if (!chatTextarea.value && savedText) {
+      chatTextarea.value = savedText;
+    }
+
+    chatTextarea.addEventListener('input', function () {
+      localStorage.setItem(storageKey, chatTextarea.value);
+    });
+  }
+
+  /**
+   * dialog共通：誤送信対策
+   */
+  function applySafeDialogBehavior(dialogElement) {
+    if (!dialogElement) return;
+
+    // ESCで閉じない
+    dialogElement.addEventListener('cancel', function (event) {
+      event.preventDefault();
     });
 
-    document.querySelectorAll('[data-close-modal]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            const modal = btn.closest('.modal');
-            if (modal) modal.hidden = true;
-        });
+    // 背景クリックで閉じない（dialog要素そのものをクリックした時だけ）
+    dialogElement.addEventListener('click', function (event) {
+      if (event.target === dialogElement) {
+        event.preventDefault();
+      }
     });
 
-    // 出品者モーダルは自動表示（hiddenにしてない）
+    // タブ切替/別タブクリックで閉じる
+    function closeIfOpen() {
+      if (dialogElement.open) {
+        dialogElement.close();
+      }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) closeIfOpen();
+    });
+
+    window.addEventListener('blur', closeIfOpen);
+  }
+
+  /**
+   * 購入者：ボタン押下で評価ダイアログ表示
+   */
+  function focusFirstStar(dialogElement) {
+    if (!dialogElement) return;
+    const firstStar = dialogElement.querySelector('.rating-dialog__star');
+    if (firstStar) {
+      // showModal直後はフォーカス移動を遅延させた方が安定する
+      setTimeout(function () {
+        firstStar.focus();
+      }, 0);
+    }
+  }
+
+  function setupRatingDialog(dialogElement, hiddenInputElement) {
+    if (!dialogElement || !hiddenInputElement) return;
+
+    const starsRoot =
+      dialogElement.querySelector('[data-rating-root]') ||
+      dialogElement.querySelector('.rating-dialog__stars');
+
+    const submitButton = dialogElement.querySelector('.rating-dialog__submit');
+    const starButtons = dialogElement.querySelectorAll('.rating-dialog__star');
+
+    // 必須要素が無ければ終了
+    if (!starsRoot || !submitButton || starButtons.length === 0) {
+      return;
+    }
+
+    function setRating(selectedRating, enableSubmit = true) {
+      hiddenInputElement.value = String(selectedRating);
+
+      starButtons.forEach(function (button) {
+        const ratingValue = Number(button.getAttribute('data-rating'));
+        const shouldActive = ratingValue <= selectedRating;
+        button.classList.toggle('is-active', shouldActive);
+      });
+
+      if (enableSubmit) {
+        submitButton.disabled = false;
+      }
+    }
+
+    // clickが拾えないケース（クリック先が別要素）対策で、rootで拾う
+    starsRoot.addEventListener('click', function (event) {
+      const clickedButton = event.target.closest('.rating-dialog__star');
+      if (!clickedButton) return;
+
+      const selectedRating = Number(clickedButton.getAttribute('data-rating'));
+      if (!Number.isFinite(selectedRating)) return;
+
+      setRating(selectedRating);
+    });
+
+    // 既に値が入っていれば描画状態を反映（ブラウザ戻る対策）
+    const initialValue = Number(hiddenInputElement.value);
+    if (Number.isFinite(initialValue) && initialValue > 0) {
+      setRating(initialValue, false);
+    }
+  }
+
+  const buyerOpenButton = document.querySelector('[data-open-buyer-rating]');
+  const buyerDialog = document.getElementById('buyerRatingDialog');
+  const buyerHiddenInput = document.getElementById('buyerRatingValue');
+
+  if (buyerDialog) {
+    applySafeDialogBehavior(buyerDialog);
+    setupRatingDialog(buyerDialog, buyerHiddenInput);
+
+    if (buyerOpenButton) {
+      buyerOpenButton.addEventListener('click', function () {
+        if (!buyerDialog.open) {
+          buyerDialog.showModal();
+          focusFirstStar(buyerDialog);
+        }
+      });
+    }
+  }
+
+  /**
+   * 出品者：自動表示
+   */
+  const sellerDialog = document.getElementById('sellerRatingDialog');
+  const sellerHiddenInput = document.getElementById('sellerRatingValue');
+
+  if (sellerDialog) {
+    applySafeDialogBehavior(sellerDialog);
+    setupRatingDialog(sellerDialog, sellerHiddenInput);
+
+    if (!sellerDialog.open) {
+      sellerDialog.showModal();
+      focusFirstStar(sellerDialog);
+    }
+  }
 })();
 </script>
 @endsection

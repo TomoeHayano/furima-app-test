@@ -71,4 +71,5 @@ class TransactionMessageController extends Controller
     {
         return (int) $transaction->buyer_id === $userId || (int) $transaction->seller_id === $userId;
     }
+    
 }
