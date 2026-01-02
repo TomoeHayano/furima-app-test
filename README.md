@@ -95,3 +95,130 @@ password：111111111
 ## ER図
 ![ER図](20260102_er_diagram.png)
 
+
+## テーブル
+### usersテーブル（ユーザー）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| name | varchar(20) |  |  | ○ |  |
+| email | varchar(255) |  | ○ | ○ |  |
+| email_verified_at | timestamp |  |  |  |  |
+| password | varchar(255) |  |  | ○ |  |
+| remember_token | varchar |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### profilesテーブル（プロフィール）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  |  | ○ | users(id) |
+| postal_code | varchar(8) |  |  | ○ |  |
+| address | varchar(255) |  |  | ○ |  |
+| building_name | varchar(255) |  |  |  |  |
+| image_path | varchar(255) |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### productsテーブル（商品）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  |  | ○ | users(id) |
+| name | varchar(255) |  |  | ○ |  |
+| brand_name | varchar(255) |  |  |  |  |
+| description | text |  |  | ○ |  |
+| price | integer |  |  | ○ |  |
+| condition_id | integer |  |  | ○ | product_conditions(id) |
+| image_path | varchar(255) |  |  | ○ |  |
+| is_sold | tinyint |  |  | ○ |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### categoriesテーブル（カテゴリ）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| name | varchar(255) |  | ○ | ○ |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### product_categoryテーブル（商品カテゴリ中間）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| product_id | unsigned bigint |  |  | ○ | products(id) |
+| category_id | unsigned bigint |  |  | ○ | categories(id) |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### likesテーブル（いいね）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  |  | ○ | users(id) |
+| product_id | unsigned bigint |  |  | ○ | products(id) |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### commentsテーブル（コメント）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  |  | ○ | users(id) |
+| product_id | unsigned bigint |  |  | ○ | products(id) |
+| content | varchar(255) |  |  | ○ |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### ordersテーブル（注文）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  |  | ○ | users(id) |
+| product_id | unsigned bigint |  |  | ○ | products(id) |
+| profile_id | unsigned bigint |  |  | ○ | profiles(id) |
+| payment_method | varchar(50) |  |  | ○ |  |
+| shipping_postal_code | varchar(8) |  |  | ○ |  |
+| shipping_address | varchar(255) |  |  | ○ |  |
+| shipping_building_name | varchar(255) |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### product_conditionsテーブル（商品状態）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| status_name | varchar(255) |  | ○ | ○ |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### transactionsテーブル（取引）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| order_id | unsigned bigint |  | ○ | ○ | orders(id) |
+| buyer_id | unsigned bigint |  |  | ○ | users(id) |
+| seller_id | unsigned bigint |  |  | ○ | users(id) |
+| buyer_rating | unsigned tinyint |  |  |  |  |
+| seller_rating | unsigned tinyint |  |  |  |  |
+| buyer_rated_at | timestamp |  |  |  |  |
+| seller_rated_at | timestamp |  |  |  |  |
+| buyer_completed_at | timestamp |  |  |  |  |
+| seller_completed_at | timestamp |  |  |  |  |
+| completed_at | timestamp |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### transaction_messagesテーブル（取引メッセージ）
+| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| --- | --- | --- | --- | --- | --- |
+| id | unsigned bigint | ○ |  | ○ |  |
+| transaction_id | unsigned bigint |  |  | ○ | transactions(id) |
+| sender_id | unsigned bigint |  |  | ○ | users(id) |
+| body | varchar(1000) |  |  | ○ |  |
+| image_path | varchar(255) |  |  |  |  |
+| read_at | timestamp |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
