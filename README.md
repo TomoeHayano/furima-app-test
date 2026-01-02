@@ -73,12 +73,25 @@ STRIPE_KEY・STRIPE_SECRET　は未設定のため、KEYの取得をお願いい
 - name：Seller One<br>
 email：seller1@example.com<br>
 password：111111111<br>
+出品商品：CO01 腕時計<br>
+CO02 HDD<br>
+CO03　玉ねぎ3束<br>
+CO04　革靴<br>
+CO05　ノートPC<br>
        
 - name：Seller Two<br>
 email：seller2@example.com<br>
 passwor：111111111<br>
+出品商品：CO06　マイク<br>
+CO07　ショルダーバッグ<br>
+CO08　タンブラー<br>
+CO09　コーヒーミル<br>
+CO10　メイクセット<br>
 
 - name：Unassigned User<br>
 email：user3@example.com<br>
 password：111111111
+
+## ER図
+![ER図](20260102_er_diagram.png)
 
