@@ -11,38 +11,39 @@
     <div class="user-info">
         <div class="user-avatar">
             @if ($user->profile && $user->profile->image_path)
-                <img src="{{ asset('storage/' . $user->profile->image_path) }}" alt="プロフィール画像">
+                <img src="{{ asset('storage/' . $user->profile->image_path) }}">
             @endif
         </div>
         <div class="user-details">
             <div class="user-meta">
                 <h1 class="user-name">{{ $user->name }}</h1>
                 @php
-                    $hasRating = !is_null($ratingAverage);
-                    $displayRating = $hasRating ? $ratingAverage : 0;
-                    $ariaLabel = $hasRating ? "評価 {$ratingAverage} / 5" : '評価なし';
+                    $hasRating = !is_null($ratingAverage) && $ratingAverage > 0;
                 @endphp
-                <div class="user-rating" aria-label="{{ $ariaLabel }}">
-                    @for ($i = 1; $i <= 5; $i++)
-                        @php
-                            $isActive = $i <= $displayRating;
-                            $starColor = $isActive ? '#fff048' : '#d9d9d9';
-                        @endphp
-                        <span
-                            class="user-rating__star"
-                            aria-hidden="true"
-                            style="
-                                color: {{ $starColor }};
-                                width: 40px;
-                                height: 40px;
-                                font-size: 32px;
-                                line-height: 40px;
-                                display: inline-block;
-                                text-align: center;
-                            "
-                        >★</span>
-                    @endfor
-                </div>
+
+                @if ($hasRating)
+                    <div class="user-rating" aria-label="評価 {{ $ratingAverage }} / 5">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @php
+                                $isActive = $i <= round($ratingAverage);
+                                $starColor = $isActive ? '#fff048' : '#d9d9d9';
+                            @endphp
+                            <span
+                                class="user-rating__star"
+                                aria-hidden="true"
+                                style="
+                                    color: {{ $starColor }};
+                                    width: 40px;
+                                    height: 40px;
+                                    font-size: 32px;
+                                    line-height: 40px;
+                                    display: inline-block;
+                                    text-align: center;
+                                "
+                            >★</span>
+                        @endfor
+                    </div>
+                @endif
             </div>
             <a href="{{ route('user.profile.edit') }}" class="profile-edit-button">プロフィールを編集</a>
         </div>
