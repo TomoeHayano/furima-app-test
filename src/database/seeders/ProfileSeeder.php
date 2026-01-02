@@ -28,6 +28,15 @@ class ProfileSeeder extends Seeder
         'created_at'    => now(),
         'updated_at'    => now(),
       ],
+      [
+        'user_id'       => 3,
+        'postal_code'   => '333-3333',
+        'address'       => '北海道札幌市中央区3-3-3',
+        'building_name' => 'てすとビル603号室',
+        'image_path'    => 'products/プロフィール写真.jpeg',
+        'created_at'    => now(),
+        'updated_at'    => now(),
+      ],
     ]);
   }
 }

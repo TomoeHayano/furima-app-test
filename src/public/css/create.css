@@ -335,3 +335,66 @@ label[for="price"] {
         gap: clamp(12px, 1.5vw, 18px);
     }
 }
+
+/* タブレット (768-850px) */
+@media (min-width: 768px) and (max-width: 850px) {
+    .sell {
+        padding: 40px 16px 0;
+    }
+
+    .sell-title {
+        font-size: 32px;
+        line-height: 40px;
+        margin-bottom: 64px;
+    }
+
+    .sell form {
+        width: 100%;
+        max-width: 640px;
+    }
+
+    .sell-section {
+        margin-bottom: 28px;
+    }
+
+    .sell-section h2 {
+        font-size: 26px;
+        line-height: 32px;
+        margin-bottom: 28px;
+    }
+
+    .sell-section > label {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .sell-section input[type="text"],
+    .sell-section input[type="number"],
+    .sell-section textarea,
+    .sell-section select {
+        width: 100%;
+    }
+
+    .sell-image-upload {
+        width: 100%;
+        margin-bottom: 36px;
+    }
+
+    .sell-image-preview {
+        max-width: 100%;
+    }
+
+    .sell-categories {
+        gap: 10px;
+    }
+
+    .sell-price-wrapper {
+        width: 100%;
+    }
+
+    .sell-button {
+        width: 100%;
+        margin-top: 72px;
+        margin-bottom: 120px;
+    }
+}

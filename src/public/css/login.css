@@ -108,3 +108,40 @@
     }
 
 }
+
+/* タブレット (768-850px) */
+@media (min-width: 768px) and (max-width: 850px) {
+    .auth-content {
+        max-width: 640px;
+        padding: 32px 24px;
+    }
+
+    .auth-title {
+        font-size: 32px;
+        margin-bottom: 104px;
+    }
+
+    .form-group {
+        min-height: 84px;
+        margin-bottom: 28px;
+    }
+
+    .form-group label {
+        font-size: 22px;
+    }
+
+    .form-group input {
+        height: 54px;
+        font-size: 18px;
+    }
+
+    .login-button {
+        margin-top: 64px;
+        font-size: 24px;
+        padding: 14px 0;
+    }
+
+    .register-link {
+        font-size: 18px;
+    }
+}

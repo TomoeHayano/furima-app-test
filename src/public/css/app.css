@@ -139,3 +139,55 @@ body {
         padding-right: clamp(12px, 1.5vw, 24px);
     }
 }
+
+/* タブレット (768-850px) */
+@media (min-width: 768px) and (max-width: 850px) {
+    .auth-header {
+        height: auto;
+        padding: 12px 16px;
+        gap: 16px;
+    }
+
+    .auth-header-inner {
+        min-width: 0;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .auth-header img {
+        height: 32px;
+    }
+
+    .toppage-header-nav {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .header-link,
+    .logout-link {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .header-button {
+        width: 92px;
+        height: 44px;
+        font-size: 20px;
+        line-height: 24px;
+        margin-right: 0;
+    }
+
+    .toppage-header-search {
+        order: 3;
+        flex: 1 1 100%;
+        min-width: 0;
+        max-width: none;
+        height: auto;
+    }
+
+    .toppage-header-search input {
+        height: 38px;
+        font-size: 15px;
+    }
+}

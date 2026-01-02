@@ -216,3 +216,73 @@
         left: 190px;
     }
 }
+
+/* タブレット (768-850px) */
+@media (min-width: 768px) and (max-width: 850px) {
+    .profile-edit-content {
+        padding-top: 64px;
+    }
+
+    .profile-form,
+    .profile-image-section,
+    .form-group,
+    .form-label,
+    .form-input,
+    .action-bar,
+    .update-button {
+        width: 100%;
+        max-width: 720px;
+    }
+
+    .profile-image-section {
+        height: auto;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .profile-image-circle {
+        position: static;
+        width: 140px;
+        height: 140px;
+    }
+
+    .image-select-button {
+        position: static;
+        left: auto;
+        top: auto;
+        width: 180px;
+        margin-top: 8px;
+    }
+
+    .form-group {
+        height: auto;
+        margin-bottom: 72px;
+    }
+
+    .form-group:last-of-type {
+        margin-bottom: 56px;
+    }
+
+    .form-label {
+        position: static;
+        font-size: 22px;
+        line-height: 28px;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        position: static;
+        height: 52px;
+    }
+
+    .action-bar {
+        height: auto;
+        margin-bottom: 140px;
+    }
+
+    .update-button {
+        position: static;
+        height: 56px;
+        font-size: 24px;
+    }
+}

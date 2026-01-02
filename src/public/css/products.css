@@ -110,3 +110,28 @@
         max-width: 320px;
     }
 }
+
+/* タブレット (768-850px) */
+@media (min-width: 768px) and (max-width: 850px) {
+    .products-page {
+        max-width: 100%;
+        padding: 112px 24px 100px;
+    }
+
+    .products-tabs {
+        gap: 20px;
+    }
+
+    .tab-link {
+        font-size: 22px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 40px 24px;
+    }
+
+    .product-card {
+        max-width: none;
+    }
+}

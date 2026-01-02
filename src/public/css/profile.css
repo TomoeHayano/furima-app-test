@@ -286,3 +286,58 @@
         gap: clamp(48px, 5vw, 64px) clamp(28px, 4vw, 48px);
     }
 }
+
+/* タブレット (768-850px) */
+@media (min-width: 768px) and (max-width: 850px) {
+    .profile-container {
+        padding: 88px 32px 100px 32px;
+    }
+
+    .user-info {
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 100%;
+        gap: 20px;
+        padding-right: 0;
+    }
+
+    .user-avatar {
+        width: 132px;
+        height: 132px;
+    }
+
+    .user-details {
+        margin-left: 0;
+        width: 100%;
+        gap: 32px;
+        justify-content: space-between;
+    }
+
+    .user-rating {
+        left: 0;
+    }
+
+    .profile-edit-button {
+        width: 240px;
+        font-size: 24px;
+    }
+
+    .tab-section {
+        height: auto;
+        margin-bottom: 40px;
+    }
+
+    .tab-list {
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .tab-item {
+        font-size: 22px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 40px 24px;
+    }
+}
